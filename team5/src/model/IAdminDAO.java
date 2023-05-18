@@ -1,5 +1,9 @@
 package model;
 
-public class IAdminDAO {
+import java.util.ArrayList;
 
+public interface IAdminDAO {
+	public ArrayList<AdminVO> getAlladmin();
+	public AdminVO getAdmin(String adminId);
+	public int updateAdmin (AdminVO vo);
 }
