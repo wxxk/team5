@@ -1,5 +1,6 @@
 package main;
 
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,12 +11,14 @@ import java.util.Scanner;
 import model.UsersDAO;
 import model.UsersVO;
 
+
 public class Main {
 	public static Scanner sc = new Scanner(System.in);
 	public static UsersVO user = new UsersVO();
 	public static UsersDAO userDAO = new UsersDAO();
 	
 	public static void main(String[] args) {
+
 		while(true) {
 			System.out.println("---------------------------------------------");
 			System.out.println("안녕하세요. 환영합니다.");
