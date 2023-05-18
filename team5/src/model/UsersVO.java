@@ -13,9 +13,9 @@ public class UsersVO {
 	
 	@Override
 	public String toString() {
-		return " ID =" + userId + ", Password = " + userPassword + ", Name =" + userName
-				+ ", Birth =" + userBirth + ", Phonenumber =" + userPhoneNumber + ", Address=" + userAddress
-				;
+		return "ID =" + userId + "\n" + "Name =" + userName + "\n" +
+				"Birth =" + userBirth +  "\n" + "Phonenumber =" + userPhoneNumber + "\n"+ 
+				"Address=" + userAddress;
 	}
 	
 	public String [] toArray() {

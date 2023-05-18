@@ -35,7 +35,7 @@ public class AdminDAO implements IAdminDAO {
 	@Override
 	public AdminVO getAdmin(String adminId) {
 		AdminVO vo = null;
-		String sql = "SELECT admin_id WHERE admin_id=?";
+		String sql = "SELECT admin_id, admin_password WHERE admin_id=?";
 		Connection con = null;
 		PreparedStatement stmt = null;
 		try {
@@ -46,6 +46,8 @@ public class AdminDAO implements IAdminDAO {
 			if(rs.next()) {
 				vo = new AdminVO();
 				vo.setAdminId(rs.getString("admin_id"));
+				vo.setAdminPassword(rs.getString("admin_password"));
+				System.out.println("타써용");
 			}
 		}catch(SQLException e) {
 			throw new RuntimeException(e);
