@@ -1,10 +1,17 @@
 package main;
 
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import model.AdminVO;
+import model.IOrderDAO;
+import model.IProductDAO;
 import model.IUsersDAO;
+import model.OrderDAO;
+import model.OrderVO;
+import model.ProductDAO;
+import model.ProductVO;
 import model.UsersDAO;
 import model.UsersVO;
 
@@ -15,8 +22,12 @@ public class Main {
 	static IUsersDAO uDAO = new UsersDAO();
 	static UsersVO uVO = new UsersVO();
 	
+	static IOrderDAO oDAO = new OrderDAO();
+	static OrderVO oVO = new OrderVO();
+	
 	public static UsersVO user = new UsersVO();
 	public static UsersDAO userDAO = new UsersDAO();
+	
 	public static AdminVO adminVO = new AdminVO();
 
 	public static void main(String[] args) {
@@ -58,7 +69,7 @@ public class Main {
 			System.out.println("---------------------------------------------");
 			System.out.println(uVO.getUserId() + "님 안녕하세요");
 			System.out.println("---------------------------------------------");
-			System.out.println("(1)회원정보 | (2)상품보기 | (3)로그아웃 | (4)종료 ");
+			System.out.println("(1)회원정보 | (2)상품보기 | (3)로그아웃 | (4)주문정보");
 			System.out.println("---------------------------------------------");
 			System.out.print("메뉴 번호 입력: ");
 			try {
@@ -82,12 +93,14 @@ public class Main {
 					
 					// 회원정보 삭제
 					} else if (userMenuSelect == 2) {
+						System.out.println("***회원 탈퇴***");
 						System.out.print("아이디 : ");
 						String id = sc.nextLine();
 						System.out.print("비밀번호 : ");
 						String pwd = sc.nextLine();
 						if (id.equals(uVO.getUserId()) && pwd.equals(uVO.getUserId())) {
 							deleteUser();
+							main(null);
 						}
 					
 					// 뒤로가기
@@ -98,12 +111,24 @@ public class Main {
 					
 					
 				case 2 :
+					System.out.println("***상품목록***");
+					try {
+						IProductDAO pDAO = new ProductDAO();
+						ArrayList<ProductVO> pVO = pDAO.getAllProducts();
+						for (ProductVO proVO : pVO) {
+							System.out.println(proVO);
+						}
+					} catch (RuntimeException e) {
+						System.out.println(e.getMessage());
+					}
+					System.out.println("(1)카테고리 | (2)뒤로가기");
+					System.out.print("메뉴 번호 입력: ");
 					break;
 				case 3 :
 					main(null);
 					break;
 				case 4:
-					exit();
+					order();
 					break;
 				default:
 					System.out.println("잘못된 선택");
@@ -124,7 +149,6 @@ public class Main {
 		try {
 			uVO = uDAO.getUser(id);
 			
-			System.out.println(uVO);
 			if (id.equals(uVO.getUserId()) && pwd.equals(uVO.getUserPassword())) {
 				s.loginUserId = uVO.getUserId();
 				mainPage();
@@ -158,7 +182,6 @@ public class Main {
 	
 	public static void updateUser() {
 		// 이름, 핸드폰번호, 주소 수정
-		UsersVO uVO = new UsersVO();
 		System.out.println("***수정***");
 		System.out.print("이름 : ");
 		uVO.setUserName(sc.nextLine());
@@ -174,9 +197,11 @@ public class Main {
 	}
 	
 	public static void deleteUser() {
-//		try {
+		try {
 			uDAO.deleteUser(uVO);
-//		};
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+		}
 	}
 	// END USER =========================================================================
 	
