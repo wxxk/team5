@@ -120,13 +120,11 @@ public class UsersDAO implements IUsersDAO {
 
 		String sql = "DELETE FROM users WHERE user_id=?";
 		Connection con = null;
-
 		try {
 			con=DataSource.getConnection();
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setString(1, vo.getUserId());
 			deleteRow = stmt.executeUpdate();
-
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}finally {

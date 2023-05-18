@@ -17,6 +17,8 @@ public class ProductDAO implements IProductDAO{
 		String sql = "select p.product_id, c.category_id, p.product_name, p.product_price, p.product_img, p.cnt "
 				+ "from product p, category c"
 				+ "where p.category_id = c.category_id";
+		
+		
 		Connection con = null;
 		PreparedStatement stmt = null;
 		try {
