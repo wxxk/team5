@@ -20,6 +20,6 @@ public class OrderVO {
 	private String userPhoneNumber;
 	private String productName;
 	private int productPrice;
-	private int cnt;
+	private int cartCnt;
 	
 }

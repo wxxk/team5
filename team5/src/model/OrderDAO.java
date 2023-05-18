@@ -14,9 +14,11 @@ public class OrderDAO implements IOrderDAO {
 		ArrayList<OrderVO> orderList = new ArrayList<OrderVO>();
 		
 		String sql = 
-		 "SELECT o.order_id, u.user_id, p.product_id, c.cart_id"
-		 + "FROM orders o, users u, product p, cart c"
-		 + "WHERE o.user_id = u.user_id AND p.product_id = o.product_id AND o.cart_id = c.cart_id";
+			"SELECT o.order_id,p.product_name, c.cart_cnt, p.product_price, u.username, u.user_address, u.user_phone_number"	
+			 + "FROM users u"
+			 + "JOIN cart c ON u.user_id = c.user_id"
+			 + "JOIN order o ON c.product_id = o.product_id"
+			 + "JOIN product p ON o.product_id = p.product_id";	
 		Connection con = null;
 		try {
 			con = DataSource.getConnection();
@@ -25,9 +27,14 @@ public class OrderDAO implements IOrderDAO {
 			while(rs.next()) {
 				OrderVO od = new OrderVO();
 				od.setOrderId(rs.getInt("order_id"));
-				od.setUserId(rs.getString("user_id"));
-				od.setProductId(rs.getInt("product_id"));
-				od.setCartId(rs.getString("cart_id"));	
+				od.setProductName(rs.getString("product_name"));
+				od.setCartCnt(rs.getInt("cart_cnt"));	
+				od.setProductPrice(rs.getInt("product_price"));
+				od.setUserName(rs.getString("user_name"));
+				od.setUserAddress(rs.getString("user_address"));
+				od.setUserPhoneNumber(rs.getString("user_phone_number"));
+				
+				
 			}
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
