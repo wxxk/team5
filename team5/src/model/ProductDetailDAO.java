@@ -14,7 +14,7 @@ public class ProductDetailDAO implements IProductDetailDAO {
 	@Override
 	public ProductDetailVO getProductDetail(String productId) {
 		ProductDetailVO vo = null;
-		String sql = "select pd.product_detail_id, p.product_id, pd.options, pd.cnt"
+		String sql = "select pd.product_detail_id, pd.options, pd.cnt"
 				+ "from product p, product_detail pd"
 				+ "where p.product_id = pd.product_id and pd.product_id = ?";
 		Connection con = null;
@@ -84,8 +84,20 @@ public class ProductDetailDAO implements IProductDetailDAO {
 
 	@Override
 	public int deleteProductDetail(ProductDetailVO vo) {
-		// TODO Auto-generated method stub
-		return 0;
+		int deleteRow = 0;
+		String sql = "DELETE FROM product_detail WHERE product_detail_id = ?";
+		Connection con = null;
+		try {
+			con=DataSource.getConnection();
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setInt(1, vo.getProductDetailId());
+			deleteRow = stmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}finally {
+			DataSource.closeConnection(con);
+		}
+		return deleteRow;
 	}
 
 }
