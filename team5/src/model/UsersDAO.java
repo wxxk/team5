@@ -53,10 +53,10 @@ public class UsersDAO implements IUsersDAO {
 			if(rs.next()) {
 				vo = new UsersVO();
 				vo.setUserId(rs.getString("user_id"));
-				vo.setUserName(rs.getString("user_name"));
 				vo.setUserPassword(rs.getString("user_password"));
+				vo.setUserName(rs.getString("user_name"));
 				vo.setUserBirth(rs.getString("user_birth"));
-				vo.setUserBirth(rs.getString("user_phone_number"));
+				vo.setUserPhoneNumber(rs.getString("user_phone_number"));
 				vo.setUserAddress(rs.getString("user_address"));
 			}
 		}catch(SQLException e) {
