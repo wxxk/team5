@@ -15,7 +15,7 @@ public class ProductDAO implements IProductDAO{
 	public ArrayList<ProductVO> getAllProducts() {
 		ArrayList<ProductVO> productList = new ArrayList<ProductVO>();
 		String sql = "select p.product_id, c.category_id, p.product_name, p.product_price, p.product_img, p.cnt "
-				+ "from product p, category c"
+				+ "from product p, category c "
 				+ "where p.category_id = c.category_id";
 		
 		
@@ -49,7 +49,7 @@ public class ProductDAO implements IProductDAO{
 	@Override
 	public int insertProduct(ProductVO vo) { 
 		int count = 0;
-		String sql = "INSERT INTO product (product_id, category_id, product_name, product_price, product_img, cnt)"+
+		String sql = "INSERT INTO product (product_seq.NEXTVAL(), category_id, product_name, product_price, product_img, cnt)"+
 					 " VALUES (?, ?, ?, ?, ?, ?)";
 		Connection con = null;
 		try {
