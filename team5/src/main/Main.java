@@ -123,6 +123,14 @@ public class Main {
 					}
 					System.out.println("(1)카테고리 | (2)뒤로가기");
 					System.out.print("메뉴 번호 입력: ");
+					int allProductSelect = sc.nextInt();
+					switch (num) {
+					case 1 : 
+						// 카테고리별 제품
+						break;
+					case 2 :
+					}
+					
 					break;
 				case 3 :
 					main(null);
