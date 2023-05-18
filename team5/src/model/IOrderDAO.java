@@ -1,5 +1,7 @@
 package model;
 
-public class IOrderDAO {
+import java.util.ArrayList;
 
+public interface IOrderDAO {
+	ArrayList<OrderVO> getOrderList();
 }
