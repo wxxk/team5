@@ -13,5 +13,6 @@
 	<classpathentry kind="lib" path="lib/json-20230227.jar"/>
 	<classpathentry kind="lib" path="lib/ojdbc6.jar"/>
 	<classpathentry kind="lib" path="lib/sqlite-jdbc-3.41.2.1.jar"/>
+	<classpathentry kind="lib" path="lib/lombok.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
