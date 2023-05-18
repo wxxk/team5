@@ -3,6 +3,7 @@ package main;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import model.AdminVO;
 import model.IUsersDAO;
 import model.UsersDAO;
 import model.UsersVO;
@@ -14,8 +15,11 @@ public class Main {
 	static IUsersDAO uDAO = new UsersDAO();
 	static UsersVO uVO = new UsersVO();
 	
-	public static void main(String[] args) {
+	public static UsersVO user = new UsersVO();
+	public static UsersDAO userDAO = new UsersDAO();
+	public static AdminVO adminVO = new AdminVO();
 
+	public static void main(String[] args) {
 		while(true) {
 			System.out.println("---------------------------------------------");
 			System.out.println("안녕하세요. 환영합니다.");
@@ -195,7 +199,9 @@ public class Main {
 	}
 	
 	public static void admin() {
-		
+		System.out.println("---------------------------------------------");
+		System.out.println("(1)상품등록   | (2)상품수정   | (3)상품삭제    |(4)상품조회   ");
+		System.out.println("---------------------------------------------");
 	}
 	
 	public static void exit() {
