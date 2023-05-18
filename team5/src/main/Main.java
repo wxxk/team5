@@ -14,14 +14,15 @@ import model.UsersVO;
 
 
 
+
+
 public class Main {
+	UsersDAO dao = new UsersDAO();
 	public static Scanner sc = new Scanner(System.in);
 	public static UsersVO user = new UsersVO();
 	public static UsersDAO userDAO = new UsersDAO();
 	public static AdminVO adminVO = new AdminVO();
-	
 	public static void main(String[] args) {
-
 		while(true) {
 			System.out.println("---------------------------------------------");
 			System.out.println("안녕하세요. 환영합니다.");
@@ -208,7 +209,9 @@ public class Main {
 	}
 	
 	public static void admin() {
-		
+		System.out.println("---------------------------------------------");
+		System.out.println("(1)상품등록   | (2)상품수정   | (3)상품삭제    |(4)상품조회   ");
+		System.out.println("---------------------------------------------");
 	}
 	
 	public static void exit() {

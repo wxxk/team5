@@ -41,7 +41,7 @@ public class UsersDAO implements IUsersDAO {
 	@Override
 	public UsersVO getUser(String userId) {
 		UsersVO vo = null;
-		String sql = "SELECT user_id, user_name,user_birth, user_phone_number, user_address "
+		String sql = "SELECT user_id, user_password, user_name,user_birth, user_phone_number, user_address "
 				+ "FROM users WHERE user_id=?";
 		Connection con = null;
 		PreparedStatement stmt = null;
@@ -54,6 +54,7 @@ public class UsersDAO implements IUsersDAO {
 				vo = new UsersVO();
 				vo.setUserId(rs.getString("user_id"));
 				vo.setUserName(rs.getString("user_name"));
+				vo.setUserPassword(rs.getString("user_password"));
 				vo.setUserBirth(rs.getString("user_birth"));
 				vo.setUserBirth(rs.getString("user_phone_number"));
 				vo.setUserAddress(rs.getString("user_address"));
