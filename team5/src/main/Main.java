@@ -8,14 +8,17 @@ import java.sql.SQLException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import model.AdminVO;
 import model.UsersDAO;
 import model.UsersVO;
+
 
 
 public class Main {
 	public static Scanner sc = new Scanner(System.in);
 	public static UsersVO user = new UsersVO();
 	public static UsersDAO userDAO = new UsersDAO();
+	public static AdminVO adminVO = new AdminVO();
 	
 	public static void main(String[] args) {
 
@@ -59,25 +62,35 @@ public class Main {
 			System.out.println("---------------------------------------------");
 			System.out.println("(1)회원정보 | (2)상품보기 | (3)로그아웃 | (4)종료 ");
 			System.out.println("---------------------------------------------");
-			System.out.println("메뉴 번호 입력: ");
+			System.out.print("메뉴 번호 입력: ");
 			try {
 				int num = sc.nextInt();
 				sc.nextLine();
 				switch(num) {
 				case 1 :
 					System.out.println("***회원정보***");
-					System.out.println(user.getUserId());
-					System.out.println(user.getUserName());
-					System.out.println(user.getUserBirth());
-					System.out.println(user.getUserPhoneNumber());
-					System.out.println(user.getUserAddress());
+					user = userDAO.getUser(user.getUserId());
+					System.out.println(user);
 					System.out.println("(1)회원정보수정 | (2)회원탈퇴 | (3)뒤로가기");
+					System.out.print("메뉴 번호 입력: ");
 					int userMenuSelect = sc.nextInt();
 					sc.nextLine();
 					if (userMenuSelect == 1) {
 						updateUser();						
 					} else if (userMenuSelect == 2) {
-						deleteUser();
+						System.out.print("아이디 : ");
+						String id = sc.nextLine();
+						System.out.print("비밀번호 : ");
+						String pwd = sc.nextLine();
+						String userId = user.getUserId();
+						String userPwd = user.getUserPassword();
+						System.out.println(id);
+						System.out.println(user.getUserId());
+						System.out.println(id.equals(user.getUserId()));
+						if (id.equals(userId) && pwd.equals(userPwd)) {
+							deleteUser();
+						}
+						
 					} else if (userMenuSelect == 3) {
 						mainPage();
 					}
@@ -115,11 +128,11 @@ public class Main {
 			ResultSet rs = stmt.executeQuery();
 			if(rs.next()) {
 				user.setUserId(rs.getString(1));
-				user.setUserPassword(rs.getString(2));
-				user.setUserName(rs.getString(3));
-				user.setUserBirth(rs.getString(4));
-				user.setUserPhoneNumber(rs.getString(5));
-				user.setUserAddress(rs.getString(6));
+//				user.setUserPassword(rs.getString(2));
+//				user.setUserName(rs.getString(3));
+//				user.setUserBirth(rs.getString(4));
+//				user.setUserPhoneNumber(rs.getString(5));
+//				user.setUserAddress(rs.getString(6));
 				mainPage();
 			}
 		} catch (SQLException e) {
@@ -169,7 +182,11 @@ public class Main {
 		}
 	}
 	
-	public static void deleteUser() {}
+	public static void deleteUser() {
+//		try {
+//			userDAO.deleteUser(vo)
+//		}
+	}
 	// END USER =========================================================================
 	
 	
