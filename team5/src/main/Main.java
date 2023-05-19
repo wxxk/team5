@@ -283,9 +283,9 @@ public class Main {
 			//				}
 
 			proVO = proDAO.getProduct(selectCategory);
-			for (ProductVO detailcategory : proVO) {
-				System.out.println(detailcategory);
-			}
+//			for (ProductVO detailcategory : proVO ) {
+//				System.out.println(detailcategory);
+//			}
 			
 
 			System.out.println("(1)상품담기 | (2)바로구매 | (3)장바구니 | (4)뒤로가기");
@@ -484,7 +484,7 @@ public class Main {
 	public static void adminUserManagement() {
 		System.out.println("***Admin User Management***");
 		System.out.println("---------------------------------------------");
-		System.out.println("(1)회원정보 조회   | (2)회원정보 삭제   | (3)뒤로가기  ");
+		System.out.println("(1)회원정보 조회   | (2)뒤로가기  ");
 		System.out.println("---------------------------------------------");
 		System.out.print("번호를 입력하세요: ");
 		try {
@@ -574,11 +574,40 @@ public class Main {
 	}
 	
 	public static void adminOrderUpdate() {
+		System.out.println("***주문 수정***");
+		System.out.println("주문 ID: ");
+		int orderId = sc.nextInt();
+		sc.nextLine();
+		oVO.setOrderId(orderId);
+		System.out.println("옵션: ");
+		oVO.setOptions(sc.nextLine());
+		System.out.println("주소: ");
+		oVO.setUserAddress(sc.nextLine());
+		try {
+			oDAO.updateOrder(oVO);
+			System.out.println(oVO);
+		}catch(RuntimeException e) {
+			System.out.println(e.getMessage());
+		}
+		adminOrderManagement();
 		
 	}
 	
+	
 	public static void adminOrderDelete() {
-		
+		System.out.println("***주문 취소***");
+		System.out.print("주문 ID: ");
+		int orderId = sc.nextInt();
+		sc.nextLine();
+		oVO = new model.OrderVO(); //uVO초기화
+		oVO.setOrderId(orderId);
+		try {
+		oDAO.deleteOrder(uVO);
+		System.out.println(orderId + "취소완료");
+		}catch(RuntimeException e) {
+			System.out.println(e.getMessage());
+		}
+		adminOrderManagement();
 	}
 	// Admin 주문관리 끝 =========================================================================
 	//END ADMIN ======================================================================
