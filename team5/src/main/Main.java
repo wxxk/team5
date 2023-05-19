@@ -577,7 +577,7 @@ public class Main {
 		oVO = new model.OrderVO(); //uVO초기화
 		oVO.setOrderId(orderId);
 		try {
-		oDAO.deleteOrder(uVO);
+//		oDAO.deleteOrder(uVO);
 		System.out.println(orderId + "취소완료");
 		}catch(RuntimeException e) {
 			System.out.println(e.getMessage());
