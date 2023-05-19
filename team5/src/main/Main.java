@@ -257,7 +257,6 @@ public class Main {
 			
 			System.out.print("조회할 카테고리 ID:");
 			sc.nextLine();
-<<<<<<< HEAD
 			int selectCategory = sc.nextInt();
 			
 			ArrayList<ProductVO> prooVO = new ArrayList<ProductVO>();
@@ -266,63 +265,17 @@ public class Main {
 			for (ProductVO detailcategory : prooVO) {
 				System.out.println(detailcategory);
 			}
-=======
-			String selectCategory = sc.nextLine();
-
-			//			try {
-			//				cVO = cDAO.getCategory(selectCategory);
-			//				for (CategoryVO detailcategory : cVO) {
-			//					System.out.println(detailcategory);
-			//				}
-
-			proVO = proDAO.getProduct(selectCategory);
-//			for (ProductVO detailcategory : proVO ) {
-//				System.out.println(detailcategory);
-//			}
->>>>>>> branch 'master' of https://github.com/wxxk/team5.git
-			
 
 			System.out.println("(1)상품담기 | (2)바로구매 | (3)장바구니 | (4)뒤로가기");
 			System.out.print("메뉴 번호 입력: ");
 			
 			int selectCategorymenu = sc.nextInt();
 			switch (selectCategorymenu) {
-<<<<<<< HEAD
 			case 1 -> cartInsert();
 //			case 2 ->
 			case 3 -> cart();
 			case 4 -> mainPage();
 			default -> System.out.println("잘못된 입력");
-=======
-			case 1:
-				CartVO ccVO = new CartVO();
-				CartDAO ccDAO = new CartDAO();
-				System.out.print("장바구니에 추가할 상품 이름: ");
-				sc.nextLine();
-				String addProductName = sc.nextLine();
-				proVO = proDAO.getProduct(addProductName);
-				System.out.print("추가할 개수: ");
-				int addProdunctCnt = sc.nextInt();	
-				ccVO.setUserId(uVO.getUserId());
-				ccVO.setProductId(proVO.getProductId());
-				ccVO.setCartCnt(addProdunctCnt);
-				ccVO.setTotalPrice(addProdunctCnt * proVO.getProductPrice());
-				System.out.println(cVO);
-				ccDAO.insertCart(ccVO);
-				System.out.println("추가되었습니다.");
-				break;
-			case 2:
-				// order insert
-				break;
-			case 3:
-				// cart get all 
-				break;
-			case 4:
-				mainPage();
-				break;
-			default:
-				System.out.println("잘못된 입력");
->>>>>>> branch 'master' of https://github.com/wxxk/team5.git
 			}
 			//			} catch (RuntimeException e){
 			//				System.out.println(e.getMessage());
@@ -337,7 +290,6 @@ public class Main {
 
 
 	public static void cart() {
-<<<<<<< HEAD
 		ArrayList<CartVO> cartList = cDAO.getAllCart(uVO.getUserId());
 		for (CartVO cart : cartList) {
 			System.out.println(cart);
@@ -359,17 +311,10 @@ public class Main {
 		System.out.println(cVO);
 		cDAO.insertCart(cVO);
 		System.out.println("추가되었습니다.");
-=======
-
->>>>>>> branch 'master' of https://github.com/wxxk/team5.git
 	}
 
 	public static void order() {
-<<<<<<< HEAD
-		ArrayList<OrderVO> orderlist = oDAO.getOrder(uVO.getUserId());
-=======
->>>>>>> branch 'master' of https://github.com/wxxk/team5.git
-
+		ArrayList<OrderVO> orderlist = oDAO.getOrderList(uVO.getUserId());
 	}
 	// START ADMIN =======================================================================
 	public static void admin() {
