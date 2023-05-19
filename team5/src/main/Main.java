@@ -512,7 +512,7 @@ public class Main {
 	public static void adminOrderManagement() {
 		System.out.println("***Admin Order Management***");
 		System.out.println("---------------------------------------------");
-		System.out.println("(1)주문조회   | (2)주문수정  | (3)주문취소    |(4)뒤로가기  ");
+		System.out.println("(1)주문조회   | (2)주문수정  | (3)뒤로가기   ");
 		System.out.println("---------------------------------------------");
 		System.out.println("번호를 입력하세요: ");
 		try {
@@ -524,8 +524,6 @@ public class Main {
 			case 2 ->
 				adminOrderUpdate();
 			case 3 ->
-				adminOrderDelete();
-			case 4 ->
 				admin();
 			default ->
 				System.out.println("잘못된 선택");
@@ -568,22 +566,7 @@ public class Main {
 		
 	}
 	
-	
-	public static void adminOrderDelete() {
-		System.out.println("***주문 취소***");
-		System.out.print("주문 ID: ");
-		int orderId = sc.nextInt();
-		sc.nextLine();
-		oVO = new model.OrderVO(); //uVO초기화
-		oVO.setOrderId(orderId);
-		try {
-//		oDAO.deleteOrder(uVO);
-		System.out.println(orderId + "취소완료");
-		}catch(RuntimeException e) {
-			System.out.println(e.getMessage());
-		}
-		adminOrderManagement();
-	}
+
 	// Admin 주문관리 끝 =========================================================================
 	//END ADMIN ======================================================================
 	// exit
