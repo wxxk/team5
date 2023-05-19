@@ -3,5 +3,7 @@ package model;
 import java.util.ArrayList;
 
 public interface IOrderDAO {
-	ArrayList<OrderVO> getOrderList();
+	public ArrayList<OrderVO> getAllOrderList();
+	public OrderVO getOrder(String userId);
+	
 }
