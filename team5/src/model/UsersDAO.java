@@ -116,7 +116,6 @@ public class UsersDAO implements IUsersDAO {
 	@Override
 	public int deleteUser(UsersVO vo) {
 		int deleteRow = 0;
-
 		String sql = "DELETE FROM users WHERE user_id=?";
 		Connection con = null;
 		try {
