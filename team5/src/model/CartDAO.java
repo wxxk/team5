@@ -12,14 +12,14 @@ public class CartDAO implements ICartDAO{
 	//카트 전체 조회
 	public ArrayList<CartVO> getAllCart(String userId){
 		ArrayList<CartVO> cartList = new ArrayList<CartVO>();
-		String sql = "SELECT c.cart_id, p.product_img, p.product_name, ct.category_name,"
-				+ "pd.options, c.cart_cnt, p.product_price, c.total_price"
-				+ "FROM users u, cart c, product p, category ct, product_detail pd "
-				+ "WHERE u.user_id = c.user_id"
-				+ "AND c.product_id = p.product_id"
-				+ "AND p.category_id = ct.category_id"
-				+ "AND pd.product_id = p.product_id"
-				+ "AND user_id = ?" ;
+		String sql = "SELECT c.cart_id, p.product_img, p.product_name, ct.category_name, "
+	            + "pd.options, c.cart_cnt, p.product_price, c.total_price "
+	            + "FROM users u, cart c, product p, category ct, product_detail pd "
+	            + "WHERE u.user_id = c.user_id "
+	            + "AND c.product_id = p.product_id "
+	            + "AND p.category_id = ct.category_id "
+	            + "AND pd.product_id = p.product_id "
+	            + "AND u.user_id = ?";
 
 		Connection con = null;
 		try {

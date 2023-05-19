@@ -26,7 +26,7 @@ public class OrderVO {
 	private int cartCnt;
 
 	public String toString() {
-		return "orderId =" + "orderId" +"\n" + 
+		return "orderId =" + orderId +"\n" + 
 				"userId =" + userId + "\n" +
 				"userPhoneNumber =" + userPhoneNumber + "\n" +
 				"userAddress =" + userAddress + "\n" +
