@@ -14,10 +14,13 @@ import model.IAdminDAO;
 import model.ICategoryDAO;
 import model.IOrderDAO;
 import model.IProductDAO;
+import model.IProductDetailDAO;
 import model.IUsersDAO;
 import model.OrderDAO;
 import model.OrderVO;
 import model.ProductDAO;
+import model.ProductDetailDAO;
+import model.ProductDetailVO;
 import model.ProductVO;
 import model.UsersDAO;
 import model.UsersVO;
@@ -40,7 +43,10 @@ public class Main {
 
 	public static ProductVO proVO = new ProductVO();
 	public static IProductDAO proDAO = new ProductDAO();
-
+	
+	public static ProductDetailVO pdVO = new ProductDetailVO();
+	public static IProductDetailDAO pdDAO = new ProductDetailDAO();
+	
 	public static CartVO cVO = new CartVO();
 	public static CartDAO cDAO = new CartDAO();
 
@@ -160,7 +166,8 @@ public class Main {
 		try {
 
 			if (uVO!=null && id.equals(uVO.getUserId()) && pwd.equals(uVO.getUserPassword())) {
-			uVO = uDAO.getUser(id);
+				s.loginUserId = uVO.getUserId();
+				mainPage();
 			}else if (adminVO!=null&&id.equals(adminVO.getAdminId()) && pwd.equals(adminVO.getAdminPassword())) {
 					s.loginAdminId = adminVO.getAdminId();
 					admin();
@@ -237,7 +244,7 @@ public class Main {
 		switch (allProductSelect) {
 		case 1 -> category();
 		case 2 -> cartInsert();
-//		case 3 ->		// order Insert
+		case 3 -> orderInsert();
 		case 4 -> cart();
 		case 5 -> mainPage();
 		default ->
@@ -272,7 +279,7 @@ public class Main {
 			int selectCategorymenu = sc.nextInt();
 			switch (selectCategorymenu) {
 			case 1 -> cartInsert();
-//			case 2 ->
+			case 2 -> orderInsert();
 			case 3 -> cart();
 			case 4 -> mainPage();
 			default -> System.out.println("잘못된 입력");
@@ -288,13 +295,20 @@ public class Main {
 	// END PRODUCT ======================================================================
 
 
-
+	// START CART========================================================================
 	public static void cart() {
 		ArrayList<CartVO> cartList = cDAO.getAllCart(uVO.getUserId());
 		for (CartVO cart : cartList) {
 			System.out.println(cart);
 		}
-//		System.out.println(cartList);
+		System.out.println("(1)구매하기 | (2)뒤로가기");
+		System.out.print("메뉴 번호 입력: ");
+		int cartmenu = sc.nextInt();
+		switch (cartmenu) {
+		case 1 -> orderInsert();
+		case 2 -> mainPage();
+		default -> System.out.println("잘못된 입력");
+		}
 	}
 	
 	public static void cartInsert() {
@@ -304,18 +318,44 @@ public class Main {
 		proVO = proDAO.getProduct(addProductName);
 		System.out.print("추가할 개수: ");
 		int addProdunctCnt = sc.nextInt();	
+		sc.nextLine();
+
+//		pdVO = pdDAO.getProductDetail(proVO.getProductId());
+
+		System.out.print("옵션 선택:");
+		String productOption = sc.nextLine();
 		cVO.setUserId(uVO.getUserId());
 		cVO.setProductId(proVO.getProductId());
+		cVO.setProductName(proVO.getProductName());
 		cVO.setCartCnt(addProdunctCnt);
 		cVO.setTotalPrice(addProdunctCnt * proVO.getProductPrice());
-		System.out.println(cVO);
+		cVO.setOptions(productOption);
 		cDAO.insertCart(cVO);
 		System.out.println("추가되었습니다.");
 	}
+	// END CART =========================================================================
 
+	
+	// START ORDER ======================================================================
 	public static void order() {
 		ArrayList<OrderVO> orderlist = oDAO.getOrderList(uVO.getUserId());
+		for (OrderVO order : orderlist) {
+			System.out.println(order);
+		}
 	}
+	
+	public static void orderInsert() {
+		ArrayList<CartVO> clVOs = cDAO.getAllCart(uVO.getUserId());
+		for(CartVO clVO : clVOs) {
+			oVO.setUserId(uVO.getUserId());
+			oVO.setProductId(clVO.getProductId());
+			oVO.setCartId(clVO.getCartId());
+			oDAO.insertOrder(oVO);
+		}
+		System.out.println("추가 완료");
+	}
+	// END ORDER ========================================================================
+	
 	// START ADMIN =======================================================================
 	public static void admin() {
 		System.out.println("---------------------------------------------");
