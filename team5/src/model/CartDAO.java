@@ -87,17 +87,17 @@ public class CartDAO implements ICartDAO{
 	//상품 등록
 	public int insertCart(CartVO vo) {
 		int count = 0;
-		String sql = "INSERT INTO cart (cart_seq.NEXTVAL(), user_id, product_id, cart_cnt, total_price)"
-		+ "VALUES(?,?,?,?,?)";
+		String sql = "INSERT INTO cart (cart_id, user_id, product_id, cart_cnt, total_price) "
+		+ "VALUES(cart_seq.NEXTVAL,?,?,?,?)";
 		Connection con = null;
 		try {
 			con = DataSource.getConnection();
 			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setInt(1, vo.getCartId());
-			stmt.setString(2, vo.getUserId());
-			stmt.setInt(3, vo.getProductId());
-			stmt.setInt(4, vo.getCartCnt());
-			stmt.setInt(5, vo.getTotalPrice());
+//			stmt.setInt(1, vo.getCartId());
+			stmt.setString(1, vo.getUserId());
+			stmt.setInt(2, vo.getProductId());
+			stmt.setInt(3, vo.getCartCnt());
+			stmt.setInt(4, vo.getTotalPrice());
 			count = stmt.executeUpdate();
 		} catch(Exception e) {
 			throw new RuntimeException(e);
