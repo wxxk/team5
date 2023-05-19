@@ -14,11 +14,9 @@ public class ProductDAO implements IProductDAO{
 	@Override
 	public ArrayList<ProductVO> getAllProducts() {
 		ArrayList<ProductVO> productList = new ArrayList<ProductVO>();
-		String sql = "select p.product_id, c.category_id, p.product_name, p.product_price, p.product_img, p.cnt "
-				+ "from product p, category c "
-				+ "where p.category_id = c.category_id";
-		
-		
+		String sql = "SELECT p.product_id, c.category_id, p.product_name, p.product_price, p.product_img, p.cnt "
+				+ "FROM product p, category c "
+				+ "WHERE p.category_id = c.category_id";
 		Connection con = null;
 		PreparedStatement stmt = null;
 		try {
@@ -44,13 +42,12 @@ public class ProductDAO implements IProductDAO{
 		return productList;
 	}
 
-
 	//상품 등록
 	@Override
 	public int insertProduct(ProductVO vo) { 
 		int count = 0;
 		String sql = "INSERT INTO product (product_seq.NEXTVAL(), category_id, product_name, product_price, product_img, cnt)"+
-					 " VALUES (?, ?, ?, ?, ?, ?)";
+				" VALUES (?, ?, ?, ?, ?, ?)";
 		Connection con = null;
 		try {
 			con = DataSource.getConnection();
@@ -92,7 +89,7 @@ public class ProductDAO implements IProductDAO{
 		}
 		return count;
 	}
-	
+
 	//상품 삭제
 	@Override
 	public int deleteProduct(ProductVO vo) {

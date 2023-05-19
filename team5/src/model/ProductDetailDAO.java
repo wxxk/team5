@@ -10,13 +10,13 @@ import main.DataSource;
 
 public class ProductDetailDAO implements IProductDetailDAO {
 
-	//상품id별 조회
+	//상품 디테일 조회
 	@Override
 	public ProductDetailVO getProductDetail(String productId) {
 		ProductDetailVO vo = null;
-		String sql = "select pd.product_detail_id, pd.options, pd.cnt"
-				+ "from product p, product_detail pd"
-				+ "where p.product_id = pd.product_id and pd.product_id = ?";
+		String sql = "SELECT pd.product_detail_id, pd.options, pd.cnt "
+				+ "FROM product p, product_detail pd "
+				+ "WHERE p.product_id = pd.product_id AND pd.product_id = ?";
 		Connection con = null;
 		PreparedStatement stmt = null;
 		try {
@@ -40,11 +40,12 @@ public class ProductDetailDAO implements IProductDetailDAO {
 		return vo;
 	}
 
+	//상품 디테일 등록
 	@Override
 	public int insertProductDetail(ProductDetailVO vo) {
 		int count = 0;
-		String sql = "INSERT INTO product_detail (producct_detail_id, product_id, options, cnt)"+
-					 " VALUES (?, ?, ?, ?)";
+		String sql = "INSERT INTO product_detail (producct_detail_seq.NEXTVAL(), product_id, options, cnt)"+
+				" VALUES (?, ?, ?, ?)";
 		Connection con = null;
 		try {
 			con = DataSource.getConnection();
@@ -61,10 +62,11 @@ public class ProductDetailDAO implements IProductDetailDAO {
 		return count;
 	}
 
+	//상품 디테일 수정
 	@Override
 	public int updateProductDetail(ProductDetailVO vo) {
 		int count = 0;
-		String sql = "UPDATE product_detail SET product_id = ?, options = ?, cnt = ?"
+		String sql = "UPDATE product_detail SET product_id = ?, options = ?, cnt = ? "
 				+ "WHERE product_detail_id = ?";
 		Connection con = null;
 		try {
@@ -82,6 +84,7 @@ public class ProductDetailDAO implements IProductDetailDAO {
 		return count;
 	}
 
+	//상품 디테일 삭제
 	@Override
 	public int deleteProductDetail(ProductDetailVO vo) {
 		int deleteRow = 0;

@@ -14,7 +14,7 @@ public class CategoryDAO implements ICategoryDAO{
 	@Override
 	public ArrayList<CategoryVO> getAllCategories() {
 		ArrayList<CategoryVO> categoryList = new ArrayList<CategoryVO>();
-		String sql = "select * from category";
+		String sql = "SELECT * FROM category";
 		Connection con = null;
 		PreparedStatement stmt = null;
 		try {
@@ -36,13 +36,13 @@ public class CategoryDAO implements ICategoryDAO{
 		return categoryList;
 	}
 	
-	//카테고리별 조회
+	//카테고리별 상품 조회
 	@Override
-	public CategoryVO getCategory(String categoryId) {
-		CategoryVO vo = null;
-		String sql = "select c.category_id, c.category_name, p.product_id, p.product_name, p.product_price, p.product_img "
-				+ "from product p, category c"
-				+ "where p.category_id = c.category_id and c.category_id = ?";
+	public ArrayList<CategoryVO> getCategory(String categoryId) {
+		ArrayList<CategoryVO> categoryList = new ArrayList<CategoryVO>();
+		String sql = "SELECT c.category_id, c.category_name, p.product_id, p.product_name, p.product_price, p.product_img "
+				+ "FROM product p, category c "
+				+ "WHERE p.category_id = c.category_id and c.category_id = ?";
 		Connection con = null;
 		PreparedStatement stmt = null;
 		try {
@@ -50,14 +50,15 @@ public class CategoryDAO implements ICategoryDAO{
 			stmt = con.prepareStatement(sql);
 			stmt.setString(1, categoryId);
 			ResultSet rs = stmt.executeQuery();
-			if(rs.next()) {
-				vo = new CategoryVO();
-				vo.setCategoryId(rs.getInt("category_id"));
-				vo.setCategoryName(rs.getString("category_name"));
-				vo.setProductId(rs.getInt("product_id"));
-				vo.setProductName(rs.getString("product_name"));
-				vo.setProductPrice(rs.getInt("product_price"));
-				vo.setProductImg(rs.getString("product_img"));
+			while(rs.next()) {
+				CategoryVO category = new CategoryVO();
+				category.setCategoryId(rs.getInt("category_id"));
+				category.setCategoryName(rs.getString("category_name"));
+				category.setProductId(rs.getInt("product_id"));
+				category.setProductName(rs.getString("product_name"));
+				category.setProductPrice(rs.getInt("product_price"));
+				category.setProductImg(rs.getString("product_img"));
+				categoryList.add(category);
 			}
 		}catch(SQLException e) {
 			throw new RuntimeException(e);
@@ -65,15 +66,15 @@ public class CategoryDAO implements ICategoryDAO{
 			if(stmt!=null)try {stmt.close();}catch(Exception e) {}
 			if(con!=null)try {con.close();}catch(Exception e) {}
 		}
-		return vo;
+		return categoryList;
 	}
-	
+
 	//카테고리 등록
 	@Override
 	public int insertCategory(CategoryVO vo) {
 		int count = 0;
-		String sql = "INSERT INTO category (category_id, category_name)"+
-					 " VALUES (?, ?)";
+		String sql = "INSERT INTO category (category_seq.NEXTVAL(), category_name)"+
+				" VALUES (?, ?)";
 		Connection con = null;
 		try {
 			con = DataSource.getConnection();
@@ -92,7 +93,7 @@ public class CategoryDAO implements ICategoryDAO{
 	@Override
 	public int updateCategory(CategoryVO vo) {
 		int count = 0;
-		String sql = "UPDATE category SET category_name = ?"
+		String sql = "UPDATE category SET category_name = ? "
 				+ "WHERE category_id= ?";
 		Connection con = null;
 		try {
@@ -126,6 +127,5 @@ public class CategoryDAO implements ICategoryDAO{
 		}
 		return deleteRow;
 	}
-
 
 }
