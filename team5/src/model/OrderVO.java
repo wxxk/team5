@@ -14,7 +14,7 @@ public class OrderVO {
 	private int orderId;
 	private String userId;
 	private int productId;
-	private String cartId;
+	private int cartId;
 
 	private String userName;
 	private String userAddress;
