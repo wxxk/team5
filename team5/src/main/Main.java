@@ -71,7 +71,7 @@ public class Main {
 			System.out.println("(1)회원정보 | (2)상품보기 | (3)로그아웃 | (4)장바구니 | (5)주문내역");
 			System.out.println("---------------------------------------------");
 			System.out.print("메뉴 번호 입력: ");
-			try {
+			try {	
 				int num = sc.nextInt();
 				sc.nextLine();
 				switch(num) {
@@ -115,6 +115,7 @@ public class Main {
 					break;
 
 				case 3 :
+					s.loginUserId = null;
 					main(null);
 					break;
 				case 4:
@@ -141,6 +142,7 @@ public class Main {
 //			adminVO = aDAO.getAdmin(id);
 //			System.out.println(uVO);
 			if (id.equals(uVO.getUserId()) && pwd.equals(uVO.getUserPassword())) {
+				
 				s.loginUserId = uVO.getUserId();
 				mainPage();
 //			}else if(id.equals("admin01")){
@@ -206,8 +208,7 @@ public class Main {
 	// START PRODUCT ====================================================================
 	public static void product() {
 		try {
-			IProductDAO pDAO = new ProductDAO();
-			ArrayList<ProductVO> pVO = pDAO.getAllProducts();
+			ArrayList<ProductVO> pVO = proDAO.getAllProducts();
 			for (ProductVO pro : pVO) {
 				System.out.println(pro);
 			}
@@ -222,7 +223,19 @@ public class Main {
 			category();
 			break;
 		case 2 :
-			// cart Insert
+			System.out.print("장바구니에 추가할 상품 이름: ");
+			sc.nextLine();
+			String addProductName = sc.nextLine();
+			proVO = proDAO.getProduct(addProductName);
+			System.out.print("추가할 개수: ");
+			int addProdunctCnt = sc.nextInt();	
+			cVO.setUserId(uVO.getUserId());
+			cVO.setProductId(proVO.getProductId());
+			cVO.setCartCnt(addProdunctCnt);
+			cVO.setTotalPrice(addProdunctCnt * proVO.getProductPrice());
+			System.out.println(cVO);
+			cDAO.insertCart(cVO);
+			System.out.println("추가되었습니다.");
 			break;
 		case 3 : 
 			// order Insert
@@ -246,20 +259,36 @@ public class Main {
 			for (CategoryVO cate : cVO) {
 				System.out.println(cate);
 			}
-			System.out.print("조회할 카테고리 :");
+			System.out.print("조회할 카테고리 ID:");
+			sc.nextLine();
 			String selectCategory = sc.nextLine();
-//			try {
-//				cVO = cDAO.getCategory(selectCategory);
-//				for (CategoryVO detailcategory : cVO) {
-//					System.out.println(detailcategory);
-//				}
+			proVO = proDAO.getProduct(selectCategory);
+			for (ProductVO detailcategory : proVO) {
+				System.out.println(detailcategory);
+			}
+			
 			System.out.println("(1)상품담기 | (2)바로구매 | (3)장바구니 | (4)뒤로가기");
 			System.out.print("메뉴 번호 입력: ");
+			
 			int selectCategorymenu = sc.nextInt();
 			switch (selectCategorymenu) {
 			case 1:
 				// cart insert
-				
+				CartVO ccVO = new CartVO();
+				CartDAO ccDAO = new CartDAO();
+				System.out.print("장바구니에 추가할 상품 이름: ");
+				sc.nextLine();
+				String addProductName = sc.nextLine();
+				proVO = proDAO.getProduct(addProductName);
+				System.out.print("추가할 개수: ");
+				int addProdunctCnt = sc.nextInt();	
+				ccVO.setUserId(uVO.getUserId());
+				ccVO.setProductId(proVO.getProductId());
+				ccVO.setCartCnt(addProdunctCnt);
+				ccVO.setTotalPrice(addProdunctCnt * proVO.getProductPrice());
+				System.out.println(cVO);
+				ccDAO.insertCart(ccVO);
+				System.out.println("추가되었습니다.");
 				break;
 			case 2:
 				// order insert
@@ -279,7 +308,9 @@ public class Main {
 		} catch (RuntimeException e) {
 			System.out.println(e.getMessage());
 		}
+	
 	}
+	
 	
 	// END PRODUCT ======================================================================
 	
