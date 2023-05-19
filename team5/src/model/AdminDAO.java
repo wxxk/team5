@@ -35,7 +35,7 @@ public class AdminDAO implements IAdminDAO {
 	@Override
 	public AdminVO getAdmin(String adminId) {
 		AdminVO vo = null;
-		String sql = "SELECT admin_id, admin_password WHERE admin_id=?";
+		String sql = "SELECT admin_id, admin_password FROM admin WHERE admin_id=?";
 		Connection con = null;
 		PreparedStatement stmt = null;
 		try {
@@ -61,7 +61,7 @@ public class AdminDAO implements IAdminDAO {
 	@Override
 	public int updateAdmin(AdminVO vo) {
 		int count=0;
-		String sql = "UPDATE admin SET admin_password WHERE admin_id=?";
+		String sql = "UPDATE admin SET admin_password FROM admin WHERE admin_id=?";
 		Connection con = null;
 		try {
 			con = DataSource.getConnection();

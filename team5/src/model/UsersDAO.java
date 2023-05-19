@@ -41,8 +41,7 @@ public class UsersDAO implements IUsersDAO {
 	@Override
 	public UsersVO getUser(String userId) {
 		UsersVO vo = null;
-		String sql = "SELECT user_id, user_password, user_name,user_birth, user_phone_number, user_address "
-				+ "FROM users WHERE user_id=?";
+		String sql = "SELECT * FROM users WHERE user_id=?";
 		Connection con = null;
 		PreparedStatement stmt = null;
 		try {

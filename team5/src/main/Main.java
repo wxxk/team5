@@ -1,23 +1,11 @@
 package main;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import model.AdminDAO;
-import model.AdminVO;
-
-import model.IAdminDAO;
-
-import model.IOrderDAO;
-import model.IProductDAO;
-import model.IUsersDAO;
-import model.OrderDAO;
-import model.OrderVO;
-import model.ProductDAO;
-import model.ProductVO;
-import model.UsersDAO;
-import model.UsersVO;
+import model.*;
 
 public class Main {
 	public static Scanner sc = new Scanner(System.in);
@@ -25,6 +13,7 @@ public class Main {
 	
 	static IUsersDAO uDAO = new UsersDAO();
 	static UsersVO uVO = new UsersVO();
+	
 	static IOrderDAO oDAO = new OrderDAO();
 	static OrderVO oVO = new OrderVO();
 
@@ -33,9 +22,12 @@ public class Main {
 	
 	public static AdminVO adminVO = new AdminVO();
 	public static IAdminDAO aDAO = new AdminDAO();
+	
 	public static ProductVO proVO = new ProductVO();
 	public static IProductDAO proDAO = new ProductDAO();
-
+	
+	public static CartVO cVO = new CartVO();
+	public static CartDAO cDAO = new CartDAO();
 
 	public static void main(String[] args) {
 		while(true) {
@@ -76,7 +68,7 @@ public class Main {
 			System.out.println("---------------------------------------------");
 			System.out.println(uVO.getUserId() + "님 안녕하세요");
 			System.out.println("---------------------------------------------");
-			System.out.println("(1)회원정보 | (2)상품보기 | (3)로그아웃 | (4)주문정보");
+			System.out.println("(1)회원정보 | (2)상품보기 | (3)로그아웃 | (4)장바구니 | (5)주문내역");
 			System.out.println("---------------------------------------------");
 			System.out.print("메뉴 번호 입력: ");
 			try {
@@ -119,31 +111,14 @@ public class Main {
 					
 				case 2 :
 					System.out.println("***상품목록***");
-					try {
-						IProductDAO pDAO = new ProductDAO();
-						ArrayList<ProductVO> pVO = pDAO.getAllProducts();
-						for (ProductVO proVO : pVO) {
-							System.out.println(proVO);
-						}
-					} catch (RuntimeException e) {
-						System.out.println(e.getMessage());
-					}
-					System.out.println("(1)카테고리 | (2)뒤로가기");
-					System.out.print("메뉴 번호 입력: ");
-					int allProductSelect = sc.nextInt();
-					switch (num) {
-					case 1 : 
-						// 카테고리별 제품
-						break;
-					case 2 :
-					}
-					
+					product();
 					break;
+
 				case 3 :
 					main(null);
 					break;
 				case 4:
-					order();
+					cart();
 					break;
 				default:
 					System.out.println("잘못된 선택");
@@ -163,17 +138,16 @@ public class Main {
 		
 		try {
 			uVO = uDAO.getUser(id);
-
-			adminVO = aDAO.getAdmin(id);
+//			adminVO = aDAO.getAdmin(id);
 //			System.out.println(uVO);
 			if (id.equals(uVO.getUserId()) && pwd.equals(uVO.getUserPassword())) {
 				s.loginUserId = uVO.getUserId();
 				mainPage();
-			}else if(id.equals("admin01")){
-				System.out.println("xka???????");
-//				s.loginAdminId = adminVO.getAdminId();
-				System.out.println("탐?");
-				admin();
+//			}else if(id.equals("admin01")){
+//				System.out.println("xka???????");
+////				s.loginAdminId = adminVO.getAdminId();
+//				System.out.println("탐?");
+//				admin();
 			}else{
 				System.out.println("아이디 또는 비밀번호가 일치하지 않습니다.");				
 			}
@@ -219,6 +193,7 @@ public class Main {
 	}
 	
 	public static void deleteUser() {
+		// 삭제안됨
 		try {
 			uDAO.deleteUser(uVO);
 		} catch(Exception e) {
@@ -230,7 +205,80 @@ public class Main {
 	
 	// START PRODUCT ====================================================================
 	public static void product() {
-		
+		try {
+			IProductDAO pDAO = new ProductDAO();
+			ArrayList<ProductVO> pVO = pDAO.getAllProducts();
+			for (ProductVO pro : pVO) {
+				System.out.println(pro);
+			}
+		} catch (RuntimeException e) {
+			System.out.println(e.getMessage());
+		}
+		System.out.println("(1)카테고리 | (2)상품담기 | (3)바로구매 | (4)장바구니 | (5)뒤로가기");
+		System.out.print("메뉴 번호 입력: ");
+		int allProductSelect = sc.nextInt();
+		switch (allProductSelect) {
+		case 1 : 
+			category();
+			break;
+		case 2 :
+			// cart Insert
+			break;
+		case 3 : 
+			// order Insert
+			break;
+		case 4 :
+			// cart Get All
+			break;
+		case 5 :
+			mainPage();
+			break;
+		default :
+			System.out.println("잘못된 입력");
+		}
+	}
+	
+	public static void category() {
+		ICategoryDAO cDAO = new CategoryDAO();
+		ArrayList<CategoryVO> cVO = new ArrayList<CategoryVO>();
+		try {
+			cVO = cDAO.getAllCategories();
+			for (CategoryVO cate : cVO) {
+				System.out.println(cate);
+			}
+			System.out.print("조회할 카테고리 :");
+			String selectCategory = sc.nextLine();
+//			try {
+//				cVO = cDAO.getCategory(selectCategory);
+//				for (CategoryVO detailcategory : cVO) {
+//					System.out.println(detailcategory);
+//				}
+			System.out.println("(1)상품담기 | (2)바로구매 | (3)장바구니 | (4)뒤로가기");
+			System.out.print("메뉴 번호 입력: ");
+			int selectCategorymenu = sc.nextInt();
+			switch (selectCategorymenu) {
+			case 1:
+				// cart insert
+				
+				break;
+			case 2:
+				// order insert
+				break;
+			case 3:
+				// cart get all 
+				break;
+			case 4:
+				mainPage();
+				break;
+			default:
+				System.out.println("잘못된 입력");
+			}
+//			} catch (RuntimeException e){
+//				System.out.println(e.getMessage());
+//			}
+		} catch (RuntimeException e) {
+			System.out.println(e.getMessage());
+		}
 	}
 	
 	// END PRODUCT ======================================================================
@@ -292,8 +340,10 @@ public class Main {
 		}
 	}
 	
+	
+	// exit
 	public static void exit() {
-		
+		System.exit(0);
 	}
 	
 }
