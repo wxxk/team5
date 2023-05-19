@@ -76,7 +76,7 @@ public class ProductDAO implements IProductDAO{
 	@Override
 	public ProductVO getProduct(String productName) {
 		ProductVO vo = null;
-		String sql = "SELECT product_id, product_name From product "
+		String sql = "SELECT product_id, product_name, product_price From product "
 				+ "WHERE product_name = ? ";
 		Connection con = null;
 		PreparedStatement stmt = null;
@@ -89,6 +89,7 @@ public class ProductDAO implements IProductDAO{
 				vo = new ProductVO();
 				vo.setProductId(rs.getInt("product_id"));
 				vo.setProductName(rs.getString("product_name"));
+				vo.setProductPrice(rs.getInt("product_price"));
 			}
 		}catch(SQLException e) {
 			throw new RuntimeException(e);
