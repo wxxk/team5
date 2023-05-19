@@ -31,7 +31,6 @@ public class CategoryDAO implements ICategoryDAO{
 			e.printStackTrace();
 		} finally {
 			DataSource.closeConnection(con);
-			if(stmt!=null) try{stmt.close();} catch(Exception e){};
 		}
 		return categoryList;
 	}
@@ -63,8 +62,7 @@ public class CategoryDAO implements ICategoryDAO{
 		}catch(SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
-			if(stmt!=null)try {stmt.close();}catch(Exception e) {}
-			if(con!=null)try {con.close();}catch(Exception e) {}
+			DataSource.closeConnection(con);
 		}
 		return categoryList;
 	}
@@ -81,6 +79,7 @@ public class CategoryDAO implements ICategoryDAO{
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setInt(1, vo.getCategoryId());
 			stmt.setString(2, vo.getCategoryName());
+			count = stmt.executeUpdate();
 		} catch(Exception e) {
 			throw new RuntimeException(e);
 		} finally {
@@ -101,6 +100,7 @@ public class CategoryDAO implements ICategoryDAO{
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setString(1, vo.getCategoryName());
 			stmt.setInt(2, vo.getCategoryId());
+			count = stmt.executeUpdate();
 		} catch(Exception e) {
 			throw new RuntimeException(e);
 		} finally {

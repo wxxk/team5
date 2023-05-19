@@ -42,6 +42,63 @@ public class ProductDAO implements IProductDAO{
 		return productList;
 	}
 
+	//categoryId로 상품 조회
+	@Override
+	public ArrayList<ProductVO> getProductBy(String categoryId) {
+		ArrayList<ProductVO> productList = new ArrayList<ProductVO>();
+		String sql = "SELECT * FROM product WHERE category_id = ?";
+		Connection con = null;
+		PreparedStatement stmt = null;
+		try {
+			con = DataSource.getConnection();
+			stmt = con.prepareStatement(sql);
+			stmt.setString(1, categoryId);
+			ResultSet rs = stmt.executeQuery();
+			while(rs.next()) {
+				ProductVO product = new ProductVO();
+				product.setProductId(rs.getInt("product_id"));
+				product.setCategoryId(rs.getInt("category_id"));
+				product.setProductName(rs.getString("product_name"));
+				product.setProductPrice(rs.getInt("product_price"));
+				product.setProductImg(rs.getString("product_img"));
+				product.setCnt(rs.getInt("cnt"));
+				productList.add(product);
+			}
+		}catch(SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			DataSource.closeConnection(con);
+		}
+		return productList;
+	}
+
+	//productName으로 상품 조회
+	@Override
+	public ProductVO getProduct(String productName) {
+		ProductVO vo = null;
+		String sql = "SELECT product_id, product_name, product_price From product "
+				+ "WHERE product_name = ? ";
+		Connection con = null;
+		PreparedStatement stmt = null;
+		try {
+			con = DataSource.getConnection();
+			stmt = con.prepareStatement(sql);
+			stmt.setString(1, productName);
+			ResultSet rs = stmt.executeQuery();
+			if(rs.next()) {
+				vo = new ProductVO();
+				vo.setProductId(rs.getInt("product_id"));
+				vo.setProductName(rs.getString("product_name"));
+				vo.setProductPrice(rs.getInt("product_price"));
+			}
+		}catch(SQLException e) {
+			throw new RuntimeException(e);
+		}finally {
+			DataSource.closeConnection(con);
+		}
+		return vo;
+	}
+
 	//상품 등록
 	@Override
 	public int insertProduct(ProductVO vo) { 
