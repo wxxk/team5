@@ -117,7 +117,6 @@ public class CartDAO implements ICartDAO{
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setInt(1, vo.getCartCnt());
 			stmt.setInt(2, vo.getCartId());
-	
 			count = stmt.executeUpdate();
 		} catch(SQLException e) {
 			throw new RuntimeException(e);
