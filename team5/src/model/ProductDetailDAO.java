@@ -12,7 +12,7 @@ public class ProductDetailDAO implements IProductDetailDAO {
 
 	//상품 디테일 조회
 	@Override
-	public ProductDetailVO getProductDetail(String productId) {
+	public ProductDetailVO getProductDetail(int productId) {
 		ProductDetailVO vo = null;
 		String sql = "SELECT pd.product_detail_id, pd.options, pd.cnt "
 				+ "FROM product p, product_detail pd "
@@ -22,7 +22,7 @@ public class ProductDetailDAO implements IProductDetailDAO {
 		try {
 			con = DataSource.getConnection();
 			stmt = con.prepareStatement(sql);
-			stmt.setString(1, productId);
+			stmt.setInt(1, productId);
 			ResultSet rs = stmt.executeQuery();
 			if(rs.next()) {
 				vo = new ProductDetailVO();

@@ -44,7 +44,7 @@ public class ProductDAO implements IProductDAO{
 
 	//categoryId로 상품 조회
 	@Override
-	public ArrayList<ProductVO> getProductBy(String categoryId) {
+	public ArrayList<ProductVO> getProductBy(int categoryId) {
 		ArrayList<ProductVO> productList = new ArrayList<ProductVO>();
 		String sql = "SELECT * FROM product WHERE category_id = ?";
 		Connection con = null;
@@ -52,7 +52,7 @@ public class ProductDAO implements IProductDAO{
 		try {
 			con = DataSource.getConnection();
 			stmt = con.prepareStatement(sql);
-			stmt.setString(1, categoryId);
+			stmt.setInt(1, categoryId);
 			ResultSet rs = stmt.executeQuery();
 			while(rs.next()) {
 				ProductVO product = new ProductVO();
@@ -103,18 +103,19 @@ public class ProductDAO implements IProductDAO{
 	@Override
 	public int insertProduct(ProductVO vo) { 
 		int count = 0;
-		String sql = "INSERT INTO product (product_seq.NEXTVAL(), category_id, product_name, product_price, product_img, cnt)"+
-				" VALUES (?, ?, ?, ?, ?, ?)";
+		String sql = "INSERT INTO product (product_id, category_id, product_name, product_price, product_img, cnt)"+
+				" VALUES (product_seq.NEXTVAL, ?, ?, ?, ?, ?)";
 		Connection con = null;
 		try {
 			con = DataSource.getConnection();
 			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setInt(1, vo.getProductId());
-			stmt.setInt(2, vo.getCategoryId());
-			stmt.setString(3, vo.getProductName());
-			stmt.setInt(4, vo.getProductPrice());
-			stmt.setString(5, vo.getProductImg());
-			stmt.setInt(6, vo.getCnt());
+//			stmt.setInt(1, vo.getProductId());
+			stmt.setInt(1, vo.getCategoryId());
+			stmt.setString(2, vo.getProductName());
+			stmt.setInt(3, vo.getProductPrice());
+			stmt.setString(4, vo.getProductImg());
+			stmt.setInt(5, vo.getCnt());
+			count = stmt.executeUpdate();
 		} catch(Exception e) {
 			throw new RuntimeException(e);
 		} finally {
@@ -139,6 +140,7 @@ public class ProductDAO implements IProductDAO{
 			stmt.setString(4, vo.getProductImg());
 			stmt.setInt(5, vo.getCnt());
 			stmt.setInt(6, vo.getProductId());
+			count = stmt.executeUpdate();
 		} catch(Exception e) {
 			throw new RuntimeException(e);
 		} finally {

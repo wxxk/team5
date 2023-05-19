@@ -15,13 +15,13 @@ public class OrderDAO implements IOrderDAO {
 		ArrayList<OrderVO> orderList = new ArrayList<OrderVO>();
 
 		String sql = 
-				"SELECT o.order_id, u.user_name, u.user_phone_number, u.user_address,"
-						+ "p.product_img, p.product_name, pd.options, c.cart_cnt, p.product_price"	
-						+ "FROM users u "
-						+ "JOIN cart c ON u.user_id = c.user_id"
-						+ "JOIN orders o ON c.product_id = o.product_id"
-						+ "JOIN product p ON o.product_id = p.product_id"
-						+ "JOIN product_detail pd ON p.product_id = pd.product_id";
+			"SELECT o.order_id, u.user_name, u.user_phone_number, u.user_address,"
+			+ "p.product_img, p.product_name, pd.options, c.cart_cnt, p.product_price "	
+			 + "FROM users u "
+			 + "JOIN cart c ON u.user_id = c.user_id "
+			 + "JOIN orders o ON c.product_id = o.product_id "
+			 + "JOIN product p ON o.product_id = p.product_id "
+			 + "JOIN product_detail pd ON p.product_id = pd.product_id ";
 
 		Connection con = null;
 		try {
@@ -66,6 +66,7 @@ public class OrderDAO implements IOrderDAO {
 		try {
 			con = DataSource.getConnection();
 			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setString(1, userId);
 			ResultSet rs = stmt.executeQuery();
 			while(rs.next()) {
 				OrderVO od = new OrderVO();
@@ -97,10 +98,10 @@ public class OrderDAO implements IOrderDAO {
 		try {
 			con = DataSource.getConnection();
 			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setInt(1, vo.getOrderId());
-			stmt.setString(2, vo.getUserId());
-			stmt.setInt(3, vo.getProductId());
-			stmt.setInt(4, vo.getCartId());
+			stmt.setString(1, vo.getUserId());
+			stmt.setInt(2, vo.getProductId());
+			stmt.setInt(3, vo.getCartId());
+			count = stmt.executeUpdate();
 		} catch(Exception e) {
 			throw new RuntimeException(e);
 		} finally {

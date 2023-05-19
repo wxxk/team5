@@ -23,9 +23,10 @@ public class CartVO {
 	private int productPrice;
 	private int totalPrice;
 
-
+	@Override
 	public String toString() {
 		return "cartId = " + cartId + "\n" + 
+				"productId = " + productId + "\n" +
 				"productImg = " + productImg + "\n" +
 				"productName = " + productName +  "\n" + 
 				"categoryName = " + categoryName + "\n" + 

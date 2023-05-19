@@ -12,14 +12,13 @@ public class CartDAO implements ICartDAO{
 	//카트 전체 조회
 	public ArrayList<CartVO> getAllCart(String userId){
 		ArrayList<CartVO> cartList = new ArrayList<CartVO>();
-		String sql = "SELECT c.cart_id, p.product_img, p.product_name, ct.category_name,"
-				+ "pd.options, c.cart_cnt, p.product_price, c.total_price"
-				+ "FROM users u, cart c, product p, category ct, product_detail pd "
-				+ "WHERE u.user_id = c.user_id"
-				+ "AND c.product_id = p.product_id"
-				+ "AND p.category_id = ct.category_id"
-				+ "AND pd.product_id = p.product_id"
-				+ "AND user_id = ?" ;
+		String sql = "SELECT c.cart_id, p.product_id, p.product_name, ct.category_name, c.options, c.cart_cnt, p.product_price, c.total_price "+		
+				"FROM users u, cart c, product p, category ct "+
+				"WHERE u.user_id = c.user_id "+
+				"AND c.product_id = p.product_id "+
+				"AND p.category_id = ct.category_id "+
+				"AND u.user_id = ? "+
+				"ORDER BY cart_id";
 
 		Connection con = null;
 		try {
@@ -30,7 +29,7 @@ public class CartDAO implements ICartDAO{
 			while(rs.next()) {
 				CartVO ct = new CartVO();
 				ct.setCartId(rs.getInt("cart_id"));
-				ct.setProductImg(rs.getString("product_img"));
+				ct.setProductId(rs.getInt("product_id"));
 				ct.setProductName(rs.getString("product_name"));
 				ct.setCategoryName(rs.getString("category_name"));
 				ct.setOptions(rs.getString("options"));
@@ -127,17 +126,17 @@ public class CartDAO implements ICartDAO{
 	//상품 등록
 	public int insertCart(CartVO vo) {
 		int count = 0;
-		String sql = "INSERT INTO cart (cart_id, user_id, product_id, cart_cnt, total_price) "
-		+ "VALUES(cart_seq.NEXTVAL,?,?,?,?)";
+		String sql = "INSERT INTO cart (cart_id, user_id, product_id, cart_cnt, total_price, options) "
+		+ "VALUES(cart_seq.NEXTVAL,?,?,?,?,?)";
 		Connection con = null;
 		try {
 			con = DataSource.getConnection();
 			PreparedStatement stmt = con.prepareStatement(sql);
-//			stmt.setInt(1, vo.getCartId());
 			stmt.setString(1, vo.getUserId());
 			stmt.setInt(2, vo.getProductId());
 			stmt.setInt(3, vo.getCartCnt());
 			stmt.setInt(4, vo.getTotalPrice());
+			stmt.setString(5, vo.getOptions());
 			count = stmt.executeUpdate();
 		} catch(Exception e) {
 			throw new RuntimeException(e);

@@ -117,7 +117,8 @@ public class UsersDAO implements IUsersDAO {
 	public int deleteUser(UsersVO vo) {
 		int deleteRow = 0;
 
-		String sql = "DELETE FROM users WHERE user_id=?";
+		String sql = "DELETE FROM users WHERE user_id=? ";
+
 		Connection con = null;
 		try {
 			con=DataSource.getConnection();
