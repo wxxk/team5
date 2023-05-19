@@ -54,6 +54,7 @@ public class ProductDetailDAO implements IProductDetailDAO {
 			stmt.setInt(2, vo.getProductId());
 			stmt.setString(3, vo.getOptions());
 			stmt.setInt(4, vo.getCnt());
+			count = stmt.executeUpdate();
 		} catch(Exception e) {
 			throw new RuntimeException(e);
 		} finally {
@@ -76,6 +77,7 @@ public class ProductDetailDAO implements IProductDetailDAO {
 			stmt.setString(2, vo.getOptions());
 			stmt.setInt(3, vo.getCnt());
 			stmt.setInt(4, vo.getProductDetailId());
+			count = stmt.executeUpdate();
 		} catch(Exception e) {
 			throw new RuntimeException(e);
 		} finally {
