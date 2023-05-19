@@ -9,6 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+
 public class OrderVO {
 	private int orderId;
 	private String userId;
@@ -19,6 +20,8 @@ public class OrderVO {
 	private String userAddress;
 	private String userPhoneNumber;
 	private String productName;
+	private String productImg;
+	private String options;
 	private int productPrice;
 	private int cartCnt;
 	

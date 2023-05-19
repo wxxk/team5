@@ -1,5 +1,146 @@
 package model;
 
-public class CartDAO {
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
-}
+import main.DataSource;
+
+public class CartDAO implements ICartDAO{
+	//카트 전체 조회
+	public ArrayList<CartVO> getAllCart(String userId){
+		ArrayList<CartVO> cartList = new ArrayList<CartVO>();
+		String sql = "SELECT u.user_id, p.product_img, p.product_name, ct.category_name,"
+				+ "pd.options, c.cart_cnt, p.product_price, c.total_price"
+				+ "FROM users u, cart c, product p, category ct, product_detail pd "
+				+ "WHERE u.user_id = c.user_id"
+				+ "AND c.product_id = p.product_id"
+				+ "AND p.category_id = ct.category_id"
+				+ "AND pd.product_id = p.product_id"
+				+ "AND user_id = ?" ;
+
+		Connection con = null;
+		try {
+			con = DataSource.getConnection();
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setString (1, userId );
+			ResultSet rs = stmt.executeQuery();
+			while(rs.next()) {
+				CartVO ct = new CartVO();
+				ct.setUserId(rs.getString("user_id"));
+				ct.setProductImg(rs.getString("product_img"));
+				ct.setProductName(rs.getString("product_name"));
+				ct.setCategoryName(rs.getString("category_name"));
+				ct.setOptions(rs.getString("options"));
+				ct.setCartCnt(rs.getInt("cart_cnt"));
+				ct.setProductPrice(rs.getInt("product_price"));
+				ct.setTotalPrice(rs.getInt("total_price"));
+				cartList.add(ct);
+			}
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			DataSource.closeConnection(con);
+		}
+		return cartList;
+	}
+
+	//카트에 담긴 상품 전체삭제
+	public int allDeleteCart(CartVO vo) {
+		int deleteRow = 0;
+		String sql = "DELETE FROM cart WHERE cart_id = ?";
+		Connection con = null;
+		try {
+			con = DataSource.getConnection();
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setInt(1, vo.getCartId());
+			deleteRow = stmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}finally {
+			DataSource.closeConnection(con);
+		}
+		return deleteRow;
+	}
+
+	//카트에 담긴 상품 부분삭제
+	public int deleteCart(CartVO vo) {
+		int deleteRow = 0;
+		String sql = "DELETE FROM cart WHERE product_id = ?";
+		Connection con = null;
+		try {
+			con = DataSource.getConnection();
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setInt(1, vo.getProductId());
+			deleteRow = stmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}finally {
+			DataSource.closeConnection(con);
+		}
+		return deleteRow;
+	}
+
+	
+	//상품 등록
+	public int insertCart(CartVO vo) {
+		int count = 0;
+		String sql = "INSERT INTO cart (cart_id, user_id, product_id, cart_cnt, total_price)"
+		+ "VALUES(?,?,?,?,?)";
+		Connection con = null;
+		try {
+			con = DataSource.getConnection();
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setInt(1, vo.getCartId());
+			stmt.setString(2, vo.getUserId());
+			stmt.setInt(3, vo.getProductId());
+			stmt.setInt(4, vo.getCartCnt());
+			stmt.setInt(5, vo.getCartCnt()*vo.getProductPrice());
+			count = stmt.executeUpdate();
+		} catch(Exception e) {
+			throw new RuntimeException(e);
+		} finally {
+			DataSource.closeConnection(con);
+		}
+		return count;
+	}
+		
+	//장바구니 수량 변경
+	public int updateCart(CartVO vo) {
+		int count = 0;
+		String sql = "UPDATE cart SET cart_cnt = ? WHERE cart_id = ?";
+		Connection con = null;
+		try {
+			con = DataSource.getConnection();
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setInt(1, vo.getCartCnt());
+			stmt.setInt(2, vo.getCartId());
+	
+			count = stmt.executeUpdate();
+		} catch(SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			DataSource.closeConnection(con);
+		}
+		return count;
+	}
+		
+
+	
+	
+	
+		
+	}
+	
+	
+	
+	
+	
+	
+
+
+
+
+
