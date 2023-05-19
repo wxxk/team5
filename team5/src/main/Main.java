@@ -160,7 +160,8 @@ public class Main {
 		try {
 
 			if (uVO!=null && id.equals(uVO.getUserId()) && pwd.equals(uVO.getUserPassword())) {
-			uVO = uDAO.getUser(id);
+					s.loginUserId = uVO.getUserId();
+					mainPage();
 			}else if (adminVO!=null&&id.equals(adminVO.getAdminId()) && pwd.equals(adminVO.getAdminPassword())) {
 					s.loginAdminId = adminVO.getAdminId();
 					admin();
