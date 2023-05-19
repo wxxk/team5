@@ -12,7 +12,7 @@ public class CartDAO implements ICartDAO{
 	//카트 전체 조회
 	public ArrayList<CartVO> getAllCart(String userId){
 		ArrayList<CartVO> cartList = new ArrayList<CartVO>();
-		String sql = "SELECT u.user_id, p.product_img, p.product_name, ct.category_name,"
+		String sql = "SELECT c.cart_id, p.product_img, p.product_name, ct.category_name,"
 				+ "pd.options, c.cart_cnt, p.product_price, c.total_price"
 				+ "FROM users u, cart c, product p, category ct, product_detail pd "
 				+ "WHERE u.user_id = c.user_id"
@@ -29,7 +29,7 @@ public class CartDAO implements ICartDAO{
 			ResultSet rs = stmt.executeQuery();
 			while(rs.next()) {
 				CartVO ct = new CartVO();
-				ct.setUserId(rs.getString("user_id"));
+				ct.setCartId(rs.getInt("cart_id"));
 				ct.setProductImg(rs.getString("product_img"));
 				ct.setProductName(rs.getString("product_name"));
 				ct.setCategoryName(rs.getString("category_name"));
@@ -87,7 +87,7 @@ public class CartDAO implements ICartDAO{
 	//상품 등록
 	public int insertCart(CartVO vo) {
 		int count = 0;
-		String sql = "INSERT INTO cart (cart_id, user_id, product_id, cart_cnt, total_price)"
+		String sql = "INSERT INTO cart (cart_seq.NEXTVAL(), user_id, product_id, cart_cnt, total_price)"
 		+ "VALUES(?,?,?,?,?)";
 		Connection con = null;
 		try {
@@ -97,7 +97,7 @@ public class CartDAO implements ICartDAO{
 			stmt.setString(2, vo.getUserId());
 			stmt.setInt(3, vo.getProductId());
 			stmt.setInt(4, vo.getCartCnt());
-			stmt.setInt(5, vo.getCartCnt()*vo.getProductPrice());
+			stmt.setInt(5, vo.getTotalPrice());
 			count = stmt.executeUpdate();
 		} catch(Exception e) {
 			throw new RuntimeException(e);

@@ -25,4 +25,23 @@ public class OrderVO {
 	private int productPrice;
 	private int cartCnt;
 	
+	public String toString() {
+		return "orderId =" + "orderId" +"\n" + 
+		"userId =" + userId + "\n" +
+		"userPhoneNumber =" + userPhoneNumber + "\n" +
+		"userAddress =" + userAddress + "\n" +
+		"productImg =" + productImg + "\n" +
+		"productName =" + productName + "\n" +
+		"options =" + options + "\n" +
+		"cartCnt =" +cartCnt + "\n" +
+		"productPrice =" + productPrice;
+	}
+			
+		public String [] toArray() {
+			return new String []{
+					orderId + "" + userId + "" + userPhoneNumber + "" + userAddress +
+					productImg + "" + productName + "" + options + "" + cartCnt + productPrice	
+			};
+	}
+	
 }
