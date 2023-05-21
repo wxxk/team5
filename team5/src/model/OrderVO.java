@@ -27,14 +27,16 @@ public class OrderVO {
 
 	public String toString() {
 		return "orderId =" + orderId +"\n" + 
+				"cartId =" + cartId + "\n" +
 				"userId =" + userId + "\n" +
+				"productId =" + productId + "\n" +
 				"userPhoneNumber =" + userPhoneNumber + "\n" +
 				"userAddress =" + userAddress + "\n" +
 				"productImg =" + productImg + "\n" +
 				"productName =" + productName + "\n" +
 				"options =" + options + "\n" +
 				"cartCnt =" +cartCnt + "\n" +
-				"productPrice =" + productPrice;
+				"productPrice =" + productPrice + "\n";
 	}
 
 	public String [] toArray() {

@@ -4,23 +4,7 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import model.AdminDAO;
-import model.AdminVO;
-import model.CartDAO;
-import model.CartVO;
-import model.CategoryDAO;
-import model.CategoryVO;
-import model.IAdminDAO;
-import model.ICategoryDAO;
-import model.IOrderDAO;
-import model.IProductDAO;
-import model.IUsersDAO;
-import model.OrderDAO;
-import model.OrderVO;
-import model.ProductDAO;
-import model.ProductVO;
-import model.UsersDAO;
-import model.UsersVO;
+import model.*;
 
 public class Main {
 	public static Scanner sc = new Scanner(System.in);
@@ -41,6 +25,9 @@ public class Main {
 	public static ProductVO proVO = new ProductVO();
 	public static IProductDAO proDAO = new ProductDAO();
 
+	public static ProductDetailVO pdVO = new ProductDetailVO();
+	public static IProductDetailDAO pdDAO = new ProductDetailDAO();
+
 	public static CartVO cVO = new CartVO();
 	public static CartDAO cDAO = new CartDAO();
 
@@ -52,9 +39,9 @@ public class Main {
 			System.out.println("(1)로그인 | (2)회원가입 | (3)종료 ");
 			System.out.println("---------------------------------------------");
 			System.out.print("메뉴 번호 입력: ");
+			String input = sc.nextLine();
 			try {
-				int num = sc.nextInt();
-				sc.nextLine();
+				int num = Integer.parseInt(input);
 				switch(num) {
 				case 1 :
 					login();
@@ -71,8 +58,8 @@ public class Main {
 				default:
 					System.out.println("잘못된 선택");
 				}
-			} catch(InputMismatchException e) {
-				System.out.println(e.getMessage());
+			} catch(NumberFormatException e) {
+				System.out.println("잘못된 입력");
 			}
 		}
 
@@ -86,9 +73,9 @@ public class Main {
 			System.out.println("(1)회원정보 | (2)상품보기 | (3)로그아웃 | (4)장바구니 | (5)주문내역");
 			System.out.println("---------------------------------------------");
 			System.out.print("메뉴 번호 입력: ");
+			String input = sc.nextLine();
 			try {	
-				int num = sc.nextInt();
-				sc.nextLine();
+				int num = Integer.parseInt(input);
 				switch(num) {
 
 				// 회원정보
@@ -142,7 +129,7 @@ public class Main {
 				default:
 					System.out.println("잘못된 선택");
 				}
-			} catch(InputMismatchException e) {
+			} catch(NumberFormatException e) {
 				System.out.println(e.getMessage());
 			}
 		}
@@ -160,11 +147,11 @@ public class Main {
 		try {
 
 			if (uVO!=null && id.equals(uVO.getUserId()) && pwd.equals(uVO.getUserPassword())) {
-					s.loginUserId = uVO.getUserId();
-					mainPage();
+				s.loginUserId = uVO.getUserId();
+				mainPage();
 			}else if (adminVO!=null&&id.equals(adminVO.getAdminId()) && pwd.equals(adminVO.getAdminPassword())) {
-					s.loginAdminId = adminVO.getAdminId();
-					admin();
+				s.loginAdminId = adminVO.getAdminId();
+				admin();
 			}else{
 				System.out.println("아이디 또는 비밀번호가 일치하지 않습니다.");				
 			}
@@ -222,7 +209,7 @@ public class Main {
 
 
 	// START PRODUCT ====================================================================
-	
+
 	public static void product() {
 		try {
 			ArrayList<ProductVO> pVO = proDAO.getAllProducts();
@@ -234,32 +221,37 @@ public class Main {
 		}
 		System.out.println("(1)카테고리 | (2)상품담기 | (3)바로구매 | (4)장바구니 | (5)뒤로가기");
 		System.out.print("메뉴 번호 입력: ");
-		int allProductSelect = sc.nextInt();
-		switch (allProductSelect) {
-		case 1 -> category();
-		case 2 -> cartInsert();
-//		case 3 ->		// order Insert
-		case 4 -> cart();
-		case 5 -> mainPage();
-		default ->
+		String input = sc.nextLine();
+		try {
+			int allProductSelect = Integer.parseInt(input);
+			switch (allProductSelect) {
+			case 1 -> category();
+			case 2 -> cartInsert();
+			case 3 -> orderInsert();
+			case 4 -> cart();
+			case 5 -> mainPage();
+			default ->
 			System.out.println("잘못된 입력");
+			}
+		} catch (NumberFormatException e){
+			System.out.println(e.getMessage());
 		}
 	}
 
 	public static void category() {
 		ICategoryDAO cDAO = new CategoryDAO();
 		ArrayList<CategoryVO> cVO = new ArrayList<CategoryVO>();
-		
+
 		try {
 			cVO = cDAO.getAllCategories();
 			for (CategoryVO cate : cVO) {
 				System.out.println(cate);
 			}
-			
+
 			System.out.print("조회할 카테고리 ID:");
 			sc.nextLine();
 			int selectCategory = sc.nextInt();
-			
+
 			ArrayList<ProductVO> prooVO = new ArrayList<ProductVO>();
 			prooVO = proDAO.getProductBy(selectCategory);
 
@@ -269,54 +261,119 @@ public class Main {
 
 			System.out.println("(1)상품담기 | (2)바로구매 | (3)장바구니 | (4)뒤로가기");
 			System.out.print("메뉴 번호 입력: ");
-			
-			int selectCategorymenu = sc.nextInt();
-			switch (selectCategorymenu) {
-			case 1 -> cartInsert();
-//			case 2 ->
-			case 3 -> cart();
-			case 4 -> mainPage();
-			default -> System.out.println("잘못된 입력");
+			String input = sc.nextLine();
+			try {
+				int selectCategorymenu = Integer.parseInt(input);
+				switch (selectCategorymenu) {
+				case 1 -> cartInsert();
+				case 2 -> orderInsert();
+				case 3 -> cart();
+				case 4 -> mainPage();
+				default -> System.out.println("잘못된 입력");
+				}
+			} catch (NumberFormatException e) {
+				System.out.println(e.getMessage());
 			}
-			//			} catch (RuntimeException e){
-			//				System.out.println(e.getMessage());
-			//			}
 		} catch (RuntimeException e) {
 			System.out.println(e.getMessage());
 		}
-	
+
 	}
 	// END PRODUCT ======================================================================
 
 
-
+	// START CART========================================================================
 	public static void cart() {
 		ArrayList<CartVO> cartList = cDAO.getAllCart(uVO.getUserId());
 		for (CartVO cart : cartList) {
 			System.out.println(cart);
 		}
-//		System.out.println(cartList);
-	}
-	
-	public static void cartInsert() {
-		System.out.print("장바구니에 추가할 상품 이름: ");
-		sc.nextLine();
-		String addProductName = sc.nextLine();
-		proVO = proDAO.getProduct(addProductName);
-		System.out.print("추가할 개수: ");
-		int addProdunctCnt = sc.nextInt();	
-		cVO.setUserId(uVO.getUserId());
-		cVO.setProductId(proVO.getProductId());
-		cVO.setCartCnt(addProdunctCnt);
-		cVO.setTotalPrice(addProdunctCnt * proVO.getProductPrice());
-		System.out.println(cVO);
-		cDAO.insertCart(cVO);
-		System.out.println("추가되었습니다.");
+		System.out.println("(1)구매하기 | (2)뒤로가기");
+		System.out.print("메뉴 번호 입력: ");
+		String input = sc.nextLine();
+		try {
+			int cartmenu = Integer.parseInt(input);
+			switch (cartmenu) {
+			case 1 -> orderInsert();
+			case 2 -> mainPage();
+			default -> System.out.println("잘못된 입력");
+			}
+		} catch (NumberFormatException e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
+	public static void cartInsert() {
+		System.out.print("장바구니에 추가할 상품 이름: ");
+		String addProductName = sc.nextLine();
+		proVO = proDAO.getProduct(addProductName);
+
+		// product detail
+		ArrayList<ProductDetailVO> productDetailList = pdDAO.getProductDetail(proVO.getProductId());
+
+		// 옵션 선택
+		for (ProductDetailVO productDetail : productDetailList) {
+			System.out.println("제품 옵션" + productDetail.getOptions());
+			System.out.println("남은 수량" + productDetail.getCnt());
+		}
+		System.out.print("옵션 선택:");
+		String productOption = sc.nextLine();
+
+		System.out.print("추가할 개수: ");
+		int addProductCnt = sc.nextInt();	
+		sc.nextLine();
+
+		ProductDetailVO pdVO = pdDAO.getProductD(proVO.getProductId(), productOption);
+
+		if (addProductCnt > pdVO.getCnt()) {
+			System.out.println("재고 부족");
+			cartInsert();
+		} else {
+			cVO.setUserId(uVO.getUserId());
+			cVO.setProductId(proVO.getProductId());
+			cVO.setProductName(proVO.getProductName());
+			cVO.setCartCnt(addProductCnt);
+			cVO.setTotalPrice(addProductCnt * proVO.getProductPrice());
+			cVO.setOptions(productOption);
+			cDAO.insertCart(cVO);
+			System.out.println("추가되었습니다.");
+		}
+
+		System.out.println("(1)메인페이지 | (2)장바구니");
+		System.out.print("메뉴 번호 입력: ");
+		int cartInsertSelectMenu = sc.nextInt();
+		try {
+			switch (cartInsertSelectMenu) {
+			case 1 -> mainPage();
+			case 2 -> order();
+			default -> System.out.println("잘못된 메뉴");
+			}
+		} catch (InputMismatchException e) {
+			System.out.println("잘못된 메뉴");
+		}
+	}
+	// END CART =========================================================================
+
+	// START ORDER ======================================================================
 	public static void order() {
 		ArrayList<OrderVO> orderlist = oDAO.getOrderList(uVO.getUserId());
+		for (OrderVO order : orderlist) {
+			System.out.println(order);
+		}
 	}
+
+	public static void orderInsert() {
+		ArrayList<CartVO> clVOs = cDAO.getAllCart(uVO.getUserId());
+		for(CartVO clVO : clVOs) {
+			oVO.setUserId(uVO.getUserId());
+			oVO.setProductId(clVO.getProductId());
+			oVO.setCartId(clVO.getCartId());
+			oDAO.insertOrder(oVO);
+		}
+		System.out.println("추가 완료");
+	}
+	// END ORDER ========================================================================
+
 	// START ADMIN =======================================================================
 	public static void admin() {
 		System.out.println("---------------------------------------------");
@@ -329,24 +386,24 @@ public class Main {
 
 			switch(num) {
 			case 1 ->
-				adminProduct();
-				
+			adminProduct();
+
 			case 2 ->
-				adminUserManagement();
-				
+			adminUserManagement();
+
 			case 3 ->
-				adminOrderManagement();
-				
+			adminOrderManagement();
+
 			case 4->
-				exit();
+			exit();
 			default ->
-				System.out.println("잘못된 선택");
+			System.out.println("잘못된 선택");
 			}
 		} catch(InputMismatchException e) {
 			System.out.println(e.getMessage());
 		}
 	}
-	
+
 	// Admin 상품관리 시작 ===================================================================
 	public static void adminProduct() {
 		System.out.println("***Admin Product Management***");
@@ -359,46 +416,46 @@ public class Main {
 			sc.nextLine();
 			switch(num) {
 			case 1 -> 
-				adminProductInsert();
+			adminProductInsert();
 			case 2 ->
-				adminProductUpdate();
+			adminProductUpdate();
 			case 3 ->
-				adminProductDelete();
+			adminProductDelete();
 			case 4 ->
-				adminProductSearch();
+			adminProductSearch();
 			case 5 ->
-				admin();
+			admin();
 			default ->
-				System.out.println("잘못된 선택");
+			System.out.println("잘못된 선택");
 			}
 		}catch(InputMismatchException e) {
 			System.out.println(e.getMessage());
 		}
 	}
 	public static void adminProductInsert() {
-        System.out.println("***상품 등록***");
-        System.out.println("카테고리 ID: ");
-        proVO.setCategoryId(sc.nextInt());
-        sc.nextLine();
-        System.out.println("상품 이름: ");
-        proVO.setProductName(sc.nextLine());
-        System.out.println("상품 가격: ");
-        proVO.setProductPrice(sc.nextInt());
-        sc.nextLine();
-        System.out.println("상품 이미지: ");
-        proVO.setProductImg(sc.nextLine());
-        System.out.println("수량: ");
-        proVO.setCnt(sc.nextInt());
-        sc.nextLine();
-        try {
-           proDAO.insertProduct(proVO); 
-           System.out.println(proVO);
-        }catch(RuntimeException e) {
-           System.out.println(e.getMessage());
-        }
-        adminProduct();
+		System.out.println("***상품 등록***");
+		System.out.println("카테고리 ID: ");
+		proVO.setCategoryId(sc.nextInt());
+		sc.nextLine();
+		System.out.println("상품 이름: ");
+		proVO.setProductName(sc.nextLine());
+		System.out.println("상품 가격: ");
+		proVO.setProductPrice(sc.nextInt());
+		sc.nextLine();
+		System.out.println("상품 이미지: ");
+		proVO.setProductImg(sc.nextLine());
+		System.out.println("수량: ");
+		//        proVO.setCnt(sc.nextInt());
+		sc.nextLine();
+		try {
+			proDAO.insertProduct(proVO); 
+			System.out.println(proVO);
+		}catch(RuntimeException e) {
+			System.out.println(e.getMessage());
+		}
+		adminProduct();
 	}
-	
+
 	public static void adminProductUpdate() {
 		System.out.println("***상품 수정***");
 		System.out.println("상품 ID: ");
@@ -416,7 +473,7 @@ public class Main {
 		System.out.println("상품 이미지: ");
 		proVO.setProductImg(sc.nextLine());
 		System.out.println("수량: ");
-		proVO.setCnt(sc.nextInt());
+		//		proVO.setCnt(sc.nextInt());
 		sc.nextLine();
 		try {
 			proDAO.updateProduct(proVO);
@@ -425,23 +482,23 @@ public class Main {
 			System.out.println(e.getMessage());
 		}
 		adminProduct();
-		
+
 	}
-	
+
 	public static void adminProductDelete() {
 		System.out.println("***상품 삭제***");
 		System.out.println("상품ID: ");
 		int productId = sc.nextInt();
 		sc.nextLine();
 		try {
-		proDAO.deleteProduct(proVO);
-		System.out.println(productId + "삭제완료");
+			proDAO.deleteProduct(proVO);
+			System.out.println(productId + "삭제완료");
 		}catch(RuntimeException e) {
 			System.out.println(e.getMessage());
 		}
 		adminProduct();
 	}
-	
+
 	public static void adminProductSearch() {
 		try {
 			IProductDAO pDAO = new ProductDAO();
@@ -455,7 +512,7 @@ public class Main {
 		adminProduct();
 	}
 	// Admin 상품관리 끝 =====================================================================
-	
+
 	// Admin 회원관리 시작 ====================================================================
 	public static void adminUserManagement() {
 		System.out.println("***Admin User Management***");
@@ -468,13 +525,13 @@ public class Main {
 			sc.nextLine();
 			switch(num) {
 			case 1 -> 
-				adminUserSearch();
+			adminUserSearch();
 			case 2 ->
-				adminUserDelete();
+			adminUserDelete();
 			case 3 ->
-				admin();
+			admin();
 			default ->
-				System.out.println("잘못된 선택");
+			System.out.println("잘못된 선택");
 			}
 		}catch(InputMismatchException e) {
 			System.out.println(e.getMessage());
@@ -493,22 +550,22 @@ public class Main {
 		adminUserManagement();
 	}
 	public static void adminUserDelete() {
-		
+
 		System.out.println("***회원 삭제***");
 		System.out.print("회원ID: ");
 		String userId = sc.nextLine();
 		uVO = new model.UsersVO(); //uVO초기화
 		uVO.setUserId(userId);
 		try {
-		uDAO.deleteUser(uVO);
-		System.out.println(userId + "삭제완료");
+			uDAO.deleteUser(uVO);
+			System.out.println(userId + "삭제완료");
 		}catch(RuntimeException e) {
 			System.out.println(e.getMessage());
 		}
 		adminUserManagement();
 	}
 	// Admin 회원관리 끝 =======================================================================
-	
+
 	// Admin 주문관리 시작 ======================================================================
 	public static void adminOrderManagement() {
 		System.out.println("***Admin Order Management***");
@@ -521,19 +578,19 @@ public class Main {
 			sc.nextLine();
 			switch(num) {
 			case 1 -> 
-				adminOrderInsert();
+			adminOrderInsert();
 			case 2 ->
-				adminOrderUpdate();
+			adminOrderUpdate();
 			case 3 ->
-				admin();
+			admin();
 			default ->
-				System.out.println("잘못된 선택");
+			System.out.println("잘못된 선택");
 			}
 		}catch(InputMismatchException e) {
 			System.out.println(e.getMessage());
 		}
 	}
-	
+
 	public static void adminOrderInsert() {
 		System.out.println("***주문 전체 조회***");
 		try {
@@ -546,7 +603,7 @@ public class Main {
 		}
 		adminOrderManagement();
 	}
-	
+
 	public static void adminOrderUpdate() {
 		System.out.println("***주문 수정***");
 		System.out.println("주문 ID: ");
@@ -564,9 +621,9 @@ public class Main {
 			System.out.println(e.getMessage());
 		}
 		adminOrderManagement();
-		
+
 	}
-	
+
 
 	// Admin 주문관리 끝 =========================================================================
 	//END ADMIN ======================================================================

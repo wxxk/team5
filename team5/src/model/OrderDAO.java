@@ -66,6 +66,7 @@ public class OrderDAO implements IOrderDAO {
 		try {
 			con = DataSource.getConnection();
 			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setString(1, userId);
 			ResultSet rs = stmt.executeQuery();
 			while(rs.next()) {
 				OrderVO od = new OrderVO();
@@ -97,10 +98,10 @@ public class OrderDAO implements IOrderDAO {
 		try {
 			con = DataSource.getConnection();
 			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setInt(1, vo.getOrderId());
-			stmt.setString(2, vo.getUserId());
-			stmt.setInt(3, vo.getProductId());
-			stmt.setInt(4, vo.getCartId());
+			stmt.setString(1, vo.getUserId());
+			stmt.setInt(2, vo.getProductId());
+			stmt.setInt(3, vo.getCartId());
+			count = stmt.executeUpdate();
 		} catch(Exception e) {
 			throw new RuntimeException(e);
 		} finally {
