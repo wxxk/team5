@@ -36,7 +36,7 @@ public class OrderVO {
 				"productName =" + productName + "\n" +
 				"options =" + options + "\n" +
 				"cartCnt =" +cartCnt + "\n" +
-				"productPrice =" + productPrice;
+				"productPrice =" + productPrice + "\n";
 	}
 
 	public String [] toArray() {
