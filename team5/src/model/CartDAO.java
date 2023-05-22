@@ -45,6 +45,46 @@ public class CartDAO implements ICartDAO{
 		}
 		return cartList;
 	}
+	
+	
+	//cart_id별로 조회
+	public ArrayList<CartVO> getCart(String cartId){
+		ArrayList<CartVO> cartList = new ArrayList<CartVO>();
+		String sql = "SELECT c.cart_id, p.product_img, p.product_name, ct.category_name,"
+				+ "pd.options, c.cart_cnt, p.product_price, c.total_price"
+				+ "FROM users u, cart c, product p, category ct, product_detail pd "
+				+ "WHERE u.user_id = c.user_id"
+				+ "AND c.product_id = p.product_id"
+				+ "AND p.category_id = ct.category_id"
+				+ "AND pd.product_id = p.product_id"
+				+ "AND cart_id = ?" ;
+
+		Connection con = null;
+		try {
+			con = DataSource.getConnection();
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setString (1, cartId);
+			ResultSet rs = stmt.executeQuery();
+			while(rs.next()) {
+				CartVO ct = new CartVO();
+				ct.setCartId(rs.getInt("cart_id"));
+				ct.setProductImg(rs.getString("product_img"));
+				ct.setProductName(rs.getString("product_name"));
+				ct.setCategoryName(rs.getString("category_name"));
+				ct.setOptions(rs.getString("options"));
+				ct.setCartCnt(rs.getInt("cart_cnt"));
+				ct.setProductPrice(rs.getInt("product_price"));
+				ct.setTotalPrice(rs.getInt("total_price"));
+				cartList.add(ct);
+			}
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			DataSource.closeConnection(con);
+		}
+		return cartList;
+		
+	}
 
 	//카트에 담긴 상품 전체삭제
 	public int allDeleteCart(CartVO vo) {

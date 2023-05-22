@@ -103,8 +103,8 @@ public class ProductDAO implements IProductDAO{
 	@Override
 	public int insertProduct(ProductVO vo) { 
 		int count = 0;
-		String sql = "INSERT INTO product (product_id, category_id, product_name, product_price, product_img, cnt)"+
-				" VALUES (product_seq.NEXTVAL, ?, ?, ?, ?, ?)";
+		String sql = "INSERT INTO product (product_id, category_id, product_name, product_price, product_img)"+
+				" VALUES (product_seq.NEXTVAL, ?, ?, ?, ?)";
 		Connection con = null;
 		try {
 			con = DataSource.getConnection();
@@ -128,7 +128,7 @@ public class ProductDAO implements IProductDAO{
 	@Override
 	public int updateProduct(ProductVO vo) {
 		int count = 0;
-		String sql = "UPDATE product SET category_id = ?, product_name = ?, product_price = ?, product_img = ?, cnt = ? "
+		String sql = "UPDATE product SET category_id = ?, product_name = ?, product_price = ?, product_img = ? "
 				+ "WHERE product_id = ?";
 		Connection con = null;
 		try {
@@ -139,7 +139,7 @@ public class ProductDAO implements IProductDAO{
 			stmt.setInt(3, vo.getProductPrice());
 			stmt.setString(4, vo.getProductImg());
 //			stmt.setInt(5, vo.getCnt());
-			stmt.setInt(6, vo.getProductId());
+			stmt.setInt(5, vo.getProductId());
 			count = stmt.executeUpdate();
 		} catch(Exception e) {
 			throw new RuntimeException(e);
