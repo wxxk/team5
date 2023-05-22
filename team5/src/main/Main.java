@@ -286,7 +286,9 @@ public class Main {
 	public static void cart() {
 		ArrayList<CartVO> cartList = cDAO.getAllCart(uVO.getUserId());
 		for (CartVO cart : cartList) {
-			System.out.println(cart);
+			if (cart.getOrdered() == 0) {
+				System.out.println(cart);				
+			}
 		}
 		System.out.println("(1)구매하기 | (2)뒤로가기");
 		System.out.print("메뉴 번호 입력: ");
@@ -304,8 +306,9 @@ public class Main {
 	}
 
 	public static void cartInsert() {
-		System.out.print("장바구니에 추가할 상품 이름: ");
-		String addProductName = sc.nextLine();
+		System.out.print("장바구니에 추가할 상품 ID: ");
+		int addProductName = sc.nextInt();
+		sc.nextLine();
 		proVO = proDAO.getProduct(addProductName);
 
 		// product detail
@@ -323,7 +326,7 @@ public class Main {
 		int addProductCnt = sc.nextInt();	
 		sc.nextLine();
 
-		ProductDetailVO pdVO = pdDAO.getProductD(proVO.getProductId(), productOption);
+		ProductDetailVO pdVO = pdDAO.getProductD(addProductName, productOption);
 
 		if (addProductCnt > pdVO.getCnt()) {
 			System.out.println("재고 부족");
@@ -336,16 +339,18 @@ public class Main {
 			cVO.setTotalPrice(addProductCnt * proVO.getProductPrice());
 			cVO.setOptions(productOption);
 			cDAO.insertCart(cVO);
-			System.out.println("추가되었습니다.");
+			System.out.println(cVO.getProductName() + " " + cVO.getCartCnt() + "개가 추가되었습니다.");
+			
 		}
 
 		System.out.println("(1)메인페이지 | (2)장바구니");
 		System.out.print("메뉴 번호 입력: ");
 		int cartInsertSelectMenu = sc.nextInt();
+		sc.nextLine();
 		try {
 			switch (cartInsertSelectMenu) {
 			case 1 -> mainPage();
-			case 2 -> order();
+			case 2 -> cart();
 			default -> System.out.println("잘못된 메뉴");
 			}
 		} catch (InputMismatchException e) {
@@ -365,12 +370,15 @@ public class Main {
 	public static void orderInsert() {
 		ArrayList<CartVO> clVOs = cDAO.getAllCart(uVO.getUserId());
 		for(CartVO clVO : clVOs) {
-			oVO.setUserId(uVO.getUserId());
-			oVO.setProductId(clVO.getProductId());
-			oVO.setCartId(clVO.getCartId());
-			oDAO.insertOrder(oVO);
+			System.out.println(clVO.getOrdered());
+			if (clVO.getOrdered() == 0) {
+				oVO.setUserId(uVO.getUserId());
+				oVO.setProductId(clVO.getProductId());
+				oVO.setCartId(clVO.getCartId());
+				oDAO.insertOrder(oVO);				
+				System.out.println(clVO.getProductName() + "추가 완료");
+			}
 		}
-		System.out.println("추가 완료");
 	}
 	// END ORDER ========================================================================
 

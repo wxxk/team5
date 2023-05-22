@@ -12,7 +12,7 @@ public class CartDAO implements ICartDAO{
 	//카트 전체 조회
 	public ArrayList<CartVO> getAllCart(String userId){
 		ArrayList<CartVO> cartList = new ArrayList<CartVO>();
-		String sql = "SELECT c.cart_id, p.product_id, p.product_name, ct.category_name, c.options, c.cart_cnt, p.product_price, c.total_price "+		
+		String sql = "SELECT c.cart_id, p.product_id, p.product_name, ct.category_name, c.options, c.cart_cnt, p.product_price, c.total_price, c.ordered "+		
 				"FROM users u, cart c, product p, category ct "+
 				"WHERE u.user_id = c.user_id "+
 				"AND c.product_id = p.product_id "+
@@ -36,6 +36,7 @@ public class CartDAO implements ICartDAO{
 				ct.setCartCnt(rs.getInt("cart_cnt"));
 				ct.setProductPrice(rs.getInt("product_price"));
 				ct.setTotalPrice(rs.getInt("total_price"));
+				ct.setOrdered(rs.getInt("ordered"));
 				cartList.add(ct);
 			}
 		} catch (SQLException e) {

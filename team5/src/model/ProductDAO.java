@@ -74,16 +74,16 @@ public class ProductDAO implements IProductDAO{
 
 	//productName으로 상품 조회
 	@Override
-	public ProductVO getProduct(String productName) {
+	public ProductVO getProduct(int productId) {
 		ProductVO vo = null;
 		String sql = "SELECT product_id, product_name, product_price From product "
-				+ "WHERE product_name = ? ";
+				+ "WHERE product_id = ? ";
 		Connection con = null;
 		PreparedStatement stmt = null;
 		try {
 			con = DataSource.getConnection();
 			stmt = con.prepareStatement(sql);
-			stmt.setString(1, productName);
+			stmt.setInt(1, productId);
 			ResultSet rs = stmt.executeQuery();
 			if(rs.next()) {
 				vo = new ProductVO();

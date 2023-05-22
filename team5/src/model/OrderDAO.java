@@ -16,7 +16,7 @@ public class OrderDAO implements IOrderDAO {
 
 		String sql = 
 			"SELECT o.order_id, u.user_name, u.user_phone_number, u.user_address,"
-			+ "p.product_img, p.product_name, pd.options, c.cart_cnt, p.product_price "	
+			+ "p.product_img, p.product_name, pd.options, c.cart_cnt, p.product_price, c.ordered "	
 			 + "FROM users u "
 			 + "JOIN cart c ON u.user_id = c.user_id "
 			 + "JOIN orders o ON c.product_id = o.product_id "
