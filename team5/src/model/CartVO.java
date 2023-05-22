@@ -22,7 +22,6 @@ public class CartVO {
 	private int cartCnt;
 	private int productPrice;
 	private int totalPrice;
-	private int ordered;
 
 	@Override
 	public String toString() {

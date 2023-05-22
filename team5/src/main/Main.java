@@ -60,6 +60,7 @@ public class Main {
 				}
 			} catch(NumberFormatException e) {
 				System.out.println("잘못된 입력");
+
 			}
 		}
 
@@ -145,8 +146,7 @@ public class Main {
 		adminVO = aDAO.getAdmin(id);
 
 		try {
-
-			if (uVO!=null && id.equals(uVO.getUserId()) && pwd.equals(uVO.getUserPassword())) {
+			if (uVO!=null && id.equals(uVO.getUserId()) && pwd.equals(uVO.getUserPassword()) && uVO.getStated() == 1) {
 				s.loginUserId = uVO.getUserId();
 				mainPage();
 			}else if (adminVO!=null&&id.equals(adminVO.getAdminId()) && pwd.equals(adminVO.getAdminPassword())) {
@@ -286,11 +286,9 @@ public class Main {
 	public static void cart() {
 		ArrayList<CartVO> cartList = cDAO.getAllCart(uVO.getUserId());
 		for (CartVO cart : cartList) {
-			if (cart.getOrdered() == 0) {
 				System.out.println(cart);				
-			}
 		}
-		System.out.println("(1)구매하기 | (2)뒤로가기");
+		System.out.println("(1)구매하기 | (2)뒤로가기 | (3)삭제하기 | (4)수량변경");
 		System.out.print("메뉴 번호 입력: ");
 		String input = sc.nextLine();
 		try {
@@ -298,6 +296,8 @@ public class Main {
 			switch (cartmenu) {
 			case 1 -> orderInsert();
 			case 2 -> mainPage();
+			case 3 -> deleteCart();
+			case 4 -> updateCart();
 			default -> System.out.println("잘못된 입력");
 			}
 		} catch (NumberFormatException e) {
@@ -340,7 +340,6 @@ public class Main {
 			cVO.setOptions(productOption);
 			cDAO.insertCart(cVO);
 			System.out.println(cVO.getProductName() + " " + cVO.getCartCnt() + "개가 추가되었습니다.");
-			
 		}
 
 		System.out.println("(1)메인페이지 | (2)장바구니");
@@ -357,6 +356,23 @@ public class Main {
 			System.out.println("잘못된 메뉴");
 		}
 	}
+	
+	public static void deleteCart() {
+		System.out.print("삭제할 카트 ID: ");
+		int deleteCartNumber = sc.nextInt();
+		sc.nextLine();
+		cDAO.deleteCart(deleteCartNumber);
+	}
+	
+	public static void updateCart() {
+		System.out.print("수량을 바꿀 카트 ID: ");
+		int updateCartId = sc.nextInt();
+		sc.nextLine();
+		System.out.print("바꿀 수량: ");
+		int updateCartCnt = sc.nextInt();
+		sc.nextLine();
+		cDAO.updateCart(updateCartCnt, updateCartId);
+	}
 	// END CART =========================================================================
 
 	// START ORDER ======================================================================
@@ -370,14 +386,12 @@ public class Main {
 	public static void orderInsert() {
 		ArrayList<CartVO> clVOs = cDAO.getAllCart(uVO.getUserId());
 		for(CartVO clVO : clVOs) {
-			System.out.println(clVO.getOrdered());
-			if (clVO.getOrdered() == 0) {
-				oVO.setUserId(uVO.getUserId());
-				oVO.setProductId(clVO.getProductId());
-				oVO.setCartId(clVO.getCartId());
-				oDAO.insertOrder(oVO);				
-				System.out.println(clVO.getProductName() + "추가 완료");
-			}
+			oVO.setUserId(uVO.getUserId());
+			oVO.setProductId(clVO.getProductId());
+			oVO.setCartId(clVO.getCartId());
+			oDAO.insertOrder(oVO);
+			cDAO.deleteCart(oVO.getCartId());
+			System.out.println(clVO.getProductName() + "추가 완료");
 		}
 	}
 	// END ORDER ========================================================================
