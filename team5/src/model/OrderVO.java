@@ -23,6 +23,7 @@ public class OrderVO {
 	private String productImg;
 	private String options;
 	private int productPrice;
+	private int totalPrice;
 	private int cartCnt;
 
 	public String toString() {

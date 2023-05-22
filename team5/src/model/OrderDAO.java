@@ -13,10 +13,10 @@ public class OrderDAO implements IOrderDAO {
 	@Override
 	public ArrayList<OrderVO> getAllOrderList(){
 		ArrayList<OrderVO> orderList = new ArrayList<OrderVO>();
-
+		//total_price넣어야 함
 		String sql = 
 			"SELECT o.order_id, u.user_name, u.user_phone_number, u.user_address,"
-			+ "p.product_img, p.product_name, pd.options, c.cart_cnt, p.product_price "	
+			+ "p.product_img, p.product_name, pd.options, c.cart_cnt, p.product_price, o.total_price "	
 			 + "FROM users u "
 			 + "JOIN cart c ON u.user_id = c.user_id "
 			 + "JOIN orders o ON c.product_id = o.product_id "
@@ -39,6 +39,7 @@ public class OrderDAO implements IOrderDAO {
 				od.setOptions(rs.getString("product_name"));
 				od.setCartCnt(rs.getInt("cart_cnt"));	
 				od.setProductPrice(rs.getInt("product_price"));
+				od.setTotalPrice(rs.getInt("total_Price"));
 				orderList.add(od);
 			}
 		} catch (SQLException e) {
@@ -56,7 +57,7 @@ public class OrderDAO implements IOrderDAO {
 		ArrayList<OrderVO> orderList = new ArrayList<OrderVO>();
 
 		String sql = 
-				"SELECT o.order_id,p.product_name, c.cart_cnt, p.product_price, u.user_name, u.user_address, u.user_phone_number "
+				"SELECT o.order_id,p.product_name, c.cart_cnt, p.product_price, u.user_name, u.user_address, u.user_phone_number, o.total_price "
 						+"FROM users u "
 						+"JOIN cart c ON u.user_id = c.user_id "
 						+"JOIN orders o ON c.product_id = o.product_id "
@@ -77,6 +78,7 @@ public class OrderDAO implements IOrderDAO {
 				od.setUserName(rs.getString("user_name"));
 				od.setUserAddress(rs.getString("user_address"));
 				od.setUserPhoneNumber(rs.getString("user_phone_number"));
+				od.setTotalPrice(rs.getInt("total_Price"));
 				orderList.add(od);
 			}
 		} catch (SQLException e) {
