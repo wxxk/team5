@@ -12,17 +12,51 @@ public class ProductDetailDAO implements IProductDetailDAO {
 
 	//상품 디테일 조회
 	@Override
-	public ProductDetailVO getProductDetail(int productId) {
+	public ArrayList<ProductDetailVO> getProductDetail(int productId) {
+		ArrayList<ProductDetailVO> productDetailList = new ArrayList<ProductDetailVO>();
 		ProductDetailVO vo = null;
-		String sql = "SELECT pd.product_detail_id, pd.options, pd.cnt "
+		String sql = "SELECT pd.product_detail_id, p.product_id, pd.options, pd.cnt "
 				+ "FROM product p, product_detail pd "
 				+ "WHERE p.product_id = pd.product_id AND pd.product_id = ?";
+		
 		Connection con = null;
 		PreparedStatement stmt = null;
 		try {
 			con = DataSource.getConnection();
 			stmt = con.prepareStatement(sql);
 			stmt.setInt(1, productId);
+			ResultSet rs = stmt.executeQuery();
+			while(rs.next()) {
+				vo = new ProductDetailVO();
+				vo.setProductDetailId(rs.getInt("product_detail_id"));
+				vo.setProductId(rs.getInt("product_id"));
+				vo.setOptions(rs.getString("options"));
+				vo.setCnt(rs.getInt("cnt"));
+				productDetailList.add(vo);
+			}
+		}catch(SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if(stmt!=null)try {stmt.close();}catch(Exception e) {}
+			if(con!=null)try {con.close();}catch(Exception e) {}
+		}
+		return productDetailList;
+	}
+	
+	public ProductDetailVO getProductD(int productId, String options) {
+		ProductDetailVO vo = null;
+		String sql = "SELECT pd.product_detail_id, p.product_id, pd.options, pd.cnt "
+				+ "FROM product p, product_detail pd "
+				+ "WHERE p.product_id = pd.product_id "
+				+ "AND pd.product_id = ? "
+				+ "AND pd.options = ?";
+		Connection con = null;
+		PreparedStatement stmt = null;
+		try {
+			con = DataSource.getConnection();
+			stmt = con.prepareStatement(sql);
+			stmt.setInt(1, productId);
+			stmt.setString(2, options);
 			ResultSet rs = stmt.executeQuery();
 			if(rs.next()) {
 				vo = new ProductDetailVO();
@@ -31,7 +65,7 @@ public class ProductDetailDAO implements IProductDetailDAO {
 				vo.setOptions(rs.getString("options"));
 				vo.setCnt(rs.getInt("cnt"));
 			}
-		}catch(SQLException e) {
+		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
 			if(stmt!=null)try {stmt.close();}catch(Exception e) {}

@@ -14,7 +14,7 @@ public class ProductDAO implements IProductDAO{
 	@Override
 	public ArrayList<ProductVO> getAllProducts() {
 		ArrayList<ProductVO> productList = new ArrayList<ProductVO>();
-		String sql = "SELECT p.product_id, c.category_id, p.product_name, p.product_price, p.product_img, p.cnt "
+		String sql = "SELECT p.product_id, c.category_id, p.product_name, p.product_price, p.product_img "
 				+ "FROM product p, category c "
 				+ "WHERE p.category_id = c.category_id";
 		Connection con = null;
@@ -30,7 +30,7 @@ public class ProductDAO implements IProductDAO{
 				product.setProductName(rs.getString("product_name"));
 				product.setProductPrice(rs.getInt("product_price"));
 				product.setProductImg(rs.getString("product_img"));
-				product.setCnt(rs.getInt("cnt"));
+//				product.setCnt(rs.getInt("cnt"));
 				productList.add(product);
 			}
 		}catch(SQLException e) {
@@ -61,7 +61,7 @@ public class ProductDAO implements IProductDAO{
 				product.setProductName(rs.getString("product_name"));
 				product.setProductPrice(rs.getInt("product_price"));
 				product.setProductImg(rs.getString("product_img"));
-				product.setCnt(rs.getInt("cnt"));
+//				product.setCnt(rs.getInt("cnt"));
 				productList.add(product);
 			}
 		}catch(SQLException e) {
@@ -114,7 +114,7 @@ public class ProductDAO implements IProductDAO{
 			stmt.setString(2, vo.getProductName());
 			stmt.setInt(3, vo.getProductPrice());
 			stmt.setString(4, vo.getProductImg());
-			stmt.setInt(5, vo.getCnt());
+//			stmt.setInt(5, vo.getCnt());
 			count = stmt.executeUpdate();
 		} catch(Exception e) {
 			throw new RuntimeException(e);
@@ -138,7 +138,7 @@ public class ProductDAO implements IProductDAO{
 			stmt.setString(2, vo.getProductName());
 			stmt.setInt(3, vo.getProductPrice());
 			stmt.setString(4, vo.getProductImg());
-			stmt.setInt(5, vo.getCnt());
+//			stmt.setInt(5, vo.getCnt());
 			stmt.setInt(6, vo.getProductId());
 			count = stmt.executeUpdate();
 		} catch(Exception e) {
