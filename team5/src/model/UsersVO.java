@@ -10,6 +10,7 @@ public class UsersVO {
 	private String userBirth;
 	private String userPhoneNumber;
 	private String userAddress;
+	private int stated;
 	
 	@Override
 	public String toString() {

@@ -28,6 +28,7 @@ public class UsersDAO implements IUsersDAO {
 				user.setUserBirth(rs.getString("user_birth"));
 				user.setUserPhoneNumber(rs.getString("user_phone_number"));
 				user.setUserAddress(rs.getString("user_address"));
+				user.setStated(rs.getInt("stated"));
 				userList.add(user);
 			}
 		}catch(SQLException e) {
@@ -57,6 +58,7 @@ public class UsersDAO implements IUsersDAO {
 				vo.setUserBirth(rs.getString("user_birth"));
 				vo.setUserPhoneNumber(rs.getString("user_phone_number"));
 				vo.setUserAddress(rs.getString("user_address"));
+				vo.setStated(rs.getInt("stated"));
 			}
 		}catch(SQLException e) {
 			throw new RuntimeException(e);
@@ -117,7 +119,7 @@ public class UsersDAO implements IUsersDAO {
 	public int deleteUser(UsersVO vo) {
 		int deleteRow = 0;
 
-		String sql = "DELETE FROM users WHERE user_id=? ";
+		String sql = "UPDATE users SET stated = 0 WHERE user_id=? ";
 
 		Connection con = null;
 		try {

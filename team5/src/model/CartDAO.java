@@ -47,7 +47,7 @@ public class CartDAO implements ICartDAO{
 	
 	
 	//cart_id별로 조회
-	public ArrayList<CartVO> getCart(String cartId){
+	public ArrayList<CartVO> getCart(int cartId){
 		ArrayList<CartVO> cartList = new ArrayList<CartVO>();
 		String sql = "SELECT c.cart_id, p.product_img, p.product_name, ct.category_name,"
 				+ "pd.options, c.cart_cnt, p.product_price "
@@ -62,7 +62,7 @@ public class CartDAO implements ICartDAO{
 		try {
 			con = DataSource.getConnection();
 			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setString (1, cartId);
+			stmt.setInt (1, cartId);
 			ResultSet rs = stmt.executeQuery();
 			while(rs.next()) {
 				CartVO ct = new CartVO();
@@ -103,14 +103,14 @@ public class CartDAO implements ICartDAO{
 	}
 
 	//카트에 담긴 상품 부분삭제
-	public int deleteCart(CartVO vo) {
+	public int deleteCart(int cartId) {
 		int deleteRow = 0;
-		String sql = "DELETE FROM cart WHERE product_id = ?";
+		String sql = "DELETE FROM cart WHERE cart_id = ?";
 		Connection con = null;
 		try {
 			con = DataSource.getConnection();
 			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setInt(1, vo.getProductId());
+			stmt.setInt(1, cartId);
 			deleteRow = stmt.executeUpdate();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
@@ -145,15 +145,15 @@ public class CartDAO implements ICartDAO{
 	}
 		
 	//장바구니 수량 변경
-	public int updateCart(CartVO vo) {
+	public int updateCart(int cartCnt, int cartId) {
 		int count = 0;
 		String sql = "UPDATE cart SET cart_cnt = ? WHERE cart_id = ?";
 		Connection con = null;
 		try {
 			con = DataSource.getConnection();
 			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setInt(1, vo.getCartCnt());
-			stmt.setInt(2, vo.getCartId());
+			stmt.setInt(1, cartCnt);
+			stmt.setInt(2, cartId);
 			count = stmt.executeUpdate();
 		} catch(SQLException e) {
 			throw new RuntimeException(e);
