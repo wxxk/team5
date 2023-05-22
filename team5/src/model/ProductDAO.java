@@ -149,6 +149,7 @@ public class ProductDAO implements IProductDAO{
 		return count;
 	}
 
+
 	//상품 삭제
 	@Override
 	public int deleteProduct(ProductVO vo) {
@@ -167,5 +168,6 @@ public class ProductDAO implements IProductDAO{
 		}
 		return deleteRow;
 	}
+
 
 }

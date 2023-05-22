@@ -88,20 +88,23 @@ public class OrderDAO implements IOrderDAO {
 	}
 
 
-
 	@Override
-	public int insertOrder(OrderVO vo) {
+	public int insertOrder(String userId, String productName, int cartId) {
 		int count = 0;
+		int totalprice = 0;
+		ProductDAO pDAO = new ProductDAO();
+		ProductVO pVO = new ProductVO();
+		CartDAO cDAO = new CartDAO();
+		OrderVO oVO = new OrderVO();
 		String sql = "INSERT INTO orders (order_id, user_id, product_id, cart_id)"+
 				" VALUES (orders_seq.NEXTVAL, ?, ?, ?)";
 		Connection con = null;
 		try {
+			pVO = pDAO.getProduct(productName);
+			totalprice = pVO.getProductPrice() * oVO.getCartCnt();
 			con = DataSource.getConnection();
 			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setString(1, vo.getUserId());
-			stmt.setInt(2, vo.getProductId());
-			stmt.setInt(3, vo.getCartId());
-			count = stmt.executeUpdate();
+
 		} catch(Exception e) {
 			throw new RuntimeException(e);
 		} finally {

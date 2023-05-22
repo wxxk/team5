@@ -139,4 +139,22 @@ public class ProductDetailDAO implements IProductDetailDAO {
 		return deleteRow;
 	}
 
+	@Override
+	public int updateStock(ProductDetailVO vo) {
+		int count = 0;
+		String sql = "UPDATE product_detail SET cnt = ? WHERE product_detail_id = ? ";
+		Connection con = null;
+		try {
+			con = DataSource.getConnection();
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setInt(1, vo.getCnt());
+			count = stmt.executeUpdate();
+		}catch(SQLException e) {
+			throw new RuntimeException(e);
+		}finally {
+			DataSource.closeConnection(con);
+		}
+		return count;
+	}
+
 }
