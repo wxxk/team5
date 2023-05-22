@@ -37,7 +37,7 @@ public class OrderDAO implements IOrderDAO {
 				od.setProductImg(rs.getString("product_img"));
 				od.setProductName(rs.getString("product_name"));
 				od.setOptions(rs.getString("product_name"));
-				od.setCartCnt(rs.getInt("cart_cnt"));	
+//				od.setCartCnt(rs.getInt("cart_cnt"));	
 				od.setProductPrice(rs.getInt("product_price"));
 				od.setTotalPrice(rs.getInt("total_Price"));
 				orderList.add(od);
@@ -73,7 +73,7 @@ public class OrderDAO implements IOrderDAO {
 				OrderVO od = new OrderVO();
 				od.setOrderId(rs.getInt("order_id"));
 				od.setProductName(rs.getString("product_name"));
-				od.setCartCnt(rs.getInt("cart_cnt"));	
+//				od.setCartCnt(rs.getInt("cart_cnt"));	
 				od.setProductPrice(rs.getInt("product_price"));
 				od.setUserName(rs.getString("user_name"));
 				od.setUserAddress(rs.getString("user_address"));
@@ -89,31 +89,6 @@ public class OrderDAO implements IOrderDAO {
 		return orderList;
 	}
 
-
-	@Override
-	public int insertOrder(String userId, String productName, int cartId) {
-		int count = 0;
-		int totalprice = 0;
-		ProductDAO pDAO = new ProductDAO();
-		ProductVO pVO = new ProductVO();
-		CartDAO cDAO = new CartDAO();
-		OrderVO oVO = new OrderVO();
-		String sql = "INSERT INTO orders (order_id, user_id, product_id, cart_id)"+
-				" VALUES (orders_seq.NEXTVAL, ?, ?, ?)";
-		Connection con = null;
-		try {
-			pVO = pDAO.getProduct(productName);
-			totalprice = pVO.getProductPrice() * oVO.getCartCnt();
-			con = DataSource.getConnection();
-			PreparedStatement stmt = con.prepareStatement(sql);
-
-		} catch(Exception e) {
-			throw new RuntimeException(e);
-		} finally {
-			DataSource.closeConnection(con);
-		}
-		return count;
-	}
 
 	@Override
 	public int updateOrder(OrderVO vo) {
@@ -151,6 +126,67 @@ public class OrderDAO implements IOrderDAO {
 			DataSource.closeConnection(con);
 		}
 		return deleteRow;
+	}
+
+
+
+	@Override
+	public int insertCartOrder() {
+		int orderPk = 0;
+		ResultSet rs = null;
+		int count = 0;
+		int totalprice = 0;
+		ProductDAO pDAO = new ProductDAO();
+		ProductVO pVO = new ProductVO();
+		ProductDetailVO pdVO = new ProductDetailVO();
+		CartDAO cDAO = new CartDAO();
+		CartVO cVO = new CartVO();
+		OrderVO oVO = new OrderVO();
+		ProductDetailDAO pdDAO = new ProductDetailDAO();
+		String sql = "INSERT INTO orders (order_id, user_id, product_id, cart_id, total_price)"+
+				" VALUES (?, ?, ?, ?,?)";
+		String sql2="SELECT order_seq_NEXTVAL AS oseq FROM dual";
+		Connection con = null;
+		try {
+			
+			//cartList select -> list
+			//order table insert-> total 계산 cart 상품별 수량 상품가격
+			//orderpk orderdetail 
+			
+			if(rs.next()) {
+				orderPk=rs.getInt("oesq");		
+			}
+			
+			
+			pVO = pDAO.getProduct();
+//			totalprice = pVO.getProductPrice();
+			con = DataSource.getConnection();
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setInt(1,orderPk);
+			stmt.setString(1, userId);
+			stmt.setInt(2, productId);
+			stmt.setInt(3, cartId);
+			stmt.setInt(4, totalprice);
+			ResultSet rs = stmt.executeQuery();
+			count = stmt.executeUpdate();
+			
+			
+//			pdDAO.updateStock(productId , pdVO.getCnt()-oVO.getCartCnt());
+
+		} catch(Exception e) {
+			throw new RuntimeException(e);
+		} finally {
+			DataSource.closeConnection(con);
+		}
+		return count;
+	}
+
+
+
+	@Override
+	public int insertProductOrder(String userId, int productDetailId, int cnt) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 

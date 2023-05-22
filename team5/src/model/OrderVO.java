@@ -24,7 +24,7 @@ public class OrderVO {
 	private String options;
 	private int productPrice;
 	private int totalPrice;
-	private int cartCnt;
+
 
 	public String toString() {
 		return "orderId =" + orderId +"\n" + 
@@ -36,14 +36,13 @@ public class OrderVO {
 				"productImg =" + productImg + "\n" +
 				"productName =" + productName + "\n" +
 				"options =" + options + "\n" +
-				"cartCnt =" +cartCnt + "\n" +
 				"productPrice =" + productPrice + "\n";
 	}
 
 	public String [] toArray() {
 		return new String []{
 				orderId + "" + userId + "" + userPhoneNumber + "" + userAddress +
-				productImg + "" + productName + "" + options + "" + cartCnt + productPrice	
+				productImg + "" + productName + "" + options + "" + productPrice	
 		};
 	}
 

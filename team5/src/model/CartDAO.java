@@ -12,7 +12,7 @@ public class CartDAO implements ICartDAO{
 	//카트 전체 조회
 	public ArrayList<CartVO> getAllCart(String userId){
 		ArrayList<CartVO> cartList = new ArrayList<CartVO>();
-		String sql = "SELECT c.cart_id, p.product_id, p.product_name, ct.category_name, c.options, c.cart_cnt, p.product_price, c.total_price "+		
+		String sql = "SELECT c.cart_id, p.product_id, p.product_name, ct.category_name, c.options, c.cart_cnt, p.product_price "+		
 				"FROM users u, cart c, product p, category ct "+
 				"WHERE u.user_id = c.user_id "+
 				"AND c.product_id = p.product_id "+
@@ -35,7 +35,6 @@ public class CartDAO implements ICartDAO{
 				ct.setOptions(rs.getString("options"));
 				ct.setCartCnt(rs.getInt("cart_cnt"));
 				ct.setProductPrice(rs.getInt("product_price"));
-				ct.setTotalPrice(rs.getInt("total_price"));
 				cartList.add(ct);
 			}
 		} catch (SQLException e) {
@@ -51,7 +50,7 @@ public class CartDAO implements ICartDAO{
 	public ArrayList<CartVO> getCart(String cartId){
 		ArrayList<CartVO> cartList = new ArrayList<CartVO>();
 		String sql = "SELECT c.cart_id, p.product_img, p.product_name, ct.category_name,"
-				+ "pd.options, c.cart_cnt, p.product_price, c.total_price"
+				+ "pd.options, c.cart_cnt, p.product_price "
 				+ "FROM users u, cart c, product p, category ct, product_detail pd "
 				+ "WHERE u.user_id = c.user_id"
 				+ "AND c.product_id = p.product_id"
@@ -74,7 +73,6 @@ public class CartDAO implements ICartDAO{
 				ct.setOptions(rs.getString("options"));
 				ct.setCartCnt(rs.getInt("cart_cnt"));
 				ct.setProductPrice(rs.getInt("product_price"));
-				ct.setTotalPrice(rs.getInt("total_price"));
 				cartList.add(ct);
 			}
 		} catch (SQLException e) {
@@ -127,8 +125,8 @@ public class CartDAO implements ICartDAO{
 	//상품 등록
 	public int insertCart(CartVO vo) {
 		int count = 0;
-		String sql = "INSERT INTO cart (cart_id, user_id, product_id, cart_cnt, total_price, options) "
-		+ "VALUES(cart_seq.NEXTVAL,?,?,?,?,?)";
+		String sql = "INSERT INTO cart (cart_id, user_id, product_id, cart_cnt, options) "
+		+ "VALUES(cart_seq.NEXTVAL,?,?,?,?)";
 		Connection con = null;
 		try {
 			con = DataSource.getConnection();
@@ -136,8 +134,7 @@ public class CartDAO implements ICartDAO{
 			stmt.setString(1, vo.getUserId());
 			stmt.setInt(2, vo.getProductId());
 			stmt.setInt(3, vo.getCartCnt());
-			stmt.setInt(4, vo.getTotalPrice());
-			stmt.setString(5, vo.getOptions());
+			stmt.setString(4, vo.getOptions());
 			count = stmt.executeUpdate();
 		} catch(Exception e) {
 			throw new RuntimeException(e);

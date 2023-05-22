@@ -21,7 +21,7 @@ public class CartVO {
 	private String options;
 	private int cartCnt;
 	private int productPrice;
-	private int totalPrice;
+
 
 	@Override
 	public String toString() {
@@ -32,14 +32,13 @@ public class CartVO {
 				"categoryName = " + categoryName + "\n" + 
 				"options = " + options + "\n" +
 				"cartCnt = " + cartCnt + "\n" +
-				"productPrice = " + productPrice + "\n" +
-				"totalPrice = " + totalPrice + "\n";	
+				"productPrice = " + productPrice ;
 	}
 
 	public String [] toArray() {
 		return new String []{
 				cartId + "" + productImg + "" + productName + "" + categoryName + "" 
-						+ options + "" + cartCnt + "" + productPrice + "" + totalPrice
+						+ options + "" + cartCnt + "" + productPrice + "" 
 		};
 
 

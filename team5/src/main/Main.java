@@ -363,13 +363,7 @@ public class Main {
 	}
 
 	public static void orderInsert() {
-		ArrayList<CartVO> clVOs = cDAO.getAllCart(uVO.getUserId());
-		for(CartVO clVO : clVOs) {
-			oVO.setUserId(uVO.getUserId());
-			oVO.setProductId(clVO.getProductId());
-			oVO.setCartId(clVO.getCartId());
-			oDAO.insertOrder(oVO);
-		}
+		insertCartOrder();
 		System.out.println("추가 완료");
 	}
 	// END ORDER ========================================================================
