@@ -23,10 +23,10 @@ public class OrderDAO implements IOrderDAO {
 		//total_price넣어야 함
 		String sql = 
 				"SELECT o.order_id, u.user_name, u.user_phone_number, u.user_address, p.product_img, p.product_name, od.options, o.order_total_price "
-				+"FROM orders o "
-				+"JOIN users u ON u.user_id = o.user_id "
-				+"JOIN order_details od ON o.order_id = od.order_id "
-				+"JOIN product p ON p.product_id = od.product_id";
+						+"FROM orders o "
+						+"JOIN users u ON u.user_id = o.user_id "
+						+"JOIN order_details od ON o.order_id = od.order_id "
+						+"JOIN product p ON p.product_id = od.product_id";
 
 		Connection con = null;
 		try {
@@ -61,11 +61,11 @@ public class OrderDAO implements IOrderDAO {
 
 		String sql = 
 				"SELECT o.order_id, u.user_name, u.user_phone_number, u.user_address, p.product_img, p.product_name, od.options, o.order_total_price "
-				+"FROM orders o "
-				+"JOIN users u ON u.user_id = o.user_id "
-				+"JOIN order_details od ON o.order_id = od.order_id "
-				+"JOIN product p ON p.product_id = od.product_id "
-				+"WHERE u.user_id = ?";
+						+"FROM orders o "
+						+"JOIN users u ON u.user_id = o.user_id "
+						+"JOIN order_details od ON o.order_id = od.order_id "
+						+"JOIN product p ON p.product_id = od.product_id "
+						+"WHERE u.user_id = ?";
 
 		Connection con = null;
 		try {
@@ -133,68 +133,67 @@ public class OrderDAO implements IOrderDAO {
 		return deleteRow;
 	}
 
-	   @Override
-	   public void insertCartOrder(List<CartVO> vos) {
-		   int count =0;
-		   int totalprice = 0;
-		   ArrayList<CartVO> CartList = new ArrayList<CartVO>();
-		   ProductVO pVO = new ProductVO();
-		   ProductDAO pDAO = new ProductDAO();
-		   OrderDetailDAO odDAO = new OrderDetailDAO();
-		   List<OrderDetailVO> oVoList= new ArrayList<OrderDetailVO>();
-		   ProductDetailDAO pdDAO = new ProductDetailDAO();
-		   ProductDetailVO pdVO = new ProductDetailVO();
-		   CartDAO cDAO = new CartDAO();
-		   
-		   int orderPk = 0;
-		   
-		   ResultSet rs = null;
-		   ResultSet rs2 = null;
-		   PreparedStatement stmt = null;
-		   PreparedStatement stmt2 = null;
-		   
-		   String sql = "INSERT INTO orders (order_id, user_id, order_total_price )"+
-				   " VALUES (?, ?, ?)";
-		   String sql2="SELECT orders_seq.NEXTVAL AS oseq FROM dual";
-		   
-		   Connection con = null;
-		   
-		   try {
-			   con = DataSource.getConnection();
-			   stmt2 = con.prepareStatement(sql2);
-			   rs = stmt2.executeQuery();
-			   if(rs.next()) {
-				   orderPk = rs.getInt("oseq");      
-			   }
-			   //pk
-			   for (CartVO vo : vos) {
-				   totalprice += vo.getCartCnt()*vo.getProductPrice();
-				   }
-			   //order
-			   stmt = con.prepareStatement(sql);
-			   stmt.setInt(1, orderPk);
-			   stmt.setString(2, vos.get(0).getUserId());
-			   stmt.setInt(3, totalprice);
-			   count =stmt.executeUpdate();
-			   for (CartVO vo : vos) {
-				   OrderDetailVO odVO=null;
-				   //orderdetails
-				   odVO = new OrderDetailVO();
-				   odVO.setProductId(vo.getProductId());
-				   odVO.setProductCnt(vo.getCartCnt());
-				   odVO.setOrderId(orderPk);
-				   odVO.setOptions(vo.getOptions());
-				   odDAO.insertOrderDetail(odVO);
-				   pdVO = pdDAO.getProductD(vo.getProductId(), vo.getOptions());
-				   pdDAO.updateStock(vo.getProductId() , pdVO.getCnt() - vo.getCartCnt());
-				   cDAO.deleteCart(vo.getCartId());
-			   }
-		   } catch(Exception e) {
-			   throw new RuntimeException(e);
-		   } finally {
-			   DataSource.closeConnection(con);
-		   }
-	   }
+	@Override
+	public void insertCartOrder(List<CartVO> vos) {
+		int count =0;
+		int totalprice = 0;
+		ArrayList<CartVO> CartList = new ArrayList<CartVO>();
+		ProductVO pVO = new ProductVO();
+		ProductDAO pDAO = new ProductDAO();
+		OrderDetailDAO odDAO = new OrderDetailDAO();
+		List<OrderDetailVO> oVoList= new ArrayList<OrderDetailVO>();
+		ProductDetailDAO pdDAO = new ProductDetailDAO();
+		ProductDetailVO pdVO = new ProductDetailVO();
+		CartDAO cDAO = new CartDAO();
+
+		int orderPk = 0;
+
+		ResultSet rs = null;
+		ResultSet rs2 = null;
+		PreparedStatement stmt = null;
+		PreparedStatement stmt2 = null;
+
+		String sql = "INSERT INTO orders (order_id, user_id, order_total_price )"+
+				" VALUES (?, ?, ?)";
+		String sql2="SELECT orders_seq.NEXTVAL AS oseq FROM dual";
+
+		Connection con = null;
+
+		try {
+			con = DataSource.getConnection();
+			stmt2 = con.prepareStatement(sql2);
+			rs = stmt2.executeQuery();
+			if(rs.next()) {
+				orderPk = rs.getInt("oseq");      
+			}
+			//pk
+			for (CartVO vo : vos) {
+				totalprice += vo.getTotalPrice(); }
+			//order
+			stmt = con.prepareStatement(sql);
+			stmt.setInt(1, orderPk);
+			stmt.setString(2, vos.get(0).getUserId());
+			stmt.setInt(3, totalprice);
+			count =stmt.executeUpdate();
+			for (CartVO vo : vos) {
+				OrderDetailVO odVO=null;
+				//orderdetails
+				odVO = new OrderDetailVO();
+				odVO.setProductId(vo.getProductId());
+				odVO.setProductCnt(vo.getCartCnt());
+				odVO.setOrderId(orderPk);
+				odVO.setOptions(vo.getOptions());
+				odDAO.insertOrderDetail(odVO);
+				pdVO = pdDAO.getProductD(vo.getProductId(), vo.getOptions());
+				pdDAO.updateStock(vo.getProductId() , pdVO.getCnt() - vo.getCartCnt());
+				cDAO.deleteCart(vo.getCartId());
+			}
+		} catch(Exception e) {
+			throw new RuntimeException(e);
+		} finally {
+			DataSource.closeConnection(con);
+		}
+	}
 
 	@Override
 	public int insertProductOrder(OrderVO vo, int cnt, String orderDetailOptions) {
