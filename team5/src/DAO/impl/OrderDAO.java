@@ -138,161 +138,74 @@ public class OrderDAO implements IOrderDAO {
 		return deleteRow;
 	}
 
-//	   @Override
-//	   public int insertCartOrder(String userId, int productId, int cartId, List<CartVO> cl, String options); {
-//		   int count = 0;
-//		   int totalprice = 0;
-//		   
-//		   ProductDAO pDAO = new ProductDAO();
-//		   OrderDetailDAO odDAO = new OrderDetailDAO();
-//		   List<OrderDetailVO> oVoList= new ArrayList<OrderDetailVO>();
-//		   ProductDetailDAO pdDAO = new ProductDetailDAO();
-//		   ProductDetailVO pdVO = new ProductDetailVO();
-//		   CartDAO cDAO = new CartDAO();
-//		   
-//		   int orderPk = 0;
-//		   
-//		   ResultSet rs = null;
-//		   
-//		   PreparedStatement stmt = null;
-//		   PreparedStatement stmt2 = null;
-//		   
-//		   String sql = "INSERT INTO orders (order_id, user_id, product_id, cart_id,order_total_price )"+
-//				   " VALUES (?,?,?,?,?)";
-//		   String sql2="SELECT orders_seq.NEXTVAL AS oseq FROM dual";
-//		   
-//		   Connection con = null;
-//		   
-//		   try {
-//			   con = DataSource.getConnection();
-//			   
-//			   stmt2 = con.prepareStatement(sql2);
-//			   rs = stmt2.executeQuery();
-//			   
-//			   if(rs.next()) {
-//				   orderPk=rs.getInt("oseq");      
-//			   }
-//		   
-//			   for(CartVO cart : cl) {
-//				   totalprice = cart.getCartCnt()*cart.getProductPrice();
-//			   }
-//			  
-//			   stmt = con.prepareStatement(sql);
-//			   stmt.setInt(1, orderPk);
-//			   stmt.setString(2, userId);
-//			   stmt.setInt(3, productId);
-//			   stmt.setInt(4, cartId);
-//			   stmt.setInt(5, totalprice);
-//			   count = stmt.executeUpdate(); 
-//			   OrderDetailVO odVO=null;
-//			   
-//			   for(CartVO cart : cl) {
-//				   odVO = new OrderDetailVO();
-//				   odVO.setProductId(productId);
-//				   odVO.setProductCnt(cart.getCartCnt());
-//				   odVO.setOrderId(orderPk);
-//				   odVO.setOptions(cart.getOptions());
-//				   oVoList.add(odVO);
-//				   odDAO.insertOrderDetail(odVO);
-////				   pdDAO.updateStock(productId, pdVO.getCnt()-odVO.getProductCnt());
-//				   cDAO.deleteCart(cart.getCartId());
-//			   }
-//			   
-//			   
-//		   } catch(Exception e) {
-//			   throw new RuntimeException(e);
-//		   } finally {
-//			   DataSource.closeConnection(con);
-//		   }
-//		   return count;
-//	   }
+	   @Override
+	   public ArrayList<CartVO> insertCartOrder(List<CartVO> vos) {
+		   int totalprice = 0;
+		   
+		   ProductVO pVO = new ProductVO();
+		   ProductDAO pDAO = new ProductDAO();
+		   OrderDetailDAO odDAO = new OrderDetailDAO();
+		   List<OrderDetailVO> oVoList= new ArrayList<OrderDetailVO>();
+		   ProductDetailDAO pdDAO = new ProductDetailDAO();
+		   ProductDetailVO pdVO = new ProductDetailVO();
+		   CartDAO cDAO = new CartDAO();
+		   
+		   int orderPk = 0;
+		   
+		   ResultSet rs = null;
+		   PreparedStatement stmt = null;
+		   PreparedStatement stmt2 = null;
+		   
+		   String sql = "INSERT INTO orders (order_id, user_id, order_total_price )"+
+				   " VALUES (?, ?, ?)";
+		   String sql2="SELECT orders_seq.NEXTVAL AS oseq FROM dual";
+		   
+		   Connection con = null;
+		   
+		   try {
+			   con = DataSource.getConnection();
+			   stmt2 = con.prepareStatement(sql2);
+			   rs = stmt2.executeQuery();
+			   if(rs.next()) {
+				   orderPk = rs.getInt("oseq");      
+			   }
+			   //pk
+			   //order
+			   for (CartVO vo : vos) {
+				   totalprice = vo.getCartCnt()*vo.getProductPrice();
+				   stmt = con.prepareStatement(sql);
+				   stmt.setInt(1, orderPk);
+				   stmt.setString(2, vo.getUserId());
+				   stmt.setInt(3, totalprice);
+				   
+//				   count = stmt.executeUpdate(); 
 
-	@Override
-	public int insertAllCartOrder(OrderVO vo) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
-	
-	@Override
-	public int insertCartOrder(String userId, int productId, int cartId , List<CartVO> cl,String options) {
-		int count = 0;
-		int totalprice = 0;
-
-		ProductDAO pDAO = new ProductDAO();
-		
-		CartVO cartVO = new CartVO();
-		CartDAO cartDAO = new CartDAO();
-
-		OrderDetailDAO odDAO = new OrderDetailDAO();
-
-		List<OrderDetailVO> oVoList= new ArrayList<OrderDetailVO>();
-
-		ProductDetailDAO pdDAO = new ProductDetailDAO();
-
-		ProductDetailVO pdVO = new ProductDetailVO();
-		pdVO = pdDAO.getProductD(productId, options);
-
-		int orderPk = 0;
-
-		ResultSet rs = null;
-
-		PreparedStatement stmt = null;
-		PreparedStatement stmt2 = null;
-
-		String sql = "INSERT INTO orders (order_id, user_id, product_id, cart_id, order_total_price )"+
-				" VALUES (?,?,?,?,?)";
-		String sql2="SELECT orders_seq.NEXTVAL AS oseq FROM dual";
-
-		Connection con = null;
-		System.out.println("test2");
-		try {
-			con = DataSource.getConnection();
-
-			pdVO = pdDAO.getProductD(productId,options);
-
-			stmt2 = con.prepareStatement(sql2);
-			rs = stmt2.executeQuery();
-
-			if(rs.next()) {
-				orderPk=rs.getInt("oseq");      
-			}
-
-			for(CartVO cart : cl) {
-				totalprice = cart.getCartCnt()*cart.getProductPrice();
-			}
-
-			stmt = con.prepareStatement(sql);
-			stmt.setInt(1, orderPk);
-			stmt.setString(2, userId);
-			stmt.setInt(3, productId);
-			stmt.setInt(4, cartId);
-			stmt.setInt(5, totalprice);
-			count = stmt.executeUpdate(); 
-			for(CartVO cart : cl) {
-				OrderDetailVO odVO = new OrderDetailVO();
-
-				odVO.setProductId(productId);
-				odVO.setProductCnt(cart.getCartCnt());
-				odVO.setOrderId(orderPk);
-				odVO.setOptions(cart.getOptions());
-
-				oVoList.add(odVO);
-
-				odDAO.insertOrderDetail(odVO);
-				
-				pdDAO.updateStock(productId , pdVO.getCnt()-cart.getCartCnt());
-			}
-
-
-		} catch(Exception e) {
-			throw new RuntimeException(e);
-		} finally {
-			DataSource.closeConnection(con);
-		}
-		return count;
-	}
-
+				   OrderDetailVO odVO=null;
+				   //orderdetails
+				   odVO = new OrderDetailVO();
+				   odVO.setProductId(vo.getProductId());
+				   odVO.setProductCnt(vo.getCartCnt());
+				   odVO.setOrderId(orderPk);
+				   odVO.setOptions(vo.getOptions());
+				   oVoList.add(odVO);
+				   odDAO.insertOrderDetail(odVO);
+				   pdVO = pdDAO.getProductD(vo.getProductId(), vo.getOptions());
+				   pdDAO.updateStock(vo.getProductId() , pdVO.getCnt() - vo.getCartCnt());
+				   cDAO.deleteCart(vo.getCartId());
+			   }
+		   } catch(Exception e) {
+			   throw new RuntimeException(e);
+		   } finally {
+			   DataSource.closeConnection(con);
+		   }
+		   return count;
+	   }
+//
+//	@Override
+//	public int insertAllCartOrder(OrderVO vo) {
+//		// TODO Auto-generated method stub
+//		return 0;
+//	}
 
 
 	@Override
