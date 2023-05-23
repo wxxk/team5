@@ -25,14 +25,16 @@ public class CartVO {
 
 	@Override
 	public String toString() {
-		return "cartId = " + cartId + "\n" + 
-				"productId = " + productId + "\n" +
-				"productImg = " + productImg + "\n" +
-				"productName = " + productName +  "\n" + 
-				"categoryName = " + categoryName + "\n" + 
-				"options = " + options + "\n" +
-				"cartCnt = " + cartCnt + "\n" +
-				"productPrice = " + productPrice ;
+		return  "   " +cartId + "\t" + "      " +
+				 productImg + "\t  " +
+				 productName +  "\t     " + 
+				 categoryName + "\t   " + 
+				 options + "           " +
+				 cartCnt + "\t    " +
+				productPrice  +"\n"+
+				"-----------------------------------------------------------------------------------------------------";
+	
+	
 	}
 
 	public String [] toArray() {
