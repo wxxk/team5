@@ -145,7 +145,7 @@ public class ProductDetailDAO implements IProductDetailDAO {
 	@Override
 	public int updateStock(int productDetailId, int cnt) {
 		int count = 0;
-		String sql = "UPDATE product_detail SET cnt = ? WHERE product_detail_id = ? ";
+		String sql = "UPDATE product_detail SET cnt = ? WHERE product_id = ? ";
 		Connection con = null;
 		try {
 			con = DataSource.getConnection();

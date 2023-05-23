@@ -468,20 +468,37 @@ public class Main {
 		for (OrderVO order : orderlist) {
 			System.out.println(order);
 		}
+		System.out.println("(1)메인 페이지 | (2)상품보기 | (3)장바구니");
+		String input = sc.nextLine();
+		int num = Integer.parseInt(input);
+		try {
+			switch(num) {
+			case 1 -> mainPage();
+			case 2 -> product();
+			case 3 -> cart();
+			default -> System.out.println("잘못된 입력!");
+			}
+		} catch (NumberFormatException e) {
+			System.out.println(e.getMessage());
+		}
+		
 	}
 
 	public static void orderInsertCart(List <CartVO> cl) {
 		List <CartVO> cartlist = new ArrayList<CartVO>();
 
 		System.out.println("***카트 구매***");
-		System.out.print("(1)전체구매 | (2)선택구매");
+		System.out.println("(1)전체구매 | (2)선택구매");
+		System.out.print("메뉴입력 : ");
 		int addnum = sc.nextInt();
 		sc.nextLine();
 
 		switch(addnum) {
 		case 1:
+//			oVO.setUserId(s.loginUserId);
 			oDAO.insertCartOrder(cl);
 			break;
+		
 		case 2:
 			while (true) {
 				System.out.println("카트 ID: ");

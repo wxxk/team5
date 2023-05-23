@@ -138,6 +138,7 @@ public class OrderDAO implements IOrderDAO {
 	public void insertCartOrder(List<CartVO> vos) {
 		int count =0;
 		int totalprice = 0;
+		String orderUserId = "";
 		ArrayList<CartVO> CartList = new ArrayList<CartVO>();
 		ProductVO pVO = new ProductVO();
 		ProductDAO pDAO = new ProductDAO();
@@ -169,11 +170,13 @@ public class OrderDAO implements IOrderDAO {
 			}
 			//pk
 			for (CartVO vo : vos) {
-				totalprice += vo.getTotalPrice(); }
+				totalprice += vo.getTotalPrice(); 
+				orderUserId = vo.getUserId();
+				}
 			//order
 			stmt = con.prepareStatement(sql);
 			stmt.setInt(1, orderPk);
-			stmt.setString(2, vos.get(0).getUserId());
+			stmt.setString(2, orderUserId);
 			stmt.setInt(3, totalprice);
 			count =stmt.executeUpdate();
 			for (CartVO vo : vos) {
@@ -185,8 +188,9 @@ public class OrderDAO implements IOrderDAO {
 				odVO.setOrderId(orderPk);
 				odVO.setOptions(vo.getOptions());
 				odDAO.insertOrderDetail(odVO);
+				
 				pdVO = pdDAO.getProductD(vo.getProductId(), vo.getOptions());
-				pdDAO.updateStock(vo.getProductId() , pdVO.getCnt() - vo.getCartCnt());
+				pdDAO.updateStock(vo.getProductId(), pdVO.getCnt() - vo.getCartCnt());
 				cDAO.deleteCart(vo.getCartId());
 			}
 		} catch(Exception e) {
