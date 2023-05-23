@@ -291,19 +291,27 @@ public class Main {
 
 		try {
 			cVO = cDAO.getAllCategories();
-			System.out.println("카테고리ID    |    "+"카테고리 이름");
-			System.out.println("----------------------------");
+			System.out.println("--------------------------------------------------------");
+			System.out.println("\t\t카테고리ID    |    "+"카테고리 이름");
+			System.out.println("--------------------------------------------------------");
 			for (CategoryVO cate : cVO) {
-				System.out.println(cate);
+				System.out.println("\t\t"+cate);
 			}
 
-			System.out.print("조회할 카테고리 ID:");
+			System.out.println("--------------------------------------------------------");
+			System.out.print("조회할 카테고리 ID : ");
 			int selectCategory = sc.nextInt();
 			sc.nextLine();
+			System.out.println("--------------------------------------------------------");
 
 			ArrayList<ProductVO> prooVO = new ArrayList<ProductVO>();
 			prooVO = proDAO.getProductBy(selectCategory);
-
+			
+			System.out.println("상품 ID  |" + "  카테고리 ID  |"  +
+					"    상품 이름      |" + "    상품 가격      |" +
+					"      상품 이미지         |");
+			System.out.println("---------------------------------------------------------------------");
+			
 			for (ProductVO detailcategory : prooVO) {
 				System.out.println(detailcategory);
 			}
@@ -353,7 +361,7 @@ public class Main {
 				System.out.println(e.getMessage());
 			}
 		} else {
-			System.out.println("cartId  |  "+"productImg  |  "+"productName  |  "+"categoryName  |  "+"options  |  "+"cartCnt  |  "+"productPrice");
+			System.out.println("cartId  |  "+"productName  |  "+"categoryName  |  "+"options  |  "+"cartCnt  |  "+"productPrice");
 			System.out.println("-----------------------------------------------------------------------------------------------------");
 			for (CartVO cart : cartList) {
 				System.out.println(cart);            
@@ -411,6 +419,7 @@ public class Main {
 			cVO.setProductId(proVO.getProductId());
 			cVO.setProductName(proVO.getProductName());
 			cVO.setCartCnt(addProductCnt);
+			cVO.setTotalPrice(proVO.getProductPrice() * addProductCnt);
 			cVO.setOptions(productOption);
 			cDAO.insertCart(cVO);
 			System.out.println(cVO.getProductName() + " " + cVO.getCartCnt() + "개가 추가되었습니다.");
@@ -453,14 +462,6 @@ public class Main {
 	// START ORDER ======================================================================
 	public static void order() {
 		ArrayList<OrderVO> orderlist = oDAO.getOrderList(uVO.getUserId());
-		//      "orderId:" + orderId +"\t" + 
-		//		"productName:" + productName + "         " +
-		//		"productPrice:" + productPrice + "        " + 
-		//		"userName:" + userName + "\t" +
-		//		"userAddress:" + userAddress + "\t  " +
-		//		"userPhoneNumber:" + userPhoneNumber + "\t " +
-		//		"options:" + options + "\t" +
-		//		"orderTotalPrice:" + totalPrice + "\t";
 		System.out.println("orderId  |  "+"productName  |  "+"productPrice  |  "+"userName  |  "+
 				"userAddress  |  "+"userPhoneNumber  |    "+"options    |  "+"orderTotalPrice");
 		System.out.println("------------------------------------------------------------------------------------------------------------------------------");

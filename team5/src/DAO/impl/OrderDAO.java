@@ -212,8 +212,8 @@ public class OrderDAO implements IOrderDAO {
 		int count = 0;
 		int orderPk = 0;
 		OrderDetailDAO odDAO = new OrderDetailDAO();
-		String sql = "INSERT INTO orders (order_id, user_id, product_id, order_total_price)"
-				+ " VALUES (?, ?, ?, ?)";
+		String sql = "INSERT INTO orders (order_id, user_id, order_total_price)"
+				+ " VALUES (?, ?, ?)";
 
 		String sql2="SELECT orders_seq.NEXTVAL AS oseq FROM dual";
 		ResultSet rs = null;
@@ -232,8 +232,7 @@ public class OrderDAO implements IOrderDAO {
 
 			stmt.setInt(1,  orderPk);
 			stmt.setString(2, vo.getUserId());
-			stmt.setInt(3, vo.getProductId());
-			stmt.setInt(4, vo.getTotalPrice());
+			stmt.setInt(3, vo.getTotalPrice());
 			count = stmt.executeUpdate();
 
 			OrderDetailVO odVO=null;
