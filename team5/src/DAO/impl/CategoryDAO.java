@@ -1,4 +1,4 @@
-package DAO;
+package DAO.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import DAO.ICategoryDAO;
 import main.DataSource;
 import model.CategoryVO;
 
