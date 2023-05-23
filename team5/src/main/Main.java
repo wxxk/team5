@@ -698,8 +698,12 @@ public class Main {
 		System.out.println("상품ID: ");
 		int productId = sc.nextInt();
 		sc.nextLine();
+		pdVO.setProductId(productId);
+		System.out.println("상품 재고: ");
+		pdVO.setCnt(sc.nextInt());
+		sc.nextLine();
 		try {
-			proDAO.deleteProduct(proVO);
+			pdDAO.updateProductDetail(pdVO);
 			System.out.println(productId + "삭제완료");
 		}catch(RuntimeException e) {
 			System.out.println(e.getMessage());
