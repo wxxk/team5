@@ -22,13 +22,11 @@ public class OrderDAO implements IOrderDAO {
 		ArrayList<OrderVO> orderList = new ArrayList<OrderVO>();
 		//total_price넣어야 함
 		String sql = 
-				"SELECT o.order_id, u.user_name, u.user_phone_number, u.user_address,"
-						+ "p.product_img, p.product_name, pd.options, c.cart_cnt, p.product_price "	
-						+ "FROM users u "
-						+ "JOIN cart c ON u.user_id = c.user_id "
-						+ "JOIN orders o ON c.product_id = o.product_id "
-						+ "JOIN product p ON o.product_id = p.product_id "
-						+ "JOIN product_detail pd ON p.product_id = pd.product_id ";
+				"SELECT o.order_id, u.user_name, u.user_phone_number, u.user_address, p.product_img, p.product_name, od.options, o.order_total_price "
+				+"FROM orders o "
+				+"JOIN users u ON u.user_id = o.user_id "
+				+"JOIN order_details od ON o.order_id = od.order_id "
+				+"JOIN product p ON p.product_id = od.product_id";
 
 		Connection con = null;
 		try {
@@ -43,10 +41,8 @@ public class OrderDAO implements IOrderDAO {
 				od.setUserAddress(rs.getString("user_address"));
 				od.setProductImg(rs.getString("product_img"));
 				od.setProductName(rs.getString("product_name"));
-				od.setOptions(rs.getString("product_name"));
-				//				od.setCartCnt(rs.getInt("cart_cnt"));	
-				od.setProductPrice(rs.getInt("product_price"));
-				od.setTotalPrice(rs.getInt("total_Price"));
+				od.setOptions(rs.getString("options"));
+				od.setTotalPrice(rs.getInt("order_total_price"));
 				orderList.add(od);
 			}
 		} catch (SQLException e) {
@@ -64,12 +60,12 @@ public class OrderDAO implements IOrderDAO {
 		ArrayList<OrderVO> orderList = new ArrayList<OrderVO>();
 
 		String sql = 
-				"SELECT o.order_id, p.product_name, p.product_price, u.user_name, u.user_address, u.user_phone_number, o.order_total_price, od.options "
-				+ "FROM users u "
-				+ "JOIN orders o ON u.user_id = o.user_id "
-				+ "JOIN product p ON o.product_id = p.product_id "
-				+ "JOIN order_details od on o.order_id = od.order_id "
-				+ "WHERE u.user_id = ?";
+				"SELECT o.order_id, u.user_name, u.user_phone_number, u.user_address, p.product_img, p.product_name, od.options, o.order_total_price "
+				+"FROM orders o "
+				+"JOIN users u ON u.user_id = o.user_id "
+				+"JOIN order_details od ON o.order_id = od.order_id "
+				+"JOIN product p ON p.product_id = od.product_id "
+				+"WHERE u.user_id = ?";
 
 		Connection con = null;
 		try {
@@ -81,14 +77,13 @@ public class OrderDAO implements IOrderDAO {
 				OrderVO od = new OrderVO();
 				od.setUserId(userId);
 				od.setOrderId(rs.getInt("order_id"));
-				od.setProductName(rs.getString("product_name"));
-				//				od.setCartCnt(rs.getInt("cart_cnt"));	
-				od.setProductPrice(rs.getInt("product_price"));
 				od.setUserName(rs.getString("user_name"));
-				od.setUserAddress(rs.getString("user_address"));
 				od.setUserPhoneNumber(rs.getString("user_phone_number"));
-				od.setTotalPrice(rs.getInt("order_total_Price"));
+				od.setUserAddress(rs.getString("user_address"));
+				od.setProductImg(rs.getString("product_img"));
+				od.setProductName(rs.getString("product_name"));
 				od.setOptions(rs.getString("options"));
+				od.setTotalPrice(rs.getInt("order_total_price"));
 				orderList.add(od);
 			}
 		} catch (SQLException e) {
@@ -139,9 +134,10 @@ public class OrderDAO implements IOrderDAO {
 	}
 
 	   @Override
-	   public ArrayList<CartVO> insertCartOrder(List<CartVO> vos) {
+	   public void insertCartOrder(List<CartVO> vos) {
+		   int count =0;
 		   int totalprice = 0;
-		   
+		   ArrayList<CartVO> CartList = new ArrayList<CartVO>();
 		   ProductVO pVO = new ProductVO();
 		   ProductDAO pDAO = new ProductDAO();
 		   OrderDetailDAO odDAO = new OrderDetailDAO();
@@ -153,6 +149,7 @@ public class OrderDAO implements IOrderDAO {
 		   int orderPk = 0;
 		   
 		   ResultSet rs = null;
+		   ResultSet rs2 = null;
 		   PreparedStatement stmt = null;
 		   PreparedStatement stmt2 = null;
 		   
@@ -170,16 +167,16 @@ public class OrderDAO implements IOrderDAO {
 				   orderPk = rs.getInt("oseq");      
 			   }
 			   //pk
-			   //order
 			   for (CartVO vo : vos) {
-				   totalprice = vo.getCartCnt()*vo.getProductPrice();
-				   stmt = con.prepareStatement(sql);
-				   stmt.setInt(1, orderPk);
-				   stmt.setString(2, vo.getUserId());
-				   stmt.setInt(3, totalprice);
-				   
-//				   count = stmt.executeUpdate(); 
-
+				   totalprice += vo.getCartCnt()*vo.getProductPrice();
+				   }
+			   //order
+			   stmt = con.prepareStatement(sql);
+			   stmt.setInt(1, orderPk);
+			   stmt.setString(2, vos.get(0).getUserId());
+			   stmt.setInt(3, totalprice);
+			   count =stmt.executeUpdate();
+			   for (CartVO vo : vos) {
 				   OrderDetailVO odVO=null;
 				   //orderdetails
 				   odVO = new OrderDetailVO();
@@ -187,7 +184,6 @@ public class OrderDAO implements IOrderDAO {
 				   odVO.setProductCnt(vo.getCartCnt());
 				   odVO.setOrderId(orderPk);
 				   odVO.setOptions(vo.getOptions());
-				   oVoList.add(odVO);
 				   odDAO.insertOrderDetail(odVO);
 				   pdVO = pdDAO.getProductD(vo.getProductId(), vo.getOptions());
 				   pdDAO.updateStock(vo.getProductId() , pdVO.getCnt() - vo.getCartCnt());
@@ -198,23 +194,15 @@ public class OrderDAO implements IOrderDAO {
 		   } finally {
 			   DataSource.closeConnection(con);
 		   }
-		   return count;
 	   }
-//
-//	@Override
-//	public int insertAllCartOrder(OrderVO vo) {
-//		// TODO Auto-generated method stub
-//		return 0;
-//	}
-
 
 	@Override
 	public int insertProductOrder(OrderVO vo, int cnt, String orderDetailOptions) {
 		int count = 0;
 		int orderPk = 0;
 		OrderDetailDAO odDAO = new OrderDetailDAO();
-		String sql = "INSERT INTO orders (order_id, user_id, product_id, order_total_price)"
-				+ " VALUES (?, ?, ?, ?)";
+		String sql = "INSERT INTO orders (order_id, user_id, order_total_price)"
+				+ " VALUES (?, ?, ?)";
 
 		String sql2="SELECT orders_seq.NEXTVAL AS oseq FROM dual";
 		ResultSet rs = null;
@@ -233,8 +221,7 @@ public class OrderDAO implements IOrderDAO {
 
 			stmt.setInt(1,  orderPk);
 			stmt.setString(2, vo.getUserId());
-			stmt.setInt(3, vo.getProductId());
-			stmt.setInt(4, vo.getTotalPrice());
+			stmt.setInt(3, vo.getTotalPrice());
 			count = stmt.executeUpdate();
 
 			OrderDetailVO odVO=null;
