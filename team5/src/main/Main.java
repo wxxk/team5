@@ -306,7 +306,7 @@ public class Main {
             int selectCategorymenu = Integer.parseInt(input);
             switch (selectCategorymenu) {
             case 1 -> cartInsert();
-//            case 2 -> orderInsertCart();
+            case 2 -> insertOrder();
             case 3 -> cart();
             case 4 -> mainPage();
             default -> System.out.println("잘못된 입력");
@@ -334,7 +334,7 @@ public class Main {
       try {
          int cartmenu = Integer.parseInt(input);
          switch (cartmenu) {
-//         case 1 -> orderInsertCart();
+         case 1 -> orderInsertCart(cartList);
          case 2 -> mainPage();
          case 3 -> deleteCart();
          case 4 -> updateCart();
@@ -401,6 +401,7 @@ public class Main {
       int deleteCartNumber = sc.nextInt();
       sc.nextLine();
       cDAO.deleteCart(deleteCartNumber);
+      cart();
    }
 
    public static void updateCart() {
@@ -430,7 +431,8 @@ public class Main {
 	   	try {
 	   		cVO=cDAO.getOrderCart(cartId);
 	   		oDAO.insertCartOrder(s.loginUserId, cVO.getProductId(), cVO.getCartId(), cl);
-	        System.out.println(oDAO);
+//	        System.out.println(oDAO);
+	        cDAO.deleteCart(cVO.getCartId());
 	      }catch(RuntimeException e) {
 	         System.out.println(e.getMessage());
 	      }
@@ -442,21 +444,29 @@ public class Main {
 	   System.out.print("구매할 제품 ID : ");
 	   int insertOrderProductId = sc.nextInt();
 	   sc.nextLine();
-	   System.out.print("구매할 개수 : ");
-	   int cnt = sc.nextInt();
-	   sc.nextLine();
-	   
 	   proVO = proDAO.getProduct(insertOrderProductId);
 	   
 	   ArrayList<ProductDetailVO> productDetailList = pdDAO.getProductDetail(proVO.getProductId());
 	   
+	   System.out.println("\t\t\t ***제품 옵션(수량)***");
 	   for (ProductDetailVO productDetail : productDetailList) {
-		   System.out.println("제품 옵션" + productDetail.getOptions());
-		   System.out.println("남은 수량" + productDetail.getCnt());
+		   System.out.print("\t\t" + productDetail.getOptions() + "(" + productDetail.getCnt() + ")");
 	   }
+	   System.out.println();
 	   
 	   System.out.print("옵션 선택 : ");
 	   String orderDetailOptions = sc.nextLine();
+	   
+	   System.out.print("구매할 개수 : ");
+	   int cnt = sc.nextInt();
+	   sc.nextLine();
+	   
+	   pdVO = pdDAO.getProductD(insertOrderProductId, orderDetailOptions);
+	   
+	   if (cnt > pdVO.getCnt()) {
+		   System.out.println("재고가 부족합니다.");
+		   insertOrder();
+	   }
 	   
 	   oVO.setUserId(uVO.getUserId());
 	   oVO.setProductId(proVO.getProductId());
