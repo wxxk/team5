@@ -9,7 +9,6 @@ import java.util.List;
 
 import DAO.IOrderDAO;
 import main.DataSource;
-import model.CartDAO;
 import model.CartVO;
 import model.OrderDetailVO;
 import model.OrderVO;
@@ -200,12 +199,13 @@ public class OrderDAO implements IOrderDAO {
 		   }
 		   return count;
 	   }
+//
+//	@Override
+//	public int insertAllCartOrder(OrderVO vo) {
+//		// TODO Auto-generated method stub
+//		return 0;
+//	}
 
-	@Override
-	public int insertAllCartOrder(OrderVO vo) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 
 	@Override
 	public int insertProductOrder(OrderVO vo, int cnt, String orderDetailOptions) {
