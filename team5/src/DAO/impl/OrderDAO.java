@@ -137,70 +137,73 @@ public class OrderDAO implements IOrderDAO {
 	}
 
 
-    @Override
-    public int insertCartOrder(String userId, int productId, int cartId , List<CartVO> cl) {
-       int count = 0;
-       int totalprice = 0;
-       
-       ProductDAO pDAO = new ProductDAO();
-       OrderDetailDAO odDAO = new OrderDetailDAO();
-       List<OrderDetailVO> oVoList= new ArrayList<OrderDetailVO>();
-       
-       int orderPk = 0;
-       
-       ResultSet rs = null;
-       
-       PreparedStatement stmt = null;
-       PreparedStatement stmt2 = null;
-       
-       String sql = "INSERT INTO orders (order_id, user_id, product_id, cart_id,order_total_price )"+
-             " VALUES (?,?,?,?,?)";
-       String sql2="SELECT orders_seq.NEXTVAL AS oseq FROM dual";
-       
-       Connection con = null;
-       
-       try {
-          con = DataSource.getConnection();
-          
-          stmt2 = con.prepareStatement(sql2);
-          rs = stmt2.executeQuery();
-          
-          if(rs.next()) {
-             orderPk=rs.getInt("oseq");      
-          }
-       
-          for(CartVO cart : cl) {
-             totalprice = cart.getCartCnt()*cart.getProductPrice();
-          }
-         
-          stmt = con.prepareStatement(sql);
-          stmt.setInt(1, orderPk);
-          stmt.setString(2, userId);
-          stmt.setInt(3, productId);
-          stmt.setInt(4, cartId);
-          stmt.setInt(5, totalprice);
-          count = stmt.executeUpdate(); 
-          OrderDetailVO odVO=null;
-          
-          for(CartVO cart : cl) {
-             odVO = new OrderDetailVO();
-             odVO.setProductId(productId);
-             odVO.setProductCnt(cart.getCartCnt());
-             odVO.setOrderId(orderPk);
-             odVO.setOptions(cart.getOptions());
-             oVoList.add(odVO);
-             odDAO.insertOrderDetail(odVO);
-          }
-          
-//          pdDAO.updateStock(productId , pdVO.getCnt()-oVO.getCartCnt());
-          
-       } catch(Exception e) {
-          throw new RuntimeException(e);
-       } finally {
-          DataSource.closeConnection(con);
-       }
-       return count;
-    }
+	   @Override
+	   public int insertCartOrder(String userId, int productId, int cartId , List<CartVO> cl) {
+		   int count = 0;
+		   int totalprice = 0;
+		   
+		   ProductDAO pDAO = new ProductDAO();
+		   OrderDetailDAO odDAO = new OrderDetailDAO();
+		   List<OrderDetailVO> oVoList= new ArrayList<OrderDetailVO>();
+		   ProductDetailDAO pdDAO = new ProductDetailDAO();
+		   ProductDetailVO pdVO = new ProductDetailVO();
+		   
+		   int orderPk = 0;
+		   
+		   ResultSet rs = null;
+		   
+		   PreparedStatement stmt = null;
+		   PreparedStatement stmt2 = null;
+		   
+		   String sql = "INSERT INTO orders (order_id, user_id, product_id, cart_id,order_total_price )"+
+				   " VALUES (?,?,?,?,?)";
+		   String sql2="SELECT orders_seq.NEXTVAL AS oseq FROM dual";
+		   
+		   Connection con = null;
+		   
+		   try {
+			   con = DataSource.getConnection();
+			   
+			   stmt2 = con.prepareStatement(sql2);
+			   rs = stmt2.executeQuery();
+			   
+			   if(rs.next()) {
+				   orderPk=rs.getInt("oseq");      
+			   }
+		   
+			   for(CartVO cart : cl) {
+				   totalprice = cart.getCartCnt()*cart.getProductPrice();
+			   }
+			  
+			   stmt = con.prepareStatement(sql);
+			   stmt.setInt(1, orderPk);
+			   stmt.setString(2, userId);
+			   stmt.setInt(3, productId);
+			   stmt.setInt(4, cartId);
+			   stmt.setInt(5, totalprice);
+			   count = stmt.executeUpdate(); 
+			   OrderDetailVO odVO=null;
+			   
+			   for(CartVO cart : cl) {
+				   odVO = new OrderDetailVO();
+				   odVO.setProductId(productId);
+				   odVO.setProductCnt(cart.getCartCnt());
+				   odVO.setOrderId(orderPk);
+				   odVO.setOptions(cart.getOptions());
+				   oVoList.add(odVO);
+				   odDAO.insertOrderDetail(odVO);
+				   pdDAO.updateStock(productId , pdVO.getCnt()-odVO.getProductCnt());
+			   }
+			   
+			   
+		   } catch(Exception e) {
+			   throw new RuntimeException(e);
+		   } finally {
+			   DataSource.closeConnection(con);
+		   }
+		   return count;
+	   }
+
 
 
 	@Override

@@ -424,19 +424,18 @@ public class Main {
    }
 
    public static void orderInsertCart(List <CartVO> cl) {
-	   	System.out.println("***카트 구매***");
-	   	System.out.println("카트 ID: ");
-	   	int cartId = sc.nextInt();
-	   	sc.nextLine();
-	   	try {
-	   		cVO=cDAO.getOrderCart(cartId);
-	   		oDAO.insertCartOrder(s.loginUserId, cVO.getProductId(), cVO.getCartId(), cl);
-//	        System.out.println(oDAO);
-	        cDAO.deleteCart(cVO.getCartId());
-	      }catch(RuntimeException e) {
-	         System.out.println(e.getMessage());
-	      }
-	     // product();
+         System.out.println("***카트 구매***");
+         System.out.println("카트 ID: ");
+         int cartId = sc.nextInt();
+         sc.nextLine();
+         try {
+            cVO=cDAO.getOrderCart(cartId);
+            oDAO.insertCartOrder(s.loginUserId, cVO.getProductId(), cVO.getCartId(), cl);
+           System.out.println(oDAO);
+         }catch(RuntimeException e) {
+            System.out.println(e.getMessage());
+         }
+         product();
    }
    public static void insertOrder() {
 	   oVO.setUserId(uVO.getUserId());
