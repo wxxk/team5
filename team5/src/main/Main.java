@@ -2,15 +2,28 @@ package main;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;
-import java.util.List;
 import java.util.Scanner;
 
-import DAO.*;
+import DAO.AdminDAO;
+import DAO.CategoryDAO;
+import DAO.IAdminDAO;
+import DAO.ICategoryDAO;
 import DAO.IOrderDAO;
-import DAO.impl.*;
+import DAO.IProductDAO;
+import DAO.IProductDetailDAO;
+import DAO.IUsersDAO;
 import DAO.impl.CartDAO;
 import DAO.impl.OrderDAO;
-import model.*;
+import DAO.impl.ProductDAO;
+import DAO.impl.ProductDetailDAO;
+import DAO.impl.UsersDAO;
+import model.AdminVO;
+import model.CartVO;
+import model.CategoryVO;
+import model.OrderVO;
+import model.ProductDetailVO;
+import model.ProductVO;
+import model.UsersVO;
 
 public class Main {
    public static Scanner sc = new Scanner(System.in);
