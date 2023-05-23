@@ -454,18 +454,40 @@ public class Main {
    }
 
    public static void orderInsertCart(List <CartVO> cl) {
-         System.out.println("***카트 구매***");
-         System.out.println("카트 ID: ");
-         int cartId = sc.nextInt();
-         sc.nextLine();
-         try {
-            cVO=cDAO.getOrderCart(cartId);
-            System.out.println("test3");
-            oDAO.insertCartOrder(s.loginUserId, cVO.getProductId(), cVO.getCartId(),cl, cVO.getOptions());
-           System.out.println(oDAO);
-         }catch(RuntimeException e) {
-            System.out.println(e.getMessage());
-         }
+	   List <CartVO> cartlist = new ArrayList<CartVO>();
+	   
+	   System.out.println("***카트 구매***");
+       System.out.print("(1)전체구매 | (2)선택구매");
+       int addnum = sc.nextInt();
+       sc.nextLine();
+       
+       switch(addnum) {
+       case 1:
+    	   orderInsertCart(cl);
+    	   break;
+       case 2:
+    	   while (true) {
+    		   System.out.println("카트 ID: ");
+    		   int cartId = sc.nextInt();
+    		   sc.nextLine();
+    		   try {
+    			   cVO = cDAO.getOrderCart(cartId);
+    			   cartlist.add(cVO);
+    			   System.out.println("더 추가하시겠습니까?");
+    			   System.out.println("(1)YES | (2)NO");
+    			   System.out.print("메뉴 입력");
+    			   int num = sc.nextInt();
+    			   sc.nextLine();
+    			   if (num == 2) {
+    				   break;
+    			   }
+    		   } catch (RuntimeException e) {
+    			   System.out.println(e.getMessage());
+    		   }
+    		   
+    	   }
+    	   orderInsertCart(cartlist);
+       }
          order();
    }
    
