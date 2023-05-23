@@ -480,7 +480,7 @@ public class Main {
 
 		switch(addnum) {
 		case 1:
-			orderInsertCart(cl);
+			oDAO.insertCartOrder(cl);
 			break;
 		case 2:
 			while (true) {
@@ -503,7 +503,7 @@ public class Main {
 				}
 
 			}
-			orderInsertCart(cartlist);
+			oDAO.insertCartOrder(cartlist);
 		}
 		order();
 	}
