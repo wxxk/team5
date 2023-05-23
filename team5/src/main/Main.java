@@ -253,6 +253,10 @@ public class Main {
    public static void product() {
       try {
          ArrayList<ProductVO> pVO = proDAO.getAllProducts();
+         System.out.println("상품 ID  |" + "  카테고리 ID  |"  +
+ 				"    상품 이름      |" + "    상품 가격      |" +
+ 				"      상품 이미지         |");
+         System.out.println("---------------------------------------------------------------------");
          for (ProductVO pro : pVO) {
             System.out.println(pro);
          }
@@ -306,7 +310,7 @@ public class Main {
             int selectCategorymenu = Integer.parseInt(input);
             switch (selectCategorymenu) {
             case 1 -> cartInsert();
-//            case 2 -> orderInsertCart();
+            case 2 -> insertOrder();
             case 3 -> cart();
             case 4 -> mainPage();
             default -> System.out.println("잘못된 입력");
@@ -401,6 +405,7 @@ public class Main {
       int deleteCartNumber = sc.nextInt();
       sc.nextLine();
       cDAO.deleteCart(deleteCartNumber);
+      cart();
    }
 
    public static void updateCart() {
@@ -439,36 +444,44 @@ public class Main {
    }
    
    public static void insertOrder() {
-      oVO.setUserId(uVO.getUserId());
-      
-      System.out.print("구매할 제품 ID : ");
-      int insertOrderProductId = sc.nextInt();
-      sc.nextLine();
-      System.out.print("구매할 개수 : ");
-      int cnt = sc.nextInt();
-      sc.nextLine();
-      
-      proVO = proDAO.getProduct(insertOrderProductId);
-      
-      ArrayList<ProductDetailVO> productDetailList = pdDAO.getProductDetail(proVO.getProductId());
-      
-      for (ProductDetailVO productDetail : productDetailList) {
-         System.out.println("제품 옵션" + productDetail.getOptions());
-         System.out.println("남은 수량" + productDetail.getCnt());
-      }
-      
-      System.out.print("옵션 선택 : ");
-      String orderDetailOptions = sc.nextLine();
-      
-      oVO.setUserId(uVO.getUserId());
-      oVO.setProductId(proVO.getProductId());
-      oVO.setTotalPrice(proVO.getProductPrice() * cnt);
-      
-      try {
-         oDAO.insertProductOrder(oVO, cnt, orderDetailOptions);
-      } catch (RuntimeException e) {
-         System.out.println(e.getMessage());
-      }
+	   oVO.setUserId(uVO.getUserId());
+	   
+	   System.out.print("구매할 제품 ID : ");
+	   int insertOrderProductId = sc.nextInt();
+	   sc.nextLine();
+	   proVO = proDAO.getProduct(insertOrderProductId);
+	   
+	   ArrayList<ProductDetailVO> productDetailList = pdDAO.getProductDetail(proVO.getProductId());
+	   
+	   System.out.println("\t\t\t ***제품 옵션(수량)***");
+	   for (ProductDetailVO productDetail : productDetailList) {
+		   System.out.print("\t\t" + productDetail.getOptions() + "(" + productDetail.getCnt() + ")");
+	   }
+	   System.out.println();
+	   
+	   System.out.print("옵션 선택 : ");
+	   String orderDetailOptions = sc.nextLine();
+	   
+	   System.out.print("구매할 개수 : ");
+	   int cnt = sc.nextInt();
+	   sc.nextLine();
+	   
+	   pdVO = pdDAO.getProductD(insertOrderProductId, orderDetailOptions);
+	   
+	   if (cnt > pdVO.getCnt()) {
+		   System.out.println("재고가 부족합니다.");
+		   insertOrder();
+	   }
+	   
+	   oVO.setUserId(uVO.getUserId());
+	   oVO.setProductId(proVO.getProductId());
+	   oVO.setTotalPrice(proVO.getProductPrice() * cnt);
+	   
+	   try {
+		   oDAO.insertProductOrder(oVO, cnt, orderDetailOptions);
+	   } catch (RuntimeException e) {
+		   System.out.println(e.getMessage());
+	   }
    }
    // END ORDER ========================================================================
 

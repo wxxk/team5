@@ -13,10 +13,9 @@ public class ProductVO {
 	@Override
 	public String toString() {
 		return  
-				"  " + productId + "\t" + "    " + categoryId + "\t" + "      " + productName + "\t" + "      " + productPrice + "\t" + " "+ productImg +"\n"
-				+ "-------------------------------------------------------------------";
-		
-	}	
+				"  " + productId + "\t" + "     " + categoryId + "\t" + "         " + productName + "\t" +  " " + productPrice + "\t" +  "    "+ productImg +"\n"
+				+ "----------------------------------------------------------------------";
+	}
 //	public String toString() {
 //		return "상품 ID = " + productId + "\n" + "카테고리 ID = " + categoryId + "\n" +
 //				"상품 이름 = " + productName + "\n" + "상품 가격 = " + productPrice + "\n" + 
