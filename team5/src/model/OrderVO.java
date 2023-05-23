@@ -31,7 +31,7 @@ public class OrderVO {
 				productName + "\t    " +
 				productPrice + "\t\t" + 
 				userName + "\t\t" +
-				userAddress + "\t  " +
+				userAddress + "\t\t    " +
 				userPhoneNumber + "\t\t " +
 				options + "\t" +
 				totalPrice + "\t" +"\n" +

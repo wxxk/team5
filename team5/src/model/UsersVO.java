@@ -11,19 +11,22 @@ public class UsersVO {
 	private String userPhoneNumber;
 	private String userAddress;
 	private int stated;
-	
+
 	@Override
 	public String toString() {
-		return "아이디 : " + userId + "\n" + "이름 : " + userName + "\n" +
-				"생년월일 : " + userBirth +  "\n" + "핸드폰 번호 : " + userPhoneNumber + "\n"+ 
-				"주소 : " + userAddress;
+		return 
+				"userId" + "\t      " +
+				"userName" + "\t      " +
+				"userBirth" + "\t     " +
+				"userPhoneNumber" + "\t" +
+				"userAddress" +"\n" +
+				"----------------------------------------------------------------------------------------------";
 	}
-	
+
 	public String [] toArray() {
 		return new String []{
-			userId + "" + userPassword + "" + userName + "" + userBirth + "" 
-					+ userPhoneNumber + "" + userAddress
+				userId + "" + userPassword + "" + userName + "" + userBirth + "" 
+						+ userPhoneNumber + "" + userAddress
 		};
 	}
 }
- 

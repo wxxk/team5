@@ -26,12 +26,12 @@ public class CartVO {
 	@Override
 	public String toString() {
 		return  "   " +cartId + "\t" + "      " +
-				 productName +  "\t     " + 
-				 categoryName + "\t   " + 
+				 productName +  "\t\t" + 
+				 categoryName + "\t\t" + 
 				 options + "           " +
 				 cartCnt + "\t    " +
 				totalPrice  +"\n"+
-				"-----------------------------------------------------------------------------------------------------";
+				"-----------------------------------------------------------------------------------------------";
 	
 	
 	}
