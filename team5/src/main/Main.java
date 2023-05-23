@@ -121,6 +121,13 @@ public class Main {
 					System.out.println("\t \t \t \t ***회원정보***");
 					System.out.println("-----------------------------------------------------------------------------------");
 					uVO = uDAO.getUser(uVO.getUserId());
+//					userId + "\t      " + 
+//					userName + "\t      " +
+//					userBirth + "\t     " +
+//					userPhoneNumber + "\t" +
+//					userAddress +"\n" +
+					System.out.println("userId   |   "+"userName   |   "+"userBirth   |   "+"userPhoneNumber   |   "+"userAddress   |   ");
+					System.out.println("-----------------------------------------------------------------------------------");
 					System.out.println(uVO);
 					System.out.println("-----------------------------------------------------------------------------------");
 					System.out.println("\t\t\t (1)회원정보수정 | (2)회원탈퇴 | (3)뒤로가기");
@@ -422,6 +429,7 @@ public class Main {
 			cVO.setCartCnt(addProductCnt);
 			cVO.setTotalPrice(proVO.getProductPrice() * addProductCnt);
 			cVO.setOptions(productOption);
+
 			cDAO.insertCart(cVO);
 			System.out.println(cVO.getProductName() + " " + cVO.getCartCnt() + "개가 추가되었습니다.");
 		}
@@ -511,7 +519,7 @@ public class Main {
 					cartlist.add(cVO);
 					System.out.println("더 추가하시겠습니까?");
 					System.out.println("(1)YES | (2)NO");
-					System.out.print("메뉴 입력");
+					System.out.print("메뉴 입력 : ");
 					int num = sc.nextInt();
 					sc.nextLine();
 					if (num == 2) {
