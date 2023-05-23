@@ -121,6 +121,13 @@ public class Main {
 					System.out.println("\t \t \t \t ***회원정보***");
 					System.out.println("-----------------------------------------------------------------------------------");
 					uVO = uDAO.getUser(uVO.getUserId());
+//					userId + "\t      " + 
+//					userName + "\t      " +
+//					userBirth + "\t     " +
+//					userPhoneNumber + "\t" +
+//					userAddress +"\n" +
+					System.out.println("userId   |   "+"userName   |   "+"userBirth   |   "+"userPhoneNumber   |   "+"userAddress   |   ");
+					System.out.println("-----------------------------------------------------------------------------------");
 					System.out.println(uVO);
 					System.out.println("-----------------------------------------------------------------------------------");
 					System.out.println("\t\t\t (1)회원정보수정 | (2)회원탈퇴 | (3)뒤로가기");
@@ -362,8 +369,8 @@ public class Main {
 				System.out.println(e.getMessage());
 			}
 		} else {
-			System.out.println("cartId  |  "+"productName  |  "+"categoryName  |  "+"options  |  "+"cartCnt  |  "+"productPrice");
-			System.out.println("-----------------------------------------------------------------------------------------------------");
+			System.out.println("카트ID\t|      "+"상품이름 \t  |    "+"카테고리이름      |\t    "+"옵션\t   |  "+"수량    |  "+"총가격");
+			System.out.println("-----------------------------------------------------------------------------------------------");
 			for (CartVO cart : cartList) {
 				System.out.println(cart);            
 			}
@@ -464,8 +471,8 @@ public class Main {
 	// START ORDER ======================================================================
 	public static void order() {
 		ArrayList<OrderVO> orderlist = oDAO.getOrderList(uVO.getUserId());
-		System.out.println("orderId  |  "+"productName  |  "+"productPrice  |  "+"userName  |  "+
-				"userAddress  |  "+"userPhoneNumber  |    "+"options    |  "+"orderTotalPrice");
+		System.out.println("주문ID\t|     "+"상품이름        |    "+"상품가격       |    "+"회원이름      |         "+
+				"회원주소              |      "+"회원전화번호         |    "+"상품옵션      |  "+"주문총가격");
 		System.out.println("------------------------------------------------------------------------------------------------------------------------------");
 		for (OrderVO order : orderlist) {
 			System.out.println(order);
@@ -773,6 +780,13 @@ public class Main {
 		System.out.println("***회원 조회***");
 		try {
 			ArrayList<UsersVO> uVO = uDAO.getAlluers();
+//			"아이디 : " + userId + "\n" + "이름 : " + userName + "\n" +
+//			"생년월일 : " + userBirth +  "\n" + "핸드폰 번호 : " + userPhoneNumber + "\n"+ 
+//			"주소 : " + userAddress;
+			System.out.println("   아이디\t|\t"+"이름\t  |     "+"생년월일       |      "+"핸드폰 번호          |\t\t"+"주소  ");
+			System.out.println("----------------------------------------------------------------------------------------------");
+			
+			
 			for(UsersVO users : uVO) {
 				System.out.println(users);
 			}

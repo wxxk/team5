@@ -28,10 +28,10 @@ public class OrderVO {
 
 	public String toString() {
 		return "   " + orderId +"\t   " + 
-				productName + "         " +
+				productName + "\t    " +
 				productPrice + "\t\t" + 
 				userName + "\t\t" +
-				userAddress + "\t  " +
+				userAddress + "\t\t    " +
 				userPhoneNumber + "\t\t " +
 				options + "\t" +
 				totalPrice + "\t" +"\n" +
