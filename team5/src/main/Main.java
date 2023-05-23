@@ -80,7 +80,7 @@ public class Main {
 	public static void mainPage() {
 		while(true) {
 			System.out.println("-----------------------------------------------------------------------------------");
-			System.out.println("\t \t \t \t" + uVO.getUserId() + "님 안녕하세요");
+			System.out.println("\t \t \t \t" + uVO.getUserId() + "님 안녕하세요.");
 			System.out.println("-----------------------------------------------------------------------------------");
 			System.out.println("\t \t (1)회원정보 | (2)상품보기 | (3)로그아웃 | (4)장바구니 | (5)주문내역");
 			System.out.println("-----------------------------------------------------------------------------------");
@@ -97,10 +97,11 @@ public class Main {
 					System.out.println("-----------------------------------------------------------------------------------");
 					uVO = uDAO.getUser(uVO.getUserId());
 					System.out.println(uVO);
-					System.out.println("(1)회원정보수정 | (2)회원탈퇴 | (3)뒤로가기");
+					System.out.println("-----------------------------------------------------------------------------------");
+					System.out.println("\t\t\t (1)회원정보수정 | (2)회원탈퇴 | (3)뒤로가기");
 					System.out.print("메뉴 번호 입력: ");
-					int userMenuSelect = sc.nextInt();
-					sc.nextLine();
+					String input1 = sc.nextLine();
+					int userMenuSelect = Integer.parseInt(input1);
 					switch(userMenuSelect) {
 					case 1 : 
 						updateUser();
@@ -119,12 +120,10 @@ public class Main {
 						}
 						break;
 					case 3: 
-						deleteUser();
-						main(null);
+						mainPage();
 						break;
 					default :
 						System.out.println("잘못된 입력");
-
 					}
 
 				case 2 :
@@ -199,7 +198,10 @@ public class Main {
 
 	public static void updateUser() {
 		// 이름, 핸드폰번호, 주소 수정
-		System.out.println("***수정***");
+		System.out.println("-----------------------------------------------------------------------------------");
+		System.out.println("\t\t\t\t*** 수  정 ***");
+		System.out.println("-----------------------------------------------------------------------------------");
+
 		System.out.print("이름 : ");
 		uVO.setUserName(sc.nextLine());
 		System.out.print("핸드폰 : ");
@@ -211,6 +213,7 @@ public class Main {
 		} catch(RuntimeException e) {
 			System.out.println(e.getMessage());
 		}
+		mainPage();
 	}
 
 	public static void deleteUser() {
