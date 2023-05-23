@@ -60,12 +60,13 @@ public class OrderDAO implements IOrderDAO {
 		ArrayList<OrderVO> orderList = new ArrayList<OrderVO>();
 
 		String sql = 
-				"SELECT o.order_id, u.user_name, u.user_phone_number, u.user_address, p.product_img, p.product_name, od.options, o.order_total_price "
-						+"FROM orders o "
-						+"JOIN users u ON u.user_id = o.user_id "
-						+"JOIN order_details od ON o.order_id = od.order_id "
-						+"JOIN product p ON p.product_id = od.product_id "
-						+"WHERE u.user_id = ?";
+				"SELECT o.order_id, u.user_name, u.user_phone_number, u.user_address, p.product_img, p.product_name, od.options, o.order_total_price, p.product_price "
+						+ "FROM orders o "
+						+ "JOIN users u ON u.user_id = o.user_id "
+						+ "JOIN order_details od ON o.order_id = od.order_id "
+						+ "JOIN product p ON p.product_id = od.product_id "
+						+ "WHERE u.user_id = ? "
+						+ "ORDER BY order_id";
 
 		Connection con = null;
 		try {
@@ -77,13 +78,14 @@ public class OrderDAO implements IOrderDAO {
 				OrderVO od = new OrderVO();
 				od.setUserId(userId);
 				od.setOrderId(rs.getInt("order_id"));
-				od.setProductName(rs.getString("product_name"));
+				od.setUserName(rs.getString("user_name"));
 				od.setUserPhoneNumber(rs.getString("user_phone_number"));
 				od.setUserAddress(rs.getString("user_address"));
 				od.setProductImg(rs.getString("product_img"));
 				od.setProductName(rs.getString("product_name"));
 				od.setOptions(rs.getString("options"));
 				od.setTotalPrice(rs.getInt("order_total_price"));
+				od.setProductPrice(rs.getInt("product_price"));
 				orderList.add(od);
 			}
 		} catch (SQLException e) {
@@ -170,7 +172,7 @@ public class OrderDAO implements IOrderDAO {
 			}
 			//pk
 			for (CartVO vo : vos) {
-				totalprice += vo.getTotalPrice(); 
+				totalprice += vo.getTotalPrice() ; 
 				orderUserId = vo.getUserId();
 				}
 			//order

@@ -422,6 +422,7 @@ public class Main {
 			cVO.setCartCnt(addProductCnt);
 			cVO.setTotalPrice(proVO.getProductPrice() * addProductCnt);
 			cVO.setOptions(productOption);
+
 			cDAO.insertCart(cVO);
 			System.out.println(cVO.getProductName() + " " + cVO.getCartCnt() + "개가 추가되었습니다.");
 		}
@@ -511,7 +512,7 @@ public class Main {
 					cartlist.add(cVO);
 					System.out.println("더 추가하시겠습니까?");
 					System.out.println("(1)YES | (2)NO");
-					System.out.print("메뉴 입력");
+					System.out.print("메뉴 입력 : ");
 					int num = sc.nextInt();
 					sc.nextLine();
 					if (num == 2) {

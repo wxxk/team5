@@ -14,7 +14,7 @@ public class CartDAO implements ICartDAO{
 	//카트 전체 조회
 	public ArrayList<CartVO> getAllCart(String userId){
 		ArrayList<CartVO> cartList = new ArrayList<CartVO>();
-		String sql = "SELECT c.cart_id, p.product_id, p.product_name, ct.category_name, c.options, c.cart_cnt, c.total_price,u.user_id "+		
+		String sql = "SELECT c.cart_id, p.product_id, p.product_name, ct.category_name, c.options, c.cart_cnt, c.total_price, u.user_id "+		
 				"FROM users u, cart c, product p, category ct "+
 				"WHERE u.user_id = c.user_id "+
 				"AND c.product_id = p.product_id "+
@@ -59,6 +59,7 @@ public class CartDAO implements ICartDAO{
 				+ "AND c.product_id = p.product_id"
 				+ "AND p.category_id = ct.category_id"
 				+ "AND pd.product_id = p.product_id"
+				+ "AND pd.options = c.options"
 				+ "AND cart_id = ?" ;
 
 		Connection con = null;
@@ -171,9 +172,10 @@ public class CartDAO implements ICartDAO{
 	//한개의 카트불러오기
 	public CartVO getOrderCart(int cartId) {
 		CartVO cVO = null;
-		String sql = "SELECT c.user_id, c.product_id, c.cart_cnt, c.options, p.product_price  FROM cart c "
+		String sql = "SELECT c.user_id, c.product_id, c.cart_cnt, c.options, c.total_price, p.product_name, p.product_img "
+				+ "FROM cart c "
 				+ "JOIN product p ON p.product_id = c.product_id "
-				+ "WHERE cart_id=? ";
+				+ "WHERE cart_id= ?";
 		Connection con = null;
 		PreparedStatement stmt = null;
 		try {
@@ -188,7 +190,9 @@ public class CartDAO implements ICartDAO{
 				cVO.setProductId(rs.getInt("product_id"));
 				cVO.setCartCnt(rs.getInt("cart_cnt"));
 				cVO.setOptions(rs.getString("options"));
-				cVO.setTotalPrice(rs.getInt("product_price"));
+				cVO.setTotalPrice(rs.getInt("total_price"));
+				cVO.setProductName(rs.getString("product_name"));
+				cVO.setProductImg(rs.getString("product_img"));
 			}
 		}catch(SQLException e) {
 			throw new RuntimeException(e);
