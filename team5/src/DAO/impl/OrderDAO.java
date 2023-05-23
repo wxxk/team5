@@ -9,7 +9,6 @@ import java.util.List;
 
 import DAO.IOrderDAO;
 import main.DataSource;
-import model.CartDAO;
 import model.CartVO;
 import model.OrderDetailVO;
 import model.OrderVO;
@@ -270,7 +269,6 @@ public class OrderDAO implements IOrderDAO {
 			stmt.setInt(4, cartId);
 			stmt.setInt(5, totalprice);
 			count = stmt.executeUpdate(); 
-			System.out.println("test1");
 			for(CartVO cart : cl) {
 				OrderDetailVO odVO = new OrderDetailVO();
 
