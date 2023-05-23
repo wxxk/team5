@@ -68,8 +68,8 @@ public class OrderDAO implements IOrderDAO {
 				"SELECT o.order_id, p.product_name, p.product_price, u.user_name, u.user_address, u.user_phone_number, o.order_total_price, od.options "
 				+ "FROM users u "
 				+ "JOIN orders o ON u.user_id = o.user_id "
-				+ "JOIN product p ON o.product_id = p.product_id "
 				+ "JOIN order_details od on o.order_id = od.order_id "
+				+ "JOIN product p on od.product_id = p.product_id "
 				+ "WHERE u.user_id = ?";
 
 		Connection con = null;
@@ -83,7 +83,6 @@ public class OrderDAO implements IOrderDAO {
 				od.setUserId(userId);
 				od.setOrderId(rs.getInt("order_id"));
 				od.setProductName(rs.getString("product_name"));
-				//				od.setCartCnt(rs.getInt("cart_cnt"));	
 				od.setProductPrice(rs.getInt("product_price"));
 				od.setUserName(rs.getString("user_name"));
 				od.setUserAddress(rs.getString("user_address"));
