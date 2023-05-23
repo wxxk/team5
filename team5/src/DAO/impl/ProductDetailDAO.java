@@ -1,4 +1,4 @@
-package model;
+package DAO.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,7 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import DAO.IProductDetailDAO;
 import main.DataSource;
+import model.ProductDetailVO;
 
 public class ProductDetailDAO implements IProductDetailDAO {
 
@@ -137,6 +139,24 @@ public class ProductDetailDAO implements IProductDetailDAO {
 			DataSource.closeConnection(con);
 		}
 		return deleteRow;
+	}
+
+	@Override
+	public int updateStock(int productDetailId, int cnt) {
+		int count = 0;
+		String sql = "UPDATE product_detail SET cnt = ? WHERE product_detail_id = ? ";
+		Connection con = null;
+		try {
+			con = DataSource.getConnection();
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setInt(1, cnt);
+			count = stmt.executeUpdate();
+		}catch(SQLException e) {
+			throw new RuntimeException(e);
+		}finally {
+			DataSource.closeConnection(con);
+		}
+		return count;
 	}
 
 }

@@ -1,4 +1,4 @@
-package model;
+package DAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import main.DataSource;
+import model.CategoryVO;
 
 public class CategoryDAO implements ICategoryDAO{
 

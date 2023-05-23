@@ -10,12 +10,13 @@ public class UsersVO {
 	private String userBirth;
 	private String userPhoneNumber;
 	private String userAddress;
+	private int stated;
 	
 	@Override
 	public String toString() {
-		return "ID =" + userId + "\n" + "Name =" + userName + "\n" +
-				"Birth =" + userBirth +  "\n" + "Phonenumber =" + userPhoneNumber + "\n"+ 
-				"Address=" + userAddress;
+		return "아이디 : " + userId + "\n" + "이름 : " + userName + "\n" +
+				"생년월일 : " + userBirth +  "\n" + "핸드폰 번호 : " + userPhoneNumber + "\n"+ 
+				"주소 : " + userAddress;
 	}
 	
 	public String [] toArray() {

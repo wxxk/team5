@@ -1,4 +1,4 @@
-package model;
+package DAO.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,13 +6,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import DAO.ICartDAO;
 import main.DataSource;
+import model.CartVO;
 
 public class CartDAO implements ICartDAO{
 	//카트 전체 조회
 	public ArrayList<CartVO> getAllCart(String userId){
 		ArrayList<CartVO> cartList = new ArrayList<CartVO>();
-		String sql = "SELECT c.cart_id, p.product_id, p.product_name, ct.category_name, c.options, c.cart_cnt, p.product_price, c.total_price "+		
+		String sql = "SELECT c.cart_id, p.product_id, p.product_name, ct.category_name, c.options, c.cart_cnt, p.product_price "+		
 				"FROM users u, cart c, product p, category ct "+
 				"WHERE u.user_id = c.user_id "+
 				"AND c.product_id = p.product_id "+
@@ -35,7 +37,6 @@ public class CartDAO implements ICartDAO{
 				ct.setOptions(rs.getString("options"));
 				ct.setCartCnt(rs.getInt("cart_cnt"));
 				ct.setProductPrice(rs.getInt("product_price"));
-				ct.setTotalPrice(rs.getInt("total_price"));
 				cartList.add(ct);
 			}
 		} catch (SQLException e) {
@@ -48,10 +49,10 @@ public class CartDAO implements ICartDAO{
 	
 	
 	//cart_id별로 조회
-	public ArrayList<CartVO> getCart(String cartId){
+	public ArrayList<CartVO> getCart(int cartId){
 		ArrayList<CartVO> cartList = new ArrayList<CartVO>();
 		String sql = "SELECT c.cart_id, p.product_img, p.product_name, ct.category_name,"
-				+ "pd.options, c.cart_cnt, p.product_price, c.total_price"
+				+ "pd.options, c.cart_cnt, p.product_price "
 				+ "FROM users u, cart c, product p, category ct, product_detail pd "
 				+ "WHERE u.user_id = c.user_id"
 				+ "AND c.product_id = p.product_id"
@@ -63,7 +64,7 @@ public class CartDAO implements ICartDAO{
 		try {
 			con = DataSource.getConnection();
 			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setString (1, cartId);
+			stmt.setInt (1, cartId);
 			ResultSet rs = stmt.executeQuery();
 			while(rs.next()) {
 				CartVO ct = new CartVO();
@@ -74,7 +75,6 @@ public class CartDAO implements ICartDAO{
 				ct.setOptions(rs.getString("options"));
 				ct.setCartCnt(rs.getInt("cart_cnt"));
 				ct.setProductPrice(rs.getInt("product_price"));
-				ct.setTotalPrice(rs.getInt("total_price"));
 				cartList.add(ct);
 			}
 		} catch (SQLException e) {
@@ -105,14 +105,14 @@ public class CartDAO implements ICartDAO{
 	}
 
 	//카트에 담긴 상품 부분삭제
-	public int deleteCart(CartVO vo) {
+	public int deleteCart(int cartId) {
 		int deleteRow = 0;
-		String sql = "DELETE FROM cart WHERE product_id = ?";
+		String sql = "DELETE FROM cart WHERE cart_id = ?";
 		Connection con = null;
 		try {
 			con = DataSource.getConnection();
 			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setInt(1, vo.getProductId());
+			stmt.setInt(1, cartId);
 			deleteRow = stmt.executeUpdate();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
@@ -122,12 +122,13 @@ public class CartDAO implements ICartDAO{
 		return deleteRow;
 	}
 
+
 	
 	//상품 등록
 	public int insertCart(CartVO vo) {
 		int count = 0;
-		String sql = "INSERT INTO cart (cart_id, user_id, product_id, cart_cnt, total_price, options) "
-		+ "VALUES(cart_seq.NEXTVAL,?,?,?,?,?)";
+		String sql = "INSERT INTO cart (cart_id, user_id, product_id, cart_cnt, options) "
+		+ "VALUES(cart_seq.NEXTVAL,?,?,?,?)";
 		Connection con = null;
 		try {
 			con = DataSource.getConnection();
@@ -135,8 +136,7 @@ public class CartDAO implements ICartDAO{
 			stmt.setString(1, vo.getUserId());
 			stmt.setInt(2, vo.getProductId());
 			stmt.setInt(3, vo.getCartCnt());
-			stmt.setInt(4, vo.getTotalPrice());
-			stmt.setString(5, vo.getOptions());
+			stmt.setString(4, vo.getOptions());
 			count = stmt.executeUpdate();
 		} catch(Exception e) {
 			throw new RuntimeException(e);
@@ -147,15 +147,15 @@ public class CartDAO implements ICartDAO{
 	}
 		
 	//장바구니 수량 변경
-	public int updateCart(CartVO vo) {
+	public int updateCart(int cartCnt, int cartId) {
 		int count = 0;
 		String sql = "UPDATE cart SET cart_cnt = ? WHERE cart_id = ?";
 		Connection con = null;
 		try {
 			con = DataSource.getConnection();
 			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setInt(1, vo.getCartCnt());
-			stmt.setInt(2, vo.getCartId());
+			stmt.setInt(1, cartCnt);
+			stmt.setInt(2, cartId);
 			count = stmt.executeUpdate();
 		} catch(SQLException e) {
 			throw new RuntimeException(e);
