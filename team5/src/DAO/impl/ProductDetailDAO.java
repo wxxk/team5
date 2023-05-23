@@ -75,6 +75,7 @@ public class ProductDetailDAO implements IProductDetailDAO {
 		}
 		return vo;
 	}
+	
 
 	//상품 디테일 등록
 	@Override
@@ -131,7 +132,7 @@ public class ProductDetailDAO implements IProductDetailDAO {
 		try {
 			con=DataSource.getConnection();
 			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setInt(1, vo.getProductDetailId());
+			stmt.setInt(1, vo.getCnt());
 			deleteRow = stmt.executeUpdate();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
@@ -149,7 +150,10 @@ public class ProductDetailDAO implements IProductDetailDAO {
 		try {
 			con = DataSource.getConnection();
 			PreparedStatement stmt = con.prepareStatement(sql);
+			
 			stmt.setInt(1, cnt);
+			stmt.setInt(2, productDetailId);
+			
 			count = stmt.executeUpdate();
 		}catch(SQLException e) {
 			throw new RuntimeException(e);
