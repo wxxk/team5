@@ -79,11 +79,11 @@ public class Main {
 
 	public static void mainPage() {
 		while(true) {
-			System.out.println("---------------------------------------------");
-			System.out.println(uVO.getUserId() + "님 안녕하세요");
-			System.out.println("---------------------------------------------");
-			System.out.println("(1)회원정보 | (2)상품보기 | (3)로그아웃 | (4)장바구니 | (5)주문내역");
-			System.out.println("---------------------------------------------");
+			System.out.println("-----------------------------------------------------------------------------------");
+			System.out.println("\t \t \t \t" + uVO.getUserId() + "님 안녕하세요");
+			System.out.println("-----------------------------------------------------------------------------------");
+			System.out.println("\t \t (1)회원정보 | (2)상품보기 | (3)로그아웃 | (4)장바구니 | (5)주문내역");
+			System.out.println("-----------------------------------------------------------------------------------");
 			System.out.print("메뉴 번호 입력: ");
 			String input = sc.nextLine();
 			try {   
@@ -92,7 +92,9 @@ public class Main {
 
 				// 회원정보
 				case 1 :
-					System.out.println("***회원정보***");
+					System.out.println("-----------------------------------------------------------------------------------");
+					System.out.println("\t \t \t \t ***회원정보***");
+					System.out.println("-----------------------------------------------------------------------------------");
 					uVO = uDAO.getUser(uVO.getUserId());
 					System.out.println(uVO);
 					System.out.println("(1)회원정보수정 | (2)회원탈퇴 | (3)뒤로가기");
@@ -151,6 +153,7 @@ public class Main {
 
 	// START USER ===========================================================================
 	public static void login() {   
+		System.out.println("-----------------------------------------------------------------------------------");
 		System.out.print("아이디 : ");
 		String id = sc.nextLine();
 		System.out.print("비밀번호 : ");
