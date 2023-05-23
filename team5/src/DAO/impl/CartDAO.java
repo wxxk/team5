@@ -178,6 +178,7 @@ public class CartDAO implements ICartDAO{
 			ResultSet rs = stmt.executeQuery();
 			if(rs.next()) {
 				cVO = new CartVO();
+				cVO.setCartId(cartId);
 				cVO.setUserId(rs.getString("user_id"));
 				cVO.setProductId(rs.getInt("product_id"));
 			}

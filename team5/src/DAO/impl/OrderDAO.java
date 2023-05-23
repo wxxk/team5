@@ -145,6 +145,8 @@ public class OrderDAO implements IOrderDAO {
 		   ProductDAO pDAO = new ProductDAO();
 		   OrderDetailDAO odDAO = new OrderDetailDAO();
 		   List<OrderDetailVO> oVoList= new ArrayList<OrderDetailVO>();
+		   ProductDetailDAO pdDAO = new ProductDetailDAO();
+		   ProductDetailVO pdVO = new ProductDetailVO();
 		   
 		   int orderPk = 0;
 		   
@@ -190,9 +192,9 @@ public class OrderDAO implements IOrderDAO {
 				   odVO.setOptions(cart.getOptions());
 				   oVoList.add(odVO);
 				   odDAO.insertOrderDetail(odVO);
+				   pdDAO.updateStock(productId , pdVO.getCnt()-odVO.getProductCnt());
 			   }
 			   
-//	         pdDAO.updateStock(productId , pdVO.getCnt()-oVO.getCartCnt());
 			   
 		   } catch(Exception e) {
 			   throw new RuntimeException(e);

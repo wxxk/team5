@@ -330,7 +330,7 @@ public class Main {
       try {
          int cartmenu = Integer.parseInt(input);
          switch (cartmenu) {
-         case 1 -> orderInsertCart(cl);
+         case 1 -> orderInsertCart(cartList);
          case 2 -> mainPage();
          case 3 -> deleteCart();
          case 4 -> updateCart();
@@ -423,8 +423,9 @@ public class Main {
 	   	System.out.println("카트 ID: ");
 	   	int cartId = sc.nextInt();
 	   	sc.nextLine();
+	   	System.out.println(cartId);
+	   	cVO = cDAO.getOrderCart(cartId);
 	   	try {
-	   		cVO=cDAO.getOrderCart(cartId);
 	   		oDAO.insertCartOrder(s.loginUserId, cVO.getProductId(), cVO.getCartId(), cl);
 	        System.out.println(oDAO);
 	      }catch(RuntimeException e) {

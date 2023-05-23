@@ -90,7 +90,9 @@ public class OrderDetailDAO implements IOrderDetailDAO {
 			stmt.setString(4, vo.getOptions());
 			count = stmt.executeUpdate();
 		}catch(SQLException e) {
+			System.out.println(e.getMessage());
 			throw new RuntimeException(e);
+			
 		}finally {
 			DataSource.closeConnection(con);
 		}
