@@ -5,22 +5,24 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
-import DAO.AdminDAO;
-import DAO.CategoryDAO;
 import DAO.IAdminDAO;
 import DAO.ICategoryDAO;
 import DAO.IOrderDAO;
 import DAO.IProductDAO;
 import DAO.IProductDetailDAO;
 import DAO.IUsersDAO;
+import DAO.impl.AdminDAO;
 import DAO.impl.CartDAO;
+import DAO.impl.CategoryDAO;
 import DAO.impl.OrderDAO;
+import DAO.impl.OrderDetailDAO;
 import DAO.impl.ProductDAO;
 import DAO.impl.ProductDetailDAO;
 import DAO.impl.UsersDAO;
 import model.AdminVO;
 import model.CartVO;
 import model.CategoryVO;
+import model.OrderDetailVO;
 import model.OrderVO;
 import model.ProductDetailVO;
 import model.ProductVO;
@@ -36,6 +38,9 @@ public class Main {
    static IOrderDAO oDAO = new OrderDAO();
    static OrderVO oVO = new OrderVO();
 
+   public static OrderDetailDAO odDAO = new OrderDetailDAO();
+   public static OrderDetailVO odVO = new OrderDetailVO(); 
+   
    public static UsersVO user = new UsersVO();
    public static UsersDAO userDAO = new UsersDAO();
 
@@ -263,7 +268,7 @@ public class Main {
          switch (allProductSelect) {
          case 1 -> category();
          case 2 -> cartInsert();
-         case 3 -> orderInsert();
+         case 3 -> insertOrder();
          case 4 -> cart();
          case 5 -> mainPage();
          default ->
@@ -302,7 +307,7 @@ public class Main {
             int selectCategorymenu = Integer.parseInt(input);
             switch (selectCategorymenu) {
             case 1 -> cartInsert();
-            case 2 -> orderInsertCart(cl);
+//            case 2 -> orderInsertCart();
             case 3 -> cart();
             case 4 -> mainPage();
             default -> System.out.println("잘못된 입력");
@@ -330,7 +335,7 @@ public class Main {
       try {
          int cartmenu = Integer.parseInt(input);
          switch (cartmenu) {
-         case 1 -> orderInsertCart(cl);
+//         case 1 -> orderInsertCart();
          case 2 -> mainPage();
          case 3 -> deleteCart();
          case 4 -> updateCart();
@@ -431,7 +436,39 @@ public class Main {
 	         System.out.println(e.getMessage());
 	      }
 	     // product();
-  }
+   }
+   public static void insertOrder() {
+	   oVO.setUserId(uVO.getUserId());
+	   
+	   System.out.print("구매할 제품 ID : ");
+	   int insertOrderProductId = sc.nextInt();
+	   sc.nextLine();
+	   System.out.print("구매할 개수 : ");
+	   int cnt = sc.nextInt();
+	   sc.nextLine();
+	   
+	   proVO = proDAO.getProduct(insertOrderProductId);
+	   
+	   ArrayList<ProductDetailVO> productDetailList = pdDAO.getProductDetail(proVO.getProductId());
+	   
+	   for (ProductDetailVO productDetail : productDetailList) {
+		   System.out.println("제품 옵션" + productDetail.getOptions());
+		   System.out.println("남은 수량" + productDetail.getCnt());
+	   }
+	   
+	   System.out.print("옵션 선택 : ");
+	   String orderDetailOptions = sc.nextLine();
+	   
+	   oVO.setUserId(uVO.getUserId());
+	   oVO.setProductId(proVO.getProductId());
+	   oVO.setTotalPrice(proVO.getProductPrice() * cnt);
+	   
+	   try {
+		   oDAO.insertProductOrder(oVO, cnt, orderDetailOptions);
+	   } catch (RuntimeException e) {
+		   System.out.println(e.getMessage());
+	   }
+   }
    // END ORDER ========================================================================
 
    // START ADMIN =======================================================================
