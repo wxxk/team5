@@ -121,6 +121,13 @@ public class Main {
 					System.out.println("\t \t \t \t ***회원정보***");
 					System.out.println("-----------------------------------------------------------------------------------");
 					uVO = uDAO.getUser(uVO.getUserId());
+//					userId + "\t      " + 
+//					userName + "\t      " +
+//					userBirth + "\t     " +
+//					userPhoneNumber + "\t" +
+//					userAddress +"\n" +
+					System.out.println("userId   |   "+"userName   |   "+"userBirth   |   "+"userPhoneNumber   |   "+"userAddress   |   ");
+					System.out.println("-----------------------------------------------------------------------------------");
 					System.out.println(uVO);
 					System.out.println("-----------------------------------------------------------------------------------");
 					System.out.println("\t\t\t (1)회원정보수정 | (2)회원탈퇴 | (3)뒤로가기");

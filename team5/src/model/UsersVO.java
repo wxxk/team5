@@ -15,11 +15,11 @@ public class UsersVO {
 	@Override
 	public String toString() {
 		return 
-				"userId" + "\t      " +
-				"userName" + "\t      " +
-				"userBirth" + "\t     " +
-				"userPhoneNumber" + "\t" +
-				"userAddress" +"\n" +
+				userId + "\t      " + 
+				userName + "\t      " +
+				userBirth + "\t     " +
+				userPhoneNumber + "\t" +
+				userAddress +"\n" +
 				"----------------------------------------------------------------------------------------------";
 	}
 
