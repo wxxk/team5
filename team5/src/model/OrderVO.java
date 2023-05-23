@@ -27,18 +27,22 @@ public class OrderVO {
 
 
 	public String toString() {
-		return "orderId:" + orderId +"\t" + 
-				"productName:" + productName + "\t" +
-				"productPrice:" + productPrice + "\t" + 
-				"userName:" + userName + "\t" +
-				"userAddress:" + userAddress + "\t" +
-				"userPhoneNumber:" + userPhoneNumber + "\t" +
-				"options:" + options + "\t" +
-				"orderTotalPrice:" + totalPrice + "\t";
+		return "   " + orderId +"\t   " + 
+				productName + "         " +
+				productPrice + "\t\t" + 
+				userName + "\t\t" +
+				userAddress + "\t  " +
+				userPhoneNumber + "\t\t " +
+				options + "\t" +
+				totalPrice + "\t" +"\n" +
+				"------------------------------------------------------------------------------------------------------------------------------";
 //				"cartId:" + cartId + "\t" +
 //				"userId:" + userId + "\t" +
 //				"productId:" + productId + "\t" +
 //				"productImg:" + productImg + "\t" +
+		
+		
+		
 	}
 
 	public String [] toArray() {
