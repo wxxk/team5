@@ -250,38 +250,6 @@ public class Main {
 
 
    // START PRODUCT ====================================================================
-
-<<<<<<< HEAD
-	public static void product() {
-		try {
-			ArrayList<ProductVO> pVO = proDAO.getAllProducts();
-			System.out.println("상품 ID |" + " 카테고리 ID |" + "    상품 이름      |" + "   상품 가격     |" + "      상품 이미지          |");
-			System.out.println("-------------------------------------------------------------------");
-			for (ProductVO pro : pVO) {
-				System.out.println(pro);
-			}
-		} catch (RuntimeException e) {
-			System.out.println(e.getMessage());
-		}
-		System.out.println("(1)카테고리 | (2)상품담기 | (3)바로구매 | (4)장바구니 | (5)뒤로가기");
-		System.out.print("메뉴 번호 입력: ");
-		String input = sc.nextLine();
-		try {
-			int allProductSelect = Integer.parseInt(input);
-			switch (allProductSelect) {
-			case 1 -> category();
-			case 2 -> cartInsert();
-			case 3 -> orderInsert();
-			case 4 -> cart();
-			case 5 -> mainPage();
-			default ->
-			System.out.println("잘못된 입력");
-			}
-		} catch (NumberFormatException e){
-			System.out.println(e.getMessage());
-		}
-	}
-=======
    public static void product() {
       try {
          ArrayList<ProductVO> pVO = proDAO.getAllProducts();
@@ -309,7 +277,6 @@ public class Main {
          System.out.println(e.getMessage());
       }
    }
->>>>>>> branch 'master' of https://github.com/wxxk/team5.git
 
    public static void category() {
       ICategoryDAO cDAO = new CategoryDAO();
