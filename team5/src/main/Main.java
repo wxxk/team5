@@ -5,26 +5,12 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
-import model.AdminDAO;
-import model.AdminVO;
-import model.CartDAO;
-import model.CartVO;
-import model.CategoryDAO;
-import model.CategoryVO;
-import model.IAdminDAO;
-import model.ICategoryDAO;
-import model.IOrderDAO;
-import model.IProductDAO;
-import model.IProductDetailDAO;
-import model.IUsersDAO;
-import model.OrderDAO;
-import model.OrderVO;
-import model.ProductDAO;
-import model.ProductDetailDAO;
-import model.ProductDetailVO;
-import model.ProductVO;
-import model.UsersDAO;
-import model.UsersVO;
+import DAO.*;
+import DAO.IOrderDAO;
+import DAO.impl.*;
+import DAO.impl.CartDAO;
+import DAO.impl.OrderDAO;
+import model.*;
 
 public class Main {
    public static Scanner sc = new Scanner(System.in);
@@ -53,11 +39,19 @@ public class Main {
 
    public static void main(String[] args) {
       while(true) {
-         System.out.println("---------------------------------------------");
-         System.out.println("안녕하세요. 환영합니다.");
-         System.out.println("---------------------------------------------");
-         System.out.println("(1)로그인 | (2)회원가입 | (3)종료 ");
-         System.out.println("---------------------------------------------");
+         System.out.println("-----------------------------------------------------------------------------------");
+         System.out.println("□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□");
+         System.out.println("□□■■■■■■■■■■■■□□□■■■■■■■■■■■□□□□□□□■■■■■■□□□□□□■■■□□□□□□□□□□■■■□□■■■■■■■■■■■■■□□□□□");
+         System.out.println("□□■■■■■■■■■■■■□□□■■■■■■■■■■■□□□□□□■■■□□■■■□□□□□■■■■■□□□□□□■■■■■□□■■■■■■■■■■■■■□□□□□");
+         System.out.println("□□□□□■■■■■□□□□□□□■■■□□□□□□□□□□□□□■■■□□□□■■■□□□□■■■□■■□□□□■■□■■■□□■■■■□□□□□□□□□□□□□□");
+         System.out.println("□□□□□■■■■■□□□□□□□■■■■■■■■■□□□□□□■■■■■■■■■■■■□□□■■■□□■■□□■■□□■■■□□■■■■■■■■■■■■■□□□□□");
+         System.out.println("□□□□□■■■■■□□□□□□□■■■□□□□□□□□□□□■■■■■■■■■■■■■■□□■■■□□□■■■■□□□■■■□□□□□□□□□□□■■■■□□□□□");
+         System.out.println("□□□□□■■■■■□□□□□□□■■■■■■■■■■■□□□■■■□□□□□□□□■■■□□■■■□□□□□□□□□□■■■□□■■■■■■■■■■■■■□□□□□");
+         System.out.println("□□□□□■■■■■□□□□□□□■■■■■■■■■■■□□□■■■□□□□□□□□■■■□□■■■□□□□□□□□□□■■■□□■■■■■■■■■■■■■□□□□□");
+         System.out.println("□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□");
+         System.out.println("-----------------------------------------------------------------------------------");
+         System.out.println("\t \t \t (1)로그인 | (2)회원가입 | (3)종료 ");
+         System.out.println("-----------------------------------------------------------------------------------");
          System.out.print("메뉴 번호 입력: ");
          String input = sc.nextLine();
          try {
@@ -88,11 +82,11 @@ public class Main {
 
    public static void mainPage() {
       while(true) {
-         System.out.println("---------------------------------------------");
-         System.out.println(uVO.getUserId() + "님 안녕하세요");
-         System.out.println("---------------------------------------------");
-         System.out.println("(1)회원정보 | (2)상품보기 | (3)로그아웃 | (4)장바구니 | (5)주문내역");
-         System.out.println("---------------------------------------------");
+         System.out.println("-----------------------------------------------------------------------------------");
+         System.out.println("\t \t \t \t" + uVO.getUserId() + "님 안녕하세요.");
+         System.out.println("-----------------------------------------------------------------------------------");
+         System.out.println("\t \t (1)회원정보 | (2)상품보기 | (3)로그아웃 | (4)장바구니 | (5)주문내역");
+         System.out.println("-----------------------------------------------------------------------------------");
          System.out.print("메뉴 번호 입력: ");
          String input = sc.nextLine();
          try {   
@@ -101,20 +95,21 @@ public class Main {
 
             // 회원정보
             case 1 :
-               System.out.println("***회원정보***");
+               System.out.println("-----------------------------------------------------------------------------------");
+               System.out.println("\t \t \t \t ***회원정보***");
+               System.out.println("-----------------------------------------------------------------------------------");
                uVO = uDAO.getUser(uVO.getUserId());
                System.out.println(uVO);
-               System.out.println("(1)회원정보수정 | (2)회원탈퇴 | (3)뒤로가기");
+               System.out.println("-----------------------------------------------------------------------------------");
+               System.out.println("\t\t\t (1)회원정보수정 | (2)회원탈퇴 | (3)뒤로가기");
                System.out.print("메뉴 번호 입력: ");
-               int userMenuSelect = sc.nextInt();
-               sc.nextLine();
-
-               // 회원정보 수정
-               if (userMenuSelect == 1) {
-                  updateUser();                  
-
-                  // 회원정보 삭제
-               } else if (userMenuSelect == 2) {
+               String input1 = sc.nextLine();
+               int userMenuSelect = Integer.parseInt(input1);
+               switch(userMenuSelect) {
+               case 1 : 
+                  updateUser();
+                  break;
+               case 2 :
                   System.out.println("***회원 탈퇴***");
                   System.out.print("아이디 : ");
                   String id = sc.nextLine();
@@ -123,14 +118,16 @@ public class Main {
                   if (id.equals(uVO.getUserId()) && pwd.equals(uVO.getUserId())) {
                      deleteUser();
                      main(null);
+                  } else {
+                     System.out.println("비밀번호가 일치하지 않습니다");
                   }
-
-                  // 뒤로가기
-               } else if (userMenuSelect == 3) {
+                  break;
+               case 3: 
                   mainPage();
+                  break;
+               default :
+                  System.out.println("잘못된 입력");
                }
-               break;
-
 
             case 2 :
                System.out.println("***상품목록***");
@@ -158,6 +155,7 @@ public class Main {
 
    // START USER ===========================================================================
    public static void login() {   
+      System.out.println("-----------------------------------------------------------------------------------");
       System.out.print("아이디 : ");
       String id = sc.nextLine();
       System.out.print("비밀번호 : ");
@@ -203,7 +201,10 @@ public class Main {
 
    public static void updateUser() {
       // 이름, 핸드폰번호, 주소 수정
-      System.out.println("***수정***");
+      System.out.println("-----------------------------------------------------------------------------------");
+      System.out.println("\t\t\t\t*** 수  정 ***");
+      System.out.println("-----------------------------------------------------------------------------------");
+
       System.out.print("이름 : ");
       uVO.setUserName(sc.nextLine());
       System.out.print("핸드폰 : ");
@@ -215,6 +216,7 @@ public class Main {
       } catch(RuntimeException e) {
          System.out.println(e.getMessage());
       }
+      mainPage();
    }
 
    public static void deleteUser() {
@@ -247,7 +249,7 @@ public class Main {
          switch (allProductSelect) {
          case 1 -> category();
          case 2 -> cartInsert();
-         case 3 -> InsertProductOrder();
+         case 3 -> orderInsert();
          case 4 -> cart();
          case 5 -> mainPage();
          default ->
@@ -258,12 +260,7 @@ public class Main {
       }
    }
 
-   private static void InsertProductOrder() {
-	// TODO Auto-generated method stub
-	
-}
-
-public static void category() {
+   public static void category() {
       ICategoryDAO cDAO = new CategoryDAO();
       ArrayList<CategoryVO> cVO = new ArrayList<CategoryVO>();
 
@@ -291,7 +288,7 @@ public static void category() {
             int selectCategorymenu = Integer.parseInt(input);
             switch (selectCategorymenu) {
             case 1 -> cartInsert();
-            case 2 -> InsertProductOrder();
+            case 2 -> orderInsert();
             case 3 -> cart();
             case 4 -> mainPage();
             default -> System.out.println("잘못된 입력");
@@ -311,7 +308,7 @@ public static void category() {
    public static void cart() {
       ArrayList<CartVO> cartList = cDAO.getAllCart(uVO.getUserId());
       for (CartVO cart : cartList) {
-            System.out.println(cart);            
+         System.out.println(cart);            
       }
       System.out.println("(1)구매하기 | (2)뒤로가기 | (3)삭제하기 | (4)수량변경");
       System.out.print("메뉴 번호 입력: ");
@@ -319,7 +316,7 @@ public static void category() {
       try {
          int cartmenu = Integer.parseInt(input);
          switch (cartmenu) {
-         case 1 -> orderInsertCart(cartList);
+         case 1 -> orderInsert();
          case 2 -> mainPage();
          case 3 -> deleteCart();
          case 4 -> updateCart();
@@ -361,7 +358,6 @@ public static void category() {
          cVO.setProductId(proVO.getProductId());
          cVO.setProductName(proVO.getProductName());
          cVO.setCartCnt(addProductCnt);
-//         cVO.setTotalPrice(addProductCnt * proVO.getProductPrice());
          cVO.setOptions(productOption);
          cDAO.insertCart(cVO);
          System.out.println(cVO.getProductName() + " " + cVO.getCartCnt() + "개가 추가되었습니다.");
@@ -381,14 +377,14 @@ public static void category() {
          System.out.println("잘못된 메뉴");
       }
    }
-   
+
    public static void deleteCart() {
       System.out.print("삭제할 카트 ID: ");
       int deleteCartNumber = sc.nextInt();
       sc.nextLine();
       cDAO.deleteCart(deleteCartNumber);
    }
-   
+
    public static void updateCart() {
       System.out.print("수량을 바꿀 카트 ID: ");
       int updateCartId = sc.nextInt();
@@ -421,8 +417,7 @@ public static void category() {
 	         System.out.println(e.getMessage());
 	      }
 	     // product();
-   }
-
+  }
    // END ORDER ========================================================================
 
    // START ADMIN =======================================================================
@@ -560,7 +555,7 @@ public static void category() {
       } catch (RuntimeException e) {
          System.out.println(e.getMessage());
       }
-      product();
+      adminProduct();
    }
    // Admin 상품관리 끝 =====================================================================
 
@@ -629,7 +624,7 @@ public static void category() {
          sc.nextLine();
          switch(num) {
          case 1 -> 
-         adminOrderSearch();
+         adminOrderInsert();
          case 2 ->
          adminOrderUpdate();
          case 3 ->
@@ -642,7 +637,7 @@ public static void category() {
       }
    }
 
-   public static void adminOrderSearch() {
+   public static void adminOrderInsert() {
       System.out.println("***주문 전체 조회***");
       try {
          ArrayList<OrderVO> oVO = oDAO.getAllOrderList();

@@ -1,6 +1,8 @@
-package model;
+package DAO;
 
 import java.util.ArrayList;
+
+import model.ProductVO;
 
 public interface IProductDAO {
 	public ArrayList<ProductVO> getAllProducts();

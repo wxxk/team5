@@ -1,4 +1,4 @@
-package model;
+package DAO.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,7 +6,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import DAO.IOrderDetailDAO;
 import main.DataSource;
+import model.OrderDetailVO;
+import model.ProductVO;
 
 public class OrderDetailDAO implements IOrderDetailDAO {
 

@@ -1,6 +1,8 @@
-package model;
+package DAO;
 
 import java.util.ArrayList;
+
+import model.UsersVO;
 
 
 public interface IUsersDAO {

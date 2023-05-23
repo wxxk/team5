@@ -1,6 +1,8 @@
-package model;
+package DAO;
 
 import java.util.ArrayList;
+
+import model.OrderDetailVO;
 
 public interface IOrderDetailDAO {
 	public ArrayList<OrderDetailVO> getAllOrderDetailList(); //admin에서 볼때
