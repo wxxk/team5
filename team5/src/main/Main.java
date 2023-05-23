@@ -2,9 +2,29 @@ package main;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
-import model.*;
+import model.AdminDAO;
+import model.AdminVO;
+import model.CartDAO;
+import model.CartVO;
+import model.CategoryDAO;
+import model.CategoryVO;
+import model.IAdminDAO;
+import model.ICategoryDAO;
+import model.IOrderDAO;
+import model.IProductDAO;
+import model.IProductDetailDAO;
+import model.IUsersDAO;
+import model.OrderDAO;
+import model.OrderVO;
+import model.ProductDAO;
+import model.ProductDetailDAO;
+import model.ProductDetailVO;
+import model.ProductVO;
+import model.UsersDAO;
+import model.UsersVO;
 
 public class Main {
    public static Scanner sc = new Scanner(System.in);
@@ -227,7 +247,7 @@ public class Main {
          switch (allProductSelect) {
          case 1 -> category();
          case 2 -> cartInsert();
-         case 3 -> orderInsert();
+         case 3 -> InsertProductOrder();
          case 4 -> cart();
          case 5 -> mainPage();
          default ->
@@ -238,7 +258,12 @@ public class Main {
       }
    }
 
-   public static void category() {
+   private static void InsertProductOrder() {
+	// TODO Auto-generated method stub
+	
+}
+
+public static void category() {
       ICategoryDAO cDAO = new CategoryDAO();
       ArrayList<CategoryVO> cVO = new ArrayList<CategoryVO>();
 
@@ -266,7 +291,7 @@ public class Main {
             int selectCategorymenu = Integer.parseInt(input);
             switch (selectCategorymenu) {
             case 1 -> cartInsert();
-            case 2 -> orderInsert();
+            case 2 -> InsertProductOrder();
             case 3 -> cart();
             case 4 -> mainPage();
             default -> System.out.println("잘못된 입력");
@@ -294,7 +319,7 @@ public class Main {
       try {
          int cartmenu = Integer.parseInt(input);
          switch (cartmenu) {
-         case 1 -> orderInsert();
+         case 1 -> orderInsertCart(cartList);
          case 2 -> mainPage();
          case 3 -> deleteCart();
          case 4 -> updateCart();
@@ -336,7 +361,7 @@ public class Main {
          cVO.setProductId(proVO.getProductId());
          cVO.setProductName(proVO.getProductName());
          cVO.setCartCnt(addProductCnt);
-         cVO.setTotalPrice(addProductCnt * proVO.getProductPrice());
+//         cVO.setTotalPrice(addProductCnt * proVO.getProductPrice());
          cVO.setOptions(productOption);
          cDAO.insertCart(cVO);
          System.out.println(cVO.getProductName() + " " + cVO.getCartCnt() + "개가 추가되었습니다.");
@@ -383,17 +408,21 @@ public class Main {
       }
    }
 
-   public static void orderInsert() {
-      ArrayList<CartVO> clVOs = cDAO.getAllCart(uVO.getUserId());
-      for(CartVO clVO : clVOs) {
-         oVO.setUserId(uVO.getUserId());
-         oVO.setProductId(clVO.getProductId());
-         oVO.setCartId(clVO.getCartId());
-         oDAO.insertOrder(oVO);
-         cDAO.deleteCart(oVO.getCartId());
-         System.out.println(clVO.getProductName() + "추가 완료");
-      }
+   public static void orderInsertCart(List <CartVO> cl) {
+	   	System.out.println("***카트 구매***");
+	   	System.out.println("카트 ID: ");
+	   	int cartId = sc.nextInt();
+	   	sc.nextLine();
+	   	try {
+	   		cVO=cDAO.getOrderCart(cartId);
+	   		oDAO.insertCartOrder(s.loginUserId, cVO.getProductId(), cVO.getCartId(), cl);
+	        System.out.println(oDAO);
+	      }catch(RuntimeException e) {
+	         System.out.println(e.getMessage());
+	      }
+	     // product();
    }
+
    // END ORDER ========================================================================
 
    // START ADMIN =======================================================================
@@ -531,7 +560,7 @@ public class Main {
       } catch (RuntimeException e) {
          System.out.println(e.getMessage());
       }
-      adminProduct();
+      product();
    }
    // Admin 상품관리 끝 =====================================================================
 
@@ -600,7 +629,7 @@ public class Main {
          sc.nextLine();
          switch(num) {
          case 1 -> 
-         adminOrderInsert();
+         adminOrderSearch();
          case 2 ->
          adminOrderUpdate();
          case 3 ->
@@ -613,7 +642,7 @@ public class Main {
       }
    }
 
-   public static void adminOrderInsert() {
+   public static void adminOrderSearch() {
       System.out.println("***주문 전체 조회***");
       try {
          ArrayList<OrderVO> oVO = oDAO.getAllOrderList();
