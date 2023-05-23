@@ -179,7 +179,7 @@ public class OrderDAO implements IOrderDAO {
 				   stmt.setString(2, vo.getUserId());
 				   stmt.setInt(3, totalprice);
 				   
-				   count = stmt.executeUpdate(); 
+//				   count = stmt.executeUpdate(); 
 
 				   OrderDetailVO odVO=null;
 				   //orderdetails
