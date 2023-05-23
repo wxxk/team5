@@ -1,4 +1,4 @@
-package DAO.impl;
+package model;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 import DAO.ICartDAO;
 import main.DataSource;
-import model.CartVO;
 
 public class CartDAO implements ICartDAO{
 	//카트 전체 조회
@@ -46,8 +45,8 @@ public class CartDAO implements ICartDAO{
 		}
 		return cartList;
 	}
-	
-	
+
+
 	//cart_id별로 조회
 	public ArrayList<CartVO> getCart(int cartId){
 		ArrayList<CartVO> cartList = new ArrayList<CartVO>();
@@ -83,7 +82,7 @@ public class CartDAO implements ICartDAO{
 			DataSource.closeConnection(con);
 		}
 		return cartList;
-		
+
 	}
 
 	//카트에 담긴 상품 전체삭제
@@ -121,14 +120,15 @@ public class CartDAO implements ICartDAO{
 		}
 		return deleteRow;
 	}
+	//하나만 ->cartID 얘가 
+	//한번에다하기
 
 
-	
 	//상품 등록
 	public int insertCart(CartVO vo) {
 		int count = 0;
 		String sql = "INSERT INTO cart (cart_id, user_id, product_id, cart_cnt, options) "
-		+ "VALUES(cart_seq.NEXTVAL,?,?,?,?)";
+				+ "VALUES(cart_seq.NEXTVAL,?,?,?,?)";
 		Connection con = null;
 		try {
 			con = DataSource.getConnection();
@@ -145,7 +145,7 @@ public class CartDAO implements ICartDAO{
 		}
 		return count;
 	}
-		
+
 	//장바구니 수량 변경
 	public int updateCart(int cartCnt, int cartId) {
 		int count = 0;
@@ -164,7 +164,7 @@ public class CartDAO implements ICartDAO{
 		}
 		return count;
 	}
-		
+
 	//한개의 카트불러오기
 	public CartVO getOrderCart(int cartId) {
 		CartVO cVO = null;
@@ -190,16 +190,15 @@ public class CartDAO implements ICartDAO{
 	}
 
 	
-	
-	
-		
-	}
-	
-	
-	
-	
-	
-	
+
+
+}
+
+
+
+
+
+
 
 
 
