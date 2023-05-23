@@ -329,23 +329,39 @@ public class Main {
    // START CART========================================================================
    public static void cart() {
       ArrayList<CartVO> cartList = cDAO.getAllCart(uVO.getUserId());
-      for (CartVO cart : cartList) {
-         System.out.println(cart);            
-      }
-      System.out.println("(1)구매하기 | (2)뒤로가기 | (3)삭제하기 | (4)수량변경");
-      System.out.print("메뉴 번호 입력: ");
-      String input = sc.nextLine();
-      try {
-         int cartmenu = Integer.parseInt(input);
-         switch (cartmenu) {
-         case 1 -> orderInsertCart(cartList);
-         case 2 -> mainPage();
-         case 3 -> deleteCart();
-         case 4 -> updateCart();
-         default -> System.out.println("잘못된 입력");
-         }
-      } catch (NumberFormatException e) {
-         System.out.println(e.getMessage());
+      System.out.println(cartList.size());
+      if (cartList.size() == 0) {
+    	  System.out.println("장바구니가 비어있습니다.");
+    	  System.out.println("-----------------------------------------");
+    	  System.out.println("(1)상품보기 | (2)메인으로");
+    	  String input = sc.nextLine();
+    	  try {
+    		  int num = Integer.parseInt(input);
+    		  switch (num) {
+    		  case 1 -> product();
+    		  case 2 -> mainPage();
+    		  defaul 3 -> System.out.println("잘못된 입력!");
+    		  }
+    	  }
+      } else {
+    	  for (CartVO cart : cartList) {
+    		  System.out.println(cart);            
+    	  }
+    	  System.out.println("(1)구매하기 | (2)뒤로가기 | (3)삭제하기 | (4)수량변경");
+    	  System.out.print("메뉴 번호 입력: ");
+    	  String input = sc.nextLine();
+    	  try {
+    		  int cartmenu = Integer.parseInt(input);
+    		  switch (cartmenu) {
+    		  case 1 -> orderInsertCart(cartList);
+    		  case 2 -> mainPage();
+    		  case 3 -> deleteCart();
+    		  case 4 -> updateCart();
+    		  default -> System.out.println("잘못된 입력");
+    		  }
+    	  } catch (NumberFormatException e) {
+    		  System.out.println(e.getMessage());
+    	  }
       }
    }
 
@@ -439,7 +455,7 @@ public class Main {
          }catch(RuntimeException e) {
             System.out.println(e.getMessage());
          }
-         product();
+         order();
    }
    public static void insertOrder() {
 	   oVO.setUserId(uVO.getUserId());

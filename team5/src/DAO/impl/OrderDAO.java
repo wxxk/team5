@@ -65,10 +65,11 @@ public class OrderDAO implements IOrderDAO {
 		ArrayList<OrderVO> orderList = new ArrayList<OrderVO>();
 
 		String sql = 
-				"SELECT o.order_id, p.product_name, p.product_price, u.user_name, u.user_address, u.user_phone_number, o.order_total_price "
+				"SELECT o.order_id, p.product_name, p.product_price, u.user_name, u.user_address, u.user_phone_number, o.order_total_price, od.options "
 				+ "FROM users u "
 				+ "JOIN orders o ON u.user_id = o.user_id "
 				+ "JOIN product p ON o.product_id = p.product_id "
+				+ "JOIN order_details od on o.order_id = od.order_id "
 				+ "WHERE u.user_id = ?";
 		Connection con = null;
 		try {
@@ -87,6 +88,7 @@ public class OrderDAO implements IOrderDAO {
 				od.setUserAddress(rs.getString("user_address"));
 				od.setUserPhoneNumber(rs.getString("user_phone_number"));
 				od.setTotalPrice(rs.getInt("order_total_Price"));
+				od.setOptions(rs.getString("options"));
 				orderList.add(od);
 			}
 		} catch (SQLException e) {
@@ -147,6 +149,7 @@ public class OrderDAO implements IOrderDAO {
 		   List<OrderDetailVO> oVoList= new ArrayList<OrderDetailVO>();
 		   ProductDetailDAO pdDAO = new ProductDetailDAO();
 		   ProductDetailVO pdVO = new ProductDetailVO();
+		   CartDAO cDAO = new CartDAO();
 		   
 		   int orderPk = 0;
 		   
@@ -192,7 +195,8 @@ public class OrderDAO implements IOrderDAO {
 				   odVO.setOptions(cart.getOptions());
 				   oVoList.add(odVO);
 				   odDAO.insertOrderDetail(odVO);
-				   pdDAO.updateStock(productId , pdVO.getCnt()-odVO.getProductCnt());
+//				   pdDAO.updateStock(productId, pdVO.getCnt()-odVO.getProductCnt());
+				   cDAO.deleteCart(cart.getCartId());
 			   }
 			   
 			   
