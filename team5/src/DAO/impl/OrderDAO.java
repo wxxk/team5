@@ -1,4 +1,4 @@
-package model;
+package DAO.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,7 +6,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import DAO.IOrderDAO;
 import main.DataSource;
+import model.CartVO;
+import model.OrderVO;
+import model.ProductDetailVO;
+import model.ProductVO;
 
 public class OrderDAO implements IOrderDAO {
 
@@ -171,7 +176,7 @@ public class OrderDAO implements IOrderDAO {
 			count = stmt.executeUpdate();
 			
 			
-//			pdDAO.updateStock(productId , pdVO.getCnt()-oVO.getCartCnt());
+//			pdDAO.updateStock(productId , pdVO.getCnt()-odVO.getproductCnt());
 
 		} catch(Exception e) {
 			throw new RuntimeException(e);

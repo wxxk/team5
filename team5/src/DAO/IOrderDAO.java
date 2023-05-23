@@ -1,6 +1,8 @@
-package model;
+package DAO;
 
 import java.util.ArrayList;
+
+import model.OrderVO;
 
 public interface IOrderDAO {
 	public ArrayList<OrderVO> getAllOrderList(); //admin입장에서 전체주문조회

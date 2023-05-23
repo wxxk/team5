@@ -1,6 +1,8 @@
-package model;
+package DAO;
 
 import java.util.ArrayList;
+
+import model.CartVO;
 
 public interface ICartDAO {
 	public ArrayList<CartVO> getAllCart(String userId);
