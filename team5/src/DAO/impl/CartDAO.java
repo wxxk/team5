@@ -165,6 +165,29 @@ public class CartDAO implements ICartDAO{
 		return count;
 	}
 		
+	//한개의 카트불러오기
+	public CartVO getOrderCart(int cartId) {
+		CartVO cVO = null;
+		String sql = "SELECT user_id, product_id FROM cart WHERE cart_id=? ";
+		Connection con = null;
+		PreparedStatement stmt = null;
+		try {
+			con = DataSource.getConnection();
+			stmt = con.prepareStatement(sql);
+			stmt.setInt(1, cartId);
+			ResultSet rs = stmt.executeQuery();
+			if(rs.next()) {
+				cVO = new CartVO();
+				cVO.setUserId(rs.getString("user_id"));
+				cVO.setProductId(rs.getInt("product_id"));
+			}
+		}catch(SQLException e) {
+			throw new RuntimeException(e);
+		}finally {
+			DataSource.closeConnection(con);
+		}
+		return cVO;
+	}
 
 	
 	

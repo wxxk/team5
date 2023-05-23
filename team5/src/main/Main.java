@@ -2,6 +2,7 @@ package main;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 import DAO.AdminDAO;
@@ -301,7 +302,7 @@ public class Main {
             int selectCategorymenu = Integer.parseInt(input);
             switch (selectCategorymenu) {
             case 1 -> cartInsert();
-            case 2 -> orderInsert();
+            case 2 -> orderInsertCart(cl);
             case 3 -> cart();
             case 4 -> mainPage();
             default -> System.out.println("잘못된 입력");
@@ -329,7 +330,7 @@ public class Main {
       try {
          int cartmenu = Integer.parseInt(input);
          switch (cartmenu) {
-         case 1 -> orderInsert();
+         case 1 -> orderInsertCart(cl);
          case 2 -> mainPage();
          case 3 -> deleteCart();
          case 4 -> updateCart();
