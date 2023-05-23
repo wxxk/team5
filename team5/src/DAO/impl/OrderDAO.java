@@ -207,6 +207,14 @@ public class OrderDAO implements IOrderDAO {
 
 
 
+	@Override
+	public int insertCartOrder() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+
 
 
 }

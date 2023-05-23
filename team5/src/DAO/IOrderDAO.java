@@ -1,7 +1,9 @@
 package DAO;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import model.CartVO;
 import model.OrderVO;
 
 public interface IOrderDAO {
@@ -11,4 +13,5 @@ public interface IOrderDAO {
 	public int insertProductOrder(String userId, int productDetailId, int cnt);
 	public int updateOrder(OrderVO vo); //user_address options
 	public int deleteOrder(OrderVO vo);
+	int insertCartOrder(String userId, int productId, int cartId, List<CartVO> cl);
 }
