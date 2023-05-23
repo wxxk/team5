@@ -620,18 +620,34 @@ public class Main {
 		sc.nextLine();
 		System.out.println("상품 이미지: ");
 		proVO.setProductImg(sc.nextLine());
-		System.out.println("수량: ");
-		//        proVO.setCnt(sc.nextInt());
-		sc.nextLine();
 		try {
 			proDAO.insertProduct(proVO); 
 			System.out.println(proVO);
 		}catch(RuntimeException e) {
 			System.out.println(e.getMessage());
 		}
-		adminProduct();
+		adminProductDetailInsert();
 	}
-
+	
+	public static void adminProductDetailInsert() {
+		System.out.println("***상품 디테일 등록***");
+		System.out.println("상품ID: ");
+		int productId = sc.nextInt();
+		pdVO.setProductId(productId);
+		System.out.println("재고: ");
+		pdVO.setCnt(sc.nextInt());
+		sc.nextLine();
+		System.out.println("옵션: ");
+		pdVO.setOptions(sc.nextLine());
+		try {
+			pdDAO.insertProductDetail(pdVO);
+			System.out.println(pdVO);
+		}catch(RuntimeException e) {
+			System.out.println(e.getMessage());
+		}
+		adminProduct();
+		
+	}
 	public static void adminProductUpdate() {
 		System.out.println("***상품 수정***");
 		System.out.println("상품 ID: ");
@@ -648,17 +664,33 @@ public class Main {
 		sc.nextLine();
 		System.out.println("상품 이미지: ");
 		proVO.setProductImg(sc.nextLine());
-		System.out.println("수량: ");
-		//      proVO.setCnt(sc.nextInt());
-		sc.nextLine();
 		try {
 			proDAO.updateProduct(proVO);
 			System.out.println(proVO);
 		}catch(RuntimeException e) {
 			System.out.println(e.getMessage());
 		}
-		adminProduct();
+		adminProductDetailUpdate();
 
+	}
+	
+	public static void adminProductDetailUpdate() {
+		System.out.println("***상품 디테일 수정***");
+		System.out.println("상품ID: ");
+		int productId = sc.nextInt();
+		pdVO.setProductId(productId);
+		System.out.println("재고: ");
+		pdVO.setCnt(sc.nextInt());
+		sc.nextLine();
+		System.out.println("옵션: ");
+		pdVO.setOptions(sc.nextLine());
+		try {
+			pdDAO.updateProductDetail(pdVO);
+			System.out.println(pdDAO);
+		}catch(RuntimeException e) {
+			System.out.println(e.getMessage());
+		}
+		adminProduct();
 	}
 
 	public static void adminProductDelete() {
@@ -693,7 +725,7 @@ public class Main {
 	public static void adminUserManagement() {
 		System.out.println("***Admin User Management***");
 		System.out.println("---------------------------------------------");
-		System.out.println("(1)회원정보 조회   | (2)뒤로가기  ");
+		System.out.println("(1)회원정보 조회   | (2)회원 삭제   | (3)뒤로가기  ");
 		System.out.println("---------------------------------------------");
 		System.out.print("번호를 입력하세요: ");
 		try {
@@ -730,11 +762,12 @@ public class Main {
 		System.out.println("***회원 삭제***");
 		System.out.print("회원ID: ");
 		String userId = sc.nextLine();
-		uVO = new model.UsersVO(); //uVO초기화
 		uVO.setUserId(userId);
+		System.out.println("상태변경: ");
+		uVO.setStated(sc.nextInt());
+		sc.nextLine();
 		try {
-			uDAO.deleteUser(uVO);
-			System.out.println(userId + "삭제완료");
+			uDAO.updateUser(uVO);
 		}catch(RuntimeException e) {
 			System.out.println(e.getMessage());
 		}
@@ -746,7 +779,7 @@ public class Main {
 	public static void adminOrderManagement() {
 		System.out.println("***Admin Order Management***");
 		System.out.println("---------------------------------------------");
-		System.out.println("(1)주문조회   | (2)주문수정  | (3)뒤로가기   ");
+		System.out.println("(1)주문조회   | (2)뒤로가기   ");
 		System.out.println("---------------------------------------------");
 		System.out.println("번호를 입력하세요: ");
 		try {
@@ -756,8 +789,6 @@ public class Main {
 			case 1 -> 
 			adminOrderInsert();
 			case 2 ->
-			adminOrderUpdate();
-			case 3 ->
 			admin();
 			default ->
 			System.out.println("잘못된 선택");
@@ -780,25 +811,7 @@ public class Main {
 		adminOrderManagement();
 	}
 
-	public static void adminOrderUpdate() {
-		System.out.println("***주문 수정***");
-		System.out.println("주문 ID: ");
-		int orderId = sc.nextInt();
-		sc.nextLine();
-		oVO.setOrderId(orderId);
-		System.out.println("옵션: ");
-		oVO.setOptions(sc.nextLine());
-		System.out.println("주소: ");
-		oVO.setUserAddress(sc.nextLine());
-		try {
-			oDAO.updateOrder(oVO);
-			System.out.println(oVO);
-		}catch(RuntimeException e) {
-			System.out.println(e.getMessage());
-		}
-		adminOrderManagement();
 
-	}
 
 
 	// Admin 주문관리 끝 =========================================================================

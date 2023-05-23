@@ -11,6 +11,6 @@ public interface IOrderDAO {
 	public ArrayList<OrderVO> getOrderList(String userId); //user에 따른 주문 목록
 	public void insertCartOrder(List<CartVO> vos);
 	public int insertProductOrder(OrderVO vo, int cnt, String orderDetailOptions);
-	public int updateOrder(OrderVO vo); //user_address options
-	public int deleteOrder(OrderVO vo);
+//	public int updateOrder(OrderVO vo); //user_address options
+//	public int deleteOrder(OrderVO vo);
 }
