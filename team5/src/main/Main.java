@@ -334,7 +334,7 @@ public class Main {
       try {
          int cartmenu = Integer.parseInt(input);
          switch (cartmenu) {
-//         case 1 -> orderInsertCart();
+         case 1 -> orderInsertCart(cartList);
          case 2 -> mainPage();
          case 3 -> deleteCart();
          case 4 -> updateCart();
@@ -429,13 +429,15 @@ public class Main {
          sc.nextLine();
          try {
             cVO=cDAO.getOrderCart(cartId);
-            oDAO.insertCartOrder(s.loginUserId, cVO.getProductId(), cVO.getCartId(), cl);
+            System.out.println("test3");
+            oDAO.insertCartOrder(s.loginUserId, cVO.getProductId(), cVO.getCartId(),cl, cVO.getOptions());
            System.out.println(oDAO);
          }catch(RuntimeException e) {
             System.out.println(e.getMessage());
          }
-        // product();
+         product();
    }
+   
    public static void insertOrder() {
       oVO.setUserId(uVO.getUserId());
       
