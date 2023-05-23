@@ -253,6 +253,10 @@ public class Main {
    public static void product() {
       try {
          ArrayList<ProductVO> pVO = proDAO.getAllProducts();
+         System.out.println("상품 ID  |" + "  카테고리 ID  |"  +
+ 				"    상품 이름      |" + "    상품 가격      |" +
+ 				"      상품 이미지         |");
+         System.out.println("---------------------------------------------------------------------");
          for (ProductVO pro : pVO) {
             System.out.println(pro);
          }
