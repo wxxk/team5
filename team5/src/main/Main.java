@@ -349,6 +349,7 @@ public class Main {
 			System.out.println("장바구니가 비어있습니다.");
 			System.out.println("-----------------------------------------");
 			System.out.println("(1)상품보기 | (2)메인으로");
+			System.out.print("메뉴 입력 : ");
 			String input = sc.nextLine();
 			try {
 				int num = Integer.parseInt(input);
@@ -468,23 +469,41 @@ public class Main {
 		for (OrderVO order : orderlist) {
 			System.out.println(order);
 		}
+		System.out.println("(1)메인 페이지 | (2)상품보기 | (3)장바구니");
+		System.out.print("메뉴 입력 : ");
+		String input = sc.nextLine();
+		int num = Integer.parseInt(input);
+		try {
+			switch(num) {
+			case 1 -> mainPage();
+			case 2 -> product();
+			case 3 -> cart();
+			default -> System.out.println("잘못된 입력!");
+			}
+		} catch (NumberFormatException e) {
+			System.out.println(e.getMessage());
+		}
+		
 	}
 
 	public static void orderInsertCart(List <CartVO> cl) {
 		List <CartVO> cartlist = new ArrayList<CartVO>();
 
 		System.out.println("***카트 구매***");
-		System.out.print("(1)전체구매 | (2)선택구매");
+		System.out.println("(1)전체구매 | (2)선택구매");
+		System.out.print("메뉴입력 : ");
 		int addnum = sc.nextInt();
 		sc.nextLine();
 
 		switch(addnum) {
 		case 1:
+//			oVO.setUserId(s.loginUserId);
 			oDAO.insertCartOrder(cl);
 			break;
+		
 		case 2:
 			while (true) {
-				System.out.println("카트 ID: ");
+				System.out.print("카트 ID: ");
 				int cartId = sc.nextInt();
 				sc.nextLine();
 				try {

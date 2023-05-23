@@ -14,7 +14,7 @@ public class CartDAO implements ICartDAO{
 	//카트 전체 조회
 	public ArrayList<CartVO> getAllCart(String userId){
 		ArrayList<CartVO> cartList = new ArrayList<CartVO>();
-		String sql = "SELECT c.cart_id, p.product_id, p.product_name, ct.category_name, c.options, c.cart_cnt, c.total_price "+		
+		String sql = "SELECT c.cart_id, p.product_id, p.product_name, ct.category_name, c.options, c.cart_cnt, c.total_price,u.user_id "+		
 				"FROM users u, cart c, product p, category ct "+
 				"WHERE u.user_id = c.user_id "+
 				"AND c.product_id = p.product_id "+
@@ -31,6 +31,7 @@ public class CartDAO implements ICartDAO{
 			while(rs.next()) {
 				CartVO ct = new CartVO();
 				ct.setCartId(rs.getInt("cart_id"));
+				ct.setUserId(rs.getString("user_id"));
 				ct.setProductId(rs.getInt("product_id"));
 				ct.setProductName(rs.getString("product_name"));
 				ct.setCategoryName(rs.getString("category_name"));
@@ -128,17 +129,17 @@ public class CartDAO implements ICartDAO{
 	//상품 등록
 	public int insertCart(CartVO vo) {
 		int count = 0;
-		String sql = "INSERT INTO cart (cart_id, user_id, cart_cnt, product_id, options) "
-		+ "VALUES(cart_seq.NEXTVAL, ?, ?, ?, ?)";
+		String sql = "INSERT INTO cart (cart_id, user_id, cart_cnt, product_id, total_price, options) "
+		+ "VALUES(cart_seq.NEXTVAL, ?, ?, ?, ?, ?)";
 		Connection con = null;
 		try {
 			con = DataSource.getConnection();
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setString(1, vo.getUserId());
-			stmt.setInt(2, vo.getProductId());
-			stmt.setInt(3, vo.getCartCnt());
+			stmt.setInt(2, vo.getCartCnt());
+			stmt.setInt(3, vo.getProductId());
 			stmt.setInt(4, vo.getTotalPrice());
-			stmt.setString(4, vo.getOptions());
+			stmt.setString(5, vo.getOptions());
 			count = stmt.executeUpdate();
 		} catch(Exception e) {
 			throw new RuntimeException(e);
@@ -187,7 +188,7 @@ public class CartDAO implements ICartDAO{
 				cVO.setProductId(rs.getInt("product_id"));
 				cVO.setCartCnt(rs.getInt("cart_cnt"));
 				cVO.setOptions(rs.getString("options"));
-				cVO.setTotalPrice(rs.getInt("total_price"));
+				cVO.setTotalPrice(rs.getInt("product_price"));
 			}
 		}catch(SQLException e) {
 			throw new RuntimeException(e);
