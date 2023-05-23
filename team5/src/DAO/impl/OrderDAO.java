@@ -77,7 +77,7 @@ public class OrderDAO implements IOrderDAO {
 				OrderVO od = new OrderVO();
 				od.setUserId(userId);
 				od.setOrderId(rs.getInt("order_id"));
-				od.setUserName(rs.getString("user_name"));
+				od.setProductName(rs.getString("product_name"));
 				od.setUserPhoneNumber(rs.getString("user_phone_number"));
 				od.setUserAddress(rs.getString("user_address"));
 				od.setProductImg(rs.getString("product_img"));
