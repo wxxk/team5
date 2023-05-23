@@ -13,7 +13,6 @@ public class OrderDAO implements IOrderDAO {
 	@Override
 	public ArrayList<OrderVO> getAllOrderList(){
 		ArrayList<OrderVO> orderList = new ArrayList<OrderVO>();
-		//total_price넣어야 함
 		String sql = 
 			"SELECT o.order_id, u.user_name, u.user_phone_number, u.user_address,"
 			+ "p.product_img, p.product_name, pd.options, c.cart_cnt, p.product_price, o.total_price "	
