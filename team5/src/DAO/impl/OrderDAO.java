@@ -95,43 +95,43 @@ public class OrderDAO implements IOrderDAO {
 	}
 
 
-	@Override
-	public int updateOrder(OrderVO vo) {
-		int count = 0;
-		String sql = "UPDATE orders SET user_address = ? AND options = ? WHERE order_id = ?";
-		Connection con = null;
-		try {
-			con = DataSource.getConnection();
-			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setString(1, vo.getUserAddress());
-			stmt.setString(2, vo.getOptions());
-			stmt.setInt(3, vo.getOrderId());
-			count = stmt.executeUpdate();
-		} catch(SQLException e) {
-			throw new RuntimeException(e);
-		} finally {
-			DataSource.closeConnection(con);
-		}
-		return count;
-	}
+//	@Override
+//	public int updateOrder(OrderVO vo) {
+//		int count = 0;
+//		String sql = "UPDATE orders SET user_address = ? AND options = ? WHERE order_id = ?";
+//		Connection con = null;
+//		try {
+//			con = DataSource.getConnection();
+//			PreparedStatement stmt = con.prepareStatement(sql);
+//			stmt.setString(1, vo.getUserAddress());
+//			stmt.setString(2, vo.getOptions());
+//			stmt.setInt(3, vo.getOrderId());
+//			count = stmt.executeUpdate();
+//		} catch(SQLException e) {
+//			throw new RuntimeException(e);
+//		} finally {
+//			DataSource.closeConnection(con);
+//		}
+//		return count;
+//	}
 
-	@Override
-	public int deleteOrder(OrderVO vo) {
-		int deleteRow = 0;
-		String sql = "DELETE FROM orders WHERE order_id = ?";
-		Connection con = null;
-		try {
-			con=DataSource.getConnection();
-			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setInt(1, vo.getOrderId());
-			deleteRow = stmt.executeUpdate();
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		}finally {
-			DataSource.closeConnection(con);
-		}
-		return deleteRow;
-	}
+//	@Override
+//	public int deleteOrder(OrderVO vo) {
+//		int deleteRow = 0;
+//		String sql = "DELETE FROM orders WHERE order_id = ?";
+//		Connection con = null;
+//		try {
+//			con=DataSource.getConnection();
+//			PreparedStatement stmt = con.prepareStatement(sql);
+//			stmt.setInt(1, vo.getOrderId());
+//			deleteRow = stmt.executeUpdate();
+//		} catch (SQLException e) {
+//			throw new RuntimeException(e);
+//		}finally {
+//			DataSource.closeConnection(con);
+//		}
+//		return deleteRow;
+//	}
 
 
 	@Override
