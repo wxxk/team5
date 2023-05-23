@@ -170,7 +170,9 @@ public class CartDAO implements ICartDAO{
 	//한개의 카트불러오기
 	public CartVO getOrderCart(int cartId) {
 		CartVO cVO = null;
-		String sql = "SELECT * FROM cart WHERE cart_id=? ";
+		String sql = "SELECT c.user_id, c.product_id, c.cart_cnt, c.options, p.product_price  FROM cart c "
+				+ "JOIN product p ON p.product_id = c.product_id "
+				+ "WHERE cart_id=? ";
 		Connection con = null;
 		PreparedStatement stmt = null;
 		try {
