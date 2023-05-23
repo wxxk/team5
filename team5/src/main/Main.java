@@ -296,8 +296,8 @@ public class Main {
          }
 
          System.out.print("조회할 카테고리 ID:");
-         sc.nextLine();
          int selectCategory = sc.nextInt();
+         sc.nextLine();
 
          ArrayList<ProductVO> prooVO = new ArrayList<ProductVO>();
          prooVO = proDAO.getProductBy(selectCategory);
@@ -385,10 +385,12 @@ public class Main {
       ArrayList<ProductDetailVO> productDetailList = pdDAO.getProductDetail(proVO.getProductId());
 
       // 옵션 선택
+      System.out.println("\t\t    ***제품 옵션(수량)***");
       for (ProductDetailVO productDetail : productDetailList) {
-         System.out.println("제품 옵션" + productDetail.getOptions());
-         System.out.println("남은 수량" + productDetail.getCnt());
+         System.out.print("\t\t" + productDetail.getOptions() + "(" + productDetail.getCnt() + ")");
       }
+      System.out.println();
+      System.out.println("--------------------------------------------------------------------------");
       System.out.print("옵션 선택:");
       String productOption = sc.nextLine();
 
