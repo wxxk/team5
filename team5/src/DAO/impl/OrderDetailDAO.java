@@ -41,7 +41,6 @@ public class OrderDetailDAO implements IOrderDetailDAO {
 		}finally {
 			DataSource.closeConnection(con);
 		}
-
 		return odlist;
 	}
 

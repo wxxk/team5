@@ -41,8 +41,6 @@ public class OrderVO {
 //				"productId:" + productId + "\t" +
 //				"productImg:" + productImg + "\t" +
 		
-		
-		
 	}
 
 	public String [] toArray() {

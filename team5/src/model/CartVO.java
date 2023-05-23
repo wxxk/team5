@@ -11,8 +11,8 @@ import lombok.Setter;
 @NoArgsConstructor
 
 
-public class CartVO {
-	private int cartId;
+public class CartVO {  
+	private int cartId;  
 	private String userId;
 	private int productId;
 	private String productImg;
@@ -26,14 +26,13 @@ public class CartVO {
 	@Override
 	public String toString() {
 		return  "   " +cartId + "\t" + "      " +
-				 productName +  "\t\t" + 
-				 categoryName + "\t\t" + 
-				 options + "           " +
-				 cartCnt + "\t    " +
+				productName +  "\t\t" + 
+				categoryName + "\t\t" + 
+				options + "           " +
+				cartCnt + "\t    " +
 				totalPrice  +"\n"+
 				"-----------------------------------------------------------------------------------------------";
-	
-	
+
 	}
 
 	public String [] toArray() {
@@ -41,7 +40,6 @@ public class CartVO {
 				cartId + "" + productImg + "" + productName + "" + categoryName + "" 
 						+ options + "" + cartCnt + "" + totalPrice + "" 
 		};
-
 
 	}
 }
