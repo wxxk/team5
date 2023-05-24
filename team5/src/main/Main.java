@@ -772,7 +772,9 @@ public class Main {
 		System.out.println("상품ID: ");
 		int productId = sc.nextInt();
 		sc.nextLine();
-		pdVO.setProductId(productId);
+		System.out.println("상품 옵션: ");
+		String options = sc.nextLine();
+		pdVO = pdDAO.getProductD(productId, options);
 		System.out.println("상품 재고: ");
 		pdVO.setCnt(sc.nextInt());
 		sc.nextLine();
@@ -847,12 +849,13 @@ public class Main {
 		System.out.println("***회원 삭제***");
 		System.out.print("회원ID: ");
 		String userId = sc.nextLine();
-		uVO.setUserId(userId);
+		uVO = uDAO.getUser(userId);
 		System.out.println("상태변경: ");
 		uVO.setStated(sc.nextInt());
 		sc.nextLine();
 		try {
-			uDAO.updateUser(uVO);
+			uDAO.deleteUser(uVO);
+			System.out.println(userId + "님의 회원상태를 비활성화 하였습니다.");
 		}catch(RuntimeException e) {
 			System.out.println(e.getMessage());
 		}

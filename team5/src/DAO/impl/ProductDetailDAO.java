@@ -103,16 +103,16 @@ public class ProductDetailDAO implements IProductDetailDAO {
 	@Override
 	public int updateProductDetail(ProductDetailVO vo) {
 		int count = 0;
-		String sql = "UPDATE product_detail SET product_id = ?, options = ?, cnt = ? "
-				+ "WHERE product_detail_id = ?";
+		String sql = "UPDATE product_detail SET options = ?, cnt = ? "
+				+ "WHERE product_id = ? AND options = ?";
 		Connection con = null;
 		try {
 			con = DataSource.getConnection();
 			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setInt(1, vo.getProductId());
-			stmt.setString(2, vo.getOptions());
-			stmt.setInt(3, vo.getCnt());
-			stmt.setInt(4, vo.getProductDetailId());
+			stmt.setString(1, vo.getOptions());
+			stmt.setInt(2, vo.getCnt());
+			stmt.setInt(3, vo.getProductId());
+			stmt.setString(4, vo.getOptions());
 			count = stmt.executeUpdate();
 		} catch(Exception e) {
 			throw new RuntimeException(e);
