@@ -94,7 +94,6 @@ public class Main {
 
 			}
 		}
-
 	}
 
 	public static void mainPage() {
@@ -201,7 +200,6 @@ public class Main {
 		}
 	}
 
-
 	public static void register() {      
 		System.out.print("아이디: ");
 		uVO.setUserId(sc.nextLine());
@@ -256,6 +254,7 @@ public class Main {
 	// START PRODUCT ====================================================================
 	public static void product() {
 		try {
+
 			ArrayList<ProductVO> pVO = proDAO.getAllProducts();
 			System.out.println("카테고리 ID  |" + "  상품 ID  |"  +
 					"    상품 이름      |" + "    상품 가격      |" +
@@ -291,7 +290,7 @@ public class Main {
 		ArrayList<CategoryVO> cVO = new ArrayList<CategoryVO>();
 
 		try {
-			cVO = cDAO.getAllCategories();
+			cVO = cDAO.getAllCategories(); //전체 카테고리 목록 보여주기
 			System.out.println("--------------------------------------------------------");
 			System.out.println("\t\t카테고리ID    |    "+"카테고리 이름");
 			System.out.println("--------------------------------------------------------");
@@ -306,7 +305,7 @@ public class Main {
 			System.out.println("--------------------------------------------------------");
 
 			ArrayList<ProductVO> prooVO = new ArrayList<ProductVO>();
-			prooVO = proDAO.getProductBy(selectCategory);
+			prooVO = proDAO.getProductBy(selectCategory); //선택한 카테고리의 상품 보여주기
 
 			System.out.println("카테고리 ID  |" + "  상품 ID  |"  +
 					"    상품 이름      |" + "    상품 가격      |" +
