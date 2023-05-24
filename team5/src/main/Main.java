@@ -67,7 +67,7 @@ public class Main {
 			System.out.println("□□□□□■■■■■□□□□□□□■■■■■■■■■■■□□□■■■□□□□□□□□■■■□□■■■□□□□□□□□□□■■■□□■■■■■■■■■■■■■□□□□□");
 			System.out.println("□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□");
 			System.out.println("-----------------------------------------------------------------------------------");
-			System.out.println("\t \t \t (1)로그인 | (2)회원가입 | (3)종료 ");
+			System.out.println("\t \t \t (1)로그인 | (2)회원가입 | (9)종료 ");
 			System.out.println("-----------------------------------------------------------------------------------");
 			System.out.print("메뉴 번호 입력: ");
 			String input = sc.nextLine();
@@ -80,11 +80,8 @@ public class Main {
 				case 2 :
 					register();
 					break;
-				case 3 : 
+				case 9 : 
 					exit();
-					break;
-				case 9 :
-					admin();
 					break;
 				default:
 					System.out.println("잘못된 선택");
@@ -101,7 +98,7 @@ public class Main {
 			System.out.println("-----------------------------------------------------------------------------------");
 			System.out.println("\t \t \t \t" + uVO.getUserId() + "님 안녕하세요.");
 			System.out.println("-----------------------------------------------------------------------------------");
-			System.out.println("\t \t (1)회원정보 | (2)상품보기 | (3)로그아웃 | (4)장바구니 | (5)주문내역");
+			System.out.println("\t \t (1)회원정보 | (2)상품보기 | (3)로그아웃 | (4)장바구니 | (5)주문내역 | (9)종료");
 			System.out.println("-----------------------------------------------------------------------------------");
 			System.out.print("메뉴 번호 입력: ");
 			String input = sc.nextLine();
@@ -122,7 +119,7 @@ public class Main {
 					System.out.println("-----------------------------------------------------------------------------------");
 					
 					
-					System.out.println("\t\t\t (1)회원정보수정 | (2)회원탈퇴 | (3)뒤로가기");
+					System.out.println("\t\t\t (1)회원정보수정 | (2)회원탈퇴 | (3)뒤로가기 | (9)종료");
 					System.out.print("메뉴 번호 입력: ");
 					String input1 = sc.nextLine();
 					int userMenuSelect = Integer.parseInt(input1);
@@ -147,6 +144,8 @@ public class Main {
 					case 3: 
 						mainPage();
 						break;
+					case 9:
+						exit();
 					default :
 						System.out.println("잘못된 입력");
 					}
@@ -166,6 +165,8 @@ public class Main {
 				case 5:
 					order();
 					break;
+				case 9:
+					exit();
 				default:
 					System.out.println("잘못된 선택");
 				}
@@ -243,6 +244,7 @@ public class Main {
 	public static void deleteUser() {
 		// 삭제안됨
 		try {
+			uVO.setStated(0);
 			uDAO.deleteUser(uVO);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
@@ -266,7 +268,7 @@ public class Main {
 		} catch (RuntimeException e) {
 			System.out.println(e.getMessage());
 		}
-		System.out.println("(1)카테고리 | (2)상품담기 | (3)바로구매 | (4)장바구니 | (5)뒤로가기");
+		System.out.println("(1)카테고리 | (2)상품담기 | (3)바로구매 | (4)장바구니 | (5)뒤로가기 | (9)종료");
 		System.out.print("메뉴 번호 입력: ");
 		String input = sc.nextLine();
 		try {
@@ -277,6 +279,7 @@ public class Main {
 			case 3 -> insertOrder();
 			case 4 -> cart();
 			case 5 -> mainPage();
+			case 9 -> exit();
 			default ->
 			System.out.println("잘못된 입력");
 			}
@@ -316,7 +319,7 @@ public class Main {
 				System.out.println(detailcategory);
 			}
 
-			System.out.println("(1)상품담기 | (2)바로구매 | (3)장바구니 | (4)뒤로가기");
+			System.out.println("(1)상품담기 | (2)바로구매 | (3)장바구니 | (4)뒤로가기 | (9)종료");
 			System.out.print("메뉴 번호 입력: ");
 			String input = sc.nextLine();
 			try {
@@ -326,6 +329,7 @@ public class Main {
 				case 2 -> insertOrder();
 				case 3 -> cart();
 				case 4 -> mainPage();
+				case 9 -> exit();
 				default -> System.out.println("잘못된 입력");
 				}
 			} catch (NumberFormatException e) {
@@ -365,7 +369,7 @@ public class Main {
 			for (CartVO cart : cartList) {
 				System.out.println(cart);            
 			}
-			System.out.println("(1)구매하기 | (2)뒤로가기 | (3)삭제하기 | (4)수량변경");
+			System.out.println("(1)구매하기 | (2)뒤로가기 | (3)삭제하기 | (4)수량변경 | (9)종료");
 			System.out.print("메뉴 번호 입력: ");
 			String input = sc.nextLine();
 			try {
@@ -375,6 +379,7 @@ public class Main {
 				case 2 -> mainPage();
 				case 3 -> deleteCart();
 				case 4 -> updateCart();
+				case 9 -> exit();
 				default -> System.out.println("잘못된 입력");
 				}
 			} catch (NumberFormatException e) {
@@ -435,7 +440,7 @@ public class Main {
 			System.out.println(cVO.getProductName() + " " + cVO.getCartCnt() + "개가 추가되었습니다.");
 		}
 
-		System.out.println("(1)메인페이지 | (2)상품보기 | (3)장바구니");
+		System.out.println("(1)메인페이지 | (2)상품보기 | (3)장바구니 | (9)종료");
 		System.out.print("메뉴 번호 입력: ");
 		int cartInsertSelectMenu = sc.nextInt();
 		sc.nextLine();
@@ -444,6 +449,7 @@ public class Main {
 			case 1 -> mainPage();
 			case 2 -> product();
 			case 3 -> cart();
+			case 9 -> exit();
 			default -> System.out.println("잘못된 메뉴");
 			}
 		} catch (InputMismatchException e) {
@@ -509,7 +515,7 @@ public class Main {
 			System.out.println(order);
 		}
 		
-		System.out.println("(1)메인 페이지 | (2)상품보기 | (3)장바구니");
+		System.out.println("(1)메인 페이지 | (2)상품보기 | (3)장바구니 | (9)종료");
 		System.out.print("메뉴 입력 : ");
 		String input = sc.nextLine();
 		int num = Integer.parseInt(input);
@@ -518,6 +524,7 @@ public class Main {
 			case 1 -> mainPage();
 			case 2 -> product();
 			case 3 -> cart();
+			case 9 -> exit();
 			default -> System.out.println("잘못된 입력!");
 			}
 		} catch (NumberFormatException e) {
@@ -657,9 +664,9 @@ public class Main {
 	public static void adminProduct() {
 		System.out.println("***Admin Product Management***");
 		System.out.println("---------------------------------------------");
-		System.out.println("(1)상품등록   | (2)상품수정   | (3)상품삭제    |(4)상품조회   |(5)뒤로가기 ");
+		System.out.println("(1)상품등록   | (2)상품수정   | (3)상품삭제    | (4)상품조회   | (5)뒤로가기 ");
 		System.out.println("---------------------------------------------");
-		System.out.println("번호를 입력하세요: ");
+		System.out.print("번호를 입력하세요: ");
 		try {
 			int num = sc.nextInt();
 			sc.nextLine();
@@ -845,20 +852,46 @@ public class Main {
 		adminUserManagement();
 	}
 	public static void adminUserDelete() {
-
 		System.out.println("***회원 삭제***");
+		
 		System.out.print("회원ID: ");
 		String userId = sc.nextLine();
+		
 		uVO = uDAO.getUser(userId);
-		System.out.println("상태변경: ");
-		uVO.setStated(sc.nextInt());
-		sc.nextLine();
-		try {
-			uDAO.deleteUser(uVO);
-			System.out.println(userId + "님의 회원상태를 비활성화 하였습니다.");
-		}catch(RuntimeException e) {
-			System.out.println(e.getMessage());
+		
+		System.out.println("---------------------------------");
+		
+		System.out.print("*** 현재 상태 :");
+		if (uVO.getStated() == 1) {
+			System.out.println("활성화 ***");
+		} else if (uVO.getStated() == 0) {
+			System.out.println("비활성화 ***");
 		}
+		System.out.println("상태변경");
+		System.out.println("(1)YES | (2)NO");
+		System.out.print("메뉴 입력 : ");
+		String input = sc.nextLine();
+		int num = Integer.parseInt(input);
+		switch (num) {
+		case 1:
+			try {
+				if (uVO.getStated() == 1) {
+					uVO.setStated(0);
+					uDAO.deleteUser(uVO);
+					System.out.println(userId + "님의 회원상태를 비활성화 하였습니다.");
+				} else if (uVO.getStated() == 0) {
+					uVO.setStated(1);
+					uDAO.deleteUser(uVO);
+					System.out.println(userId + "님의 회원상태를 활성화 하였습니다.");
+				}
+			}catch(RuntimeException e) {
+				System.out.println(e.getMessage());
+			}
+			break;
+		case 2:
+			adminUserManagement();
+		}
+
 		adminUserManagement();
 	}
 	// Admin 회원관리 끝 =======================================================================
