@@ -147,15 +147,16 @@ public class CartDAO implements ICartDAO{
 	}
 
 	//장바구니 수량 변경  
-	public int updateCart(int cartCnt, int cartId) {
+	public int updateCart(int cartCnt, int totalPrice, int cartId) {
 		int count = 0;
-		String sql = "UPDATE cart SET cart_cnt = ? WHERE cart_id = ?";
+		String sql = "UPDATE cart SET cart_cnt = ?, total_price = ? WHERE cart_id = ?";
 		Connection con = null;
 		try {
 			con = DataSource.getConnection();
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setInt(1, cartCnt); //stmt의 첫 번째 매개변수에 cartCnt 값을 설정
-			stmt.setInt(2, cartId);  //stmt의 두 번째 매개변수에 cartId 값을 설정
+			stmt.setInt(2, totalPrice);
+			stmt.setInt(3, cartId);  //stmt의 두 번째 매개변수에 cartId 값을 설정
 			count = stmt.executeUpdate();
 		} catch(SQLException e) {
 			throw new RuntimeException(e);

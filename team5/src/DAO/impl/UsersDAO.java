@@ -121,13 +121,14 @@ public class UsersDAO implements IUsersDAO {
 	public int deleteUser(UsersVO vo) {
 		int deleteRow = 0;
 
-		String sql = "UPDATE users SET stated = 0 WHERE user_id=? ";
+		String sql = "UPDATE users SET stated = ? WHERE user_id=? ";
 
 		Connection con = null;
 		try {
 			con=DataSource.getConnection();
 			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setString(1, vo.getUserId());
+			stmt.setInt(1, vo.getStated());
+			stmt.setString(2, vo.getUserId());
 			deleteRow = stmt.executeUpdate();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);

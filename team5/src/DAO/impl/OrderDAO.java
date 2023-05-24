@@ -173,12 +173,11 @@ public class OrderDAO implements IOrderDAO {
 			//pk
 			for (CartVO vo : vos) {
 				totalprice += vo.getTotalPrice() ; 
-				orderUserId = vo.getUserId();
 				}
 			//order
 			stmt = con.prepareStatement(sql);
 			stmt.setInt(1, orderPk);
-			stmt.setString(2, orderUserId);
+			stmt.setString(2, vos.get(0).getUserId());
 			stmt.setInt(3, totalprice);
 			count =stmt.executeUpdate();
 			for (CartVO vo : vos) {
