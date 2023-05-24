@@ -263,7 +263,7 @@ public class Main {
 	public static void product() {
 		try {
 			ArrayList<ProductVO> pVO = proDAO.getAllProducts();
-			System.out.println("상품 ID  |" + "  카테고리 ID  |"  +
+			System.out.println("카테고리 ID  |" + "  상품 ID  |"  +
 					"    상품 이름      |" + "    상품 가격      |" +
 					"      상품 이미지         |");
 			System.out.println("---------------------------------------------------------------------");
@@ -314,7 +314,7 @@ public class Main {
 			ArrayList<ProductVO> prooVO = new ArrayList<ProductVO>();
 			prooVO = proDAO.getProductBy(selectCategory);
 
-			System.out.println("상품 ID  |" + "  카테고리 ID  |"  +
+			System.out.println("카테고리 ID  |" + "  상품 ID  |"  +
 					"    상품 이름      |" + "    상품 가격      |" +
 					"      상품 이미지         |");
 			System.out.println("---------------------------------------------------------------------");
@@ -659,12 +659,13 @@ public class Main {
 		System.out.println("***상품 디테일 등록***");
 		System.out.println("상품ID: ");
 		int productId = sc.nextInt();
+		sc.nextLine();
 		pdVO.setProductId(productId);
+		System.out.println("옵션: ");
+		pdVO.setOptions(sc.nextLine());
 		System.out.println("재고: ");
 		pdVO.setCnt(sc.nextInt());
 		sc.nextLine();
-		System.out.println("옵션: ");
-		pdVO.setOptions(sc.nextLine());
 		try {
 			pdDAO.insertProductDetail(pdVO);
 			System.out.println(pdVO);
