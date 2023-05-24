@@ -350,8 +350,6 @@ public class Main {
 	public static void cart() {
 		ArrayList<CartVO> cartList = cDAO.getAllCart(uVO.getUserId());
 
-
-
 		if (cartList.size() == 0) {
 			System.out.println("장바구니가 비어있습니다.");
 			System.out.println("-----------------------------------------");
