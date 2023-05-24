@@ -36,16 +36,11 @@ public class Main {
 	public static IUsersDAO uDAO = new UsersDAO();
 	public static UsersVO uVO = new UsersVO();
 
-
 	static IOrderDAO oDAO = new OrderDAO();
 	static OrderVO oVO = new OrderVO();
 
-
 	public static OrderDetailDAO odDAO = new OrderDetailDAO();
 	public static OrderDetailVO odVO = new OrderDetailVO(); 
-
-	public static UsersVO user = new UsersVO();
-	public static UsersDAO userDAO = new UsersDAO();
 
 	public static AdminVO adminVO = new AdminVO();
 	public static IAdminDAO aDAO = new AdminDAO();
@@ -117,23 +112,22 @@ public class Main {
 
 				// 회원정보
 				case 1 :
+					// 회원 정보 출력
 					System.out.println("-----------------------------------------------------------------------------------");
 					System.out.println("\t \t \t \t ***회원정보***");
 					System.out.println("-----------------------------------------------------------------------------------");
 					uVO = uDAO.getUser(uVO.getUserId());
-//					userId + "\t      " + 
-//					userName + "\t      " +
-//					userBirth + "\t     " +
-//					userPhoneNumber + "\t" +
-//					userAddress +"\n" +
 					System.out.println("userId   |   "+"userName   |   "+"userBirth   |   "+"userPhoneNumber   |   "+"userAddress   |   ");
 					System.out.println("-----------------------------------------------------------------------------------");
 					System.out.println(uVO);
 					System.out.println("-----------------------------------------------------------------------------------");
+					
+					
 					System.out.println("\t\t\t (1)회원정보수정 | (2)회원탈퇴 | (3)뒤로가기");
 					System.out.print("메뉴 번호 입력: ");
 					String input1 = sc.nextLine();
 					int userMenuSelect = Integer.parseInt(input1);
+					
 					switch(userMenuSelect) {
 					case 1 : 
 						updateUser();
@@ -409,7 +403,17 @@ public class Main {
 		System.out.println("--------------------------------------------------------------------------");
 		System.out.print("옵션 선택:");
 		String productOption = sc.nextLine();
-
+		boolean isOption = false;
+		
+		for (ProductDetailVO productDetail : productDetailList) {
+			if (productOption.equals(productDetail.getOptions())) {
+				isOption = true;
+			}
+		}
+		if (!isOption) {
+			System.out.println("유효하지 않은 옵션입니다.");
+			cartInsert();
+		}
 
 		System.out.print("추가할 개수: ");
 		int addProductCnt = sc.nextInt();   
@@ -460,10 +464,38 @@ public class Main {
 		System.out.print("수량을 바꿀 카트 ID: ");
 		int updateCartId = sc.nextInt();
 		sc.nextLine();
+		
 		System.out.print("바꿀 수량: ");
 		int updateCartCnt = sc.nextInt();
 		sc.nextLine();
-		cDAO.updateCart(updateCartCnt, updateCartId);
+		
+		cVO = cDAO.getOrderCart(updateCartId);
+		proVO = proDAO.getProduct(cVO.getProductId()); 
+		pdVO = pdDAO.getProductD(cVO.getProductId(), cVO.getOptions());
+		
+		if (updateCartCnt > pdVO.getCnt()) {
+			System.out.println("--------------------------------------------------");
+			System.out.println("재고가 부족합니다.");
+			System.out.println("남은 재고 : " + pdVO.getCnt());
+			System.out.println("--------------------------------------------------");
+			updateCart();
+		}
+		
+		if (updateCartCnt == 0) {
+			System.out.println("0개 이하로 수정할 수 없습니다.");
+			System.out.println("--------------------------------------------------");
+			System.out.println("(1)수량변경 | (2)장바구니");
+			System.out.print("메뉴 입력 : ");
+			String input = sc.nextLine();
+			int num = Integer.parseInt(input);
+			switch (num) {
+			case 1 -> updateCart();
+			case 2 -> cart();
+			default -> System.out.println("잘못된 메뉴");
+			}	
+		}
+		int totalPrice = updateCartCnt * proVO.getProductPrice();
+		cDAO.updateCart(updateCartCnt, totalPrice, updateCartId);
 	}
 	// END CART =========================================================================
 
@@ -473,9 +505,11 @@ public class Main {
 		System.out.println("주문ID\t|     "+"상품이름        |    "+"상품가격       |    "+"회원이름      |         "+
 				"회원주소              |      "+"회원전화번호         |    "+"상품옵션      |  "+"주문총가격");
 		System.out.println("------------------------------------------------------------------------------------------------------------------------------");
+		
 		for (OrderVO order : orderlist) {
 			System.out.println(order);
 		}
+		
 		System.out.println("(1)메인 페이지 | (2)상품보기 | (3)장바구니");
 		System.out.print("메뉴 입력 : ");
 		String input = sc.nextLine();
@@ -499,15 +533,13 @@ public class Main {
 		System.out.println("***카트 구매***");
 		System.out.println("(1)전체구매 | (2)선택구매");
 		System.out.print("메뉴입력 : ");
-		int addnum = sc.nextInt();
-		sc.nextLine();
+		String input = sc.nextLine();
+		int addnum = Integer.parseInt(input);
 
 		switch(addnum) {
 		case 1:
-//			oVO.setUserId(s.loginUserId);
 			oDAO.insertCartOrder(cl);
 			break;
-		
 		case 2:
 			while (true) {
 				System.out.print("카트 ID: ");
@@ -540,11 +572,12 @@ public class Main {
 		System.out.print("구매할 제품 ID : ");
 		int insertOrderProductId = sc.nextInt();
 		sc.nextLine();
+		
 		proVO = proDAO.getProduct(insertOrderProductId);
-
 		ArrayList<ProductDetailVO> productDetailList = pdDAO.getProductDetail(proVO.getProductId());
 
 		System.out.println("\t\t\t ***제품 옵션(수량)***");
+		
 		for (ProductDetailVO productDetail : productDetailList) {
 			System.out.print("\t\t" + productDetail.getOptions() + "(" + productDetail.getCnt() + ")");
 		}
@@ -552,6 +585,17 @@ public class Main {
 
 		System.out.print("옵션 선택 : ");
 		String orderDetailOptions = sc.nextLine();
+		boolean isOption = false;
+		
+		for (ProductDetailVO productDetail : productDetailList) {
+			if (orderDetailOptions.equals(productDetail.getOptions())) {
+				isOption = true;
+			}
+		}
+		
+		if (!isOption) {
+			System.out.println("유효하지 않은 옵션입니다!");
+		}
 
 		System.out.print("구매할 개수 : ");
 		int cnt = sc.nextInt();
@@ -561,6 +605,10 @@ public class Main {
 
 		if (cnt > pdVO.getCnt()) {
 			System.out.println("재고가 부족합니다.");
+			insertOrder();
+		}
+		if (cnt == 0) {
+			System.out.println("1개 이상 입력해주세요.");
 			insertOrder();
 		}
 
