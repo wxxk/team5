@@ -54,11 +54,11 @@ public class CartDAO implements ICartDAO{
 		String sql = "SELECT u.user_id, c.cart_id, p.product_img, p.product_name, ct.category_name,"
 				+ "pd.options, c.cart_cnt, c.total_price "
 				+ "FROM users u, cart c, product p, category ct, product_detail pd "
-				+ "WHERE u.user_id = c.user_id"
-				+ "AND c.product_id = p.product_id"
-				+ "AND p.category_id = ct.category_id"
-				+ "AND pd.product_id = p.product_id"
-				+ "AND pd.options = c.options"
+				+ "WHERE u.user_id = c.user_id "
+				+ "AND c.product_id = p.product_id "
+				+ "AND p.category_id = ct.category_id "
+				+ "AND pd.product_id = p.product_id "
+				+ "AND pd.options = c.options "
 				+ "AND cart_id = ?" ;
 		Connection con = null;
 		try {
@@ -125,17 +125,17 @@ public class CartDAO implements ICartDAO{
 	//장바구니에 상품 등록
 	public int insertCart(CartVO vo) {
 		int count = 0;
-		String sql = "INSERT INTO cart (cart_id, user_id, cart_cnt, product_id, options) "
-				+ "VALUES(cart_seq.NEXTVAL, ?, ?, ?, ?)";
+		String sql = "INSERT INTO cart (cart_id, user_id, cart_cnt, product_id, total_price, options) "
+				+ "VALUES(cart_seq.NEXTVAL, ?, ?, ?, ?, ?)";
 		Connection con = null;
 		try {
 			con = DataSource.getConnection();
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setString(1, vo.getUserId());//vo객체의 getUserId()의 값인 userId를 stmt의 첫 번째 매개변수에 설정
-			stmt.setInt(2, vo.getProductId());
-			stmt.setInt(3, vo.getCartCnt());
+			stmt.setInt(2, vo.getCartCnt());
+			stmt.setInt(3, vo.getProductId());
 			stmt.setInt(4, vo.getTotalPrice());
-			stmt.setString(4, vo.getOptions());
+			stmt.setString(5, vo.getOptions());
 			count = stmt.executeUpdate();
 		} catch(Exception e) {
 			throw new RuntimeException(e);
