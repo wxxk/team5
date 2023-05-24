@@ -314,7 +314,7 @@ public class Main {
 			ArrayList<ProductVO> prooVO = new ArrayList<ProductVO>();
 			prooVO = proDAO.getProductBy(selectCategory);
 
-			System.out.println("상품 ID  |" + "  카테고리 ID  |"  +
+			System.out.println("카테고리 ID  |" + "  상품 ID  |"  +
 					"    상품 이름      |" + "    상품 가격      |" +
 					"      상품 이미지         |");
 			System.out.println("---------------------------------------------------------------------");
