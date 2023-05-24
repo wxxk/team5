@@ -37,6 +37,7 @@ public class CartDAO implements ICartDAO{
 				ct.setOptions(rs.getString("options"));
 				ct.setCartCnt(rs.getInt("cart_cnt"));
 				ct.setTotalPrice(rs.getInt("total_price"));
+				ct.setUserId(rs.getString("user_id"));
 				cartList.add(ct);
 			}
 		} catch (SQLException e) {
