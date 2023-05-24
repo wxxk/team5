@@ -132,7 +132,8 @@ public class ProductDAO implements IProductDAO{
 	public int updateProduct(ProductVO vo) {
 		int count = 0;
 		String sql = "UPDATE product SET category_id = ?, product_name = ?, product_price = ?, product_img = ? "
-				+ "WHERE product_id = ?";
+				+ "WHERE product_id = ? "
+				+ "AND options = ?";
 		Connection con = null;
 		try {
 			con = DataSource.getConnection();
