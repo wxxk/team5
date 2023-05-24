@@ -88,22 +88,22 @@ public class CartDAO implements ICartDAO{
 	}
 
 	//장바구니에 담긴 상품 전체삭제
-	public int allDeleteCart(CartVO vo) {
-		int deleteRow = 0;
-		String sql = "DELETE FROM cart WHERE cart_id = ?";
-		Connection con = null;
-		try {
-			con = DataSource.getConnection();
-			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setInt(1, vo.getCartId()); //vo객체의 getCartId()의 값인 cartId를 stmt의 첫 번째 매개변수에 설정
-			deleteRow = stmt.executeUpdate();
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		}finally {
-			DataSource.closeConnection(con);
-		}
-		return deleteRow;
-	}
+//	public int allDeleteCart(CartVO vo) {
+//		int deleteRow = 0;
+//		String sql = "DELETE FROM cart WHERE cart_id = ?";
+//		Connection con = null;
+//		try {
+//			con = DataSource.getConnection();
+//			PreparedStatement stmt = con.prepareStatement(sql);
+//			stmt.setInt(1, vo.getCartId()); //vo객체의 getCartId()의 값인 cartId를 stmt의 첫 번째 매개변수에 설정
+//			deleteRow = stmt.executeUpdate();
+//		} catch (SQLException e) {
+//			throw new RuntimeException(e);
+//		}finally {
+//			DataSource.closeConnection(con);
+//		}
+//		return deleteRow;
+//	}
 
 	//장바구니에 담긴 상품 부분삭제
 	public int deleteCart(int cartId) {
@@ -146,7 +146,7 @@ public class CartDAO implements ICartDAO{
 		return count;
 	}
 
-	//장바구니 수량 변경  
+	//장바구니 수량, 총 가격 변경  
 	public int updateCart(int cartCnt, int totalPrice, int cartId) {
 		int count = 0;
 		String sql = "UPDATE cart SET cart_cnt = ?, total_price = ? WHERE cart_id = ?";
@@ -155,8 +155,8 @@ public class CartDAO implements ICartDAO{
 			con = DataSource.getConnection();
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setInt(1, cartCnt); //stmt의 첫 번째 매개변수에 cartCnt 값을 설정
-			stmt.setInt(2, totalPrice);
-			stmt.setInt(3, cartId);  //stmt의 두 번째 매개변수에 cartId 값을 설정
+			stmt.setInt(2, totalPrice); //stmt의 두 번째 매개변수에 totalPrice 값을 설정
+			stmt.setInt(3, cartId);  //stmt의 세 번째 매개변수에 cartId 값을 설정
 			count = stmt.executeUpdate();
 		} catch(SQLException e) {
 			throw new RuntimeException(e);

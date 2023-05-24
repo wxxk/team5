@@ -58,7 +58,6 @@ public class OrderDAO implements IOrderDAO {
 	@Override
 	public ArrayList<OrderVO> getOrderList(String userId){
 		ArrayList<OrderVO> orderList = new ArrayList<OrderVO>();
-
 		String sql = 
 				"SELECT o.order_id, u.user_name, u.user_phone_number, u.user_address, p.product_img, p.product_name, od.options, o.order_total_price, p.product_price "
 						+ "FROM orders o "

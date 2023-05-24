@@ -502,7 +502,7 @@ public class Main {
 		int totalPrice = updateCartCnt * proVO.getProductPrice();
 		cDAO.updateCart(updateCartCnt, totalPrice, updateCartId);
 	}
-	// END CART =========================================================================
+	// END CART ========================================================================= 
 
 	// START ORDER ======================================================================
 	public static void order() {
@@ -735,7 +735,7 @@ public class Main {
 		int productId = sc.nextInt();
 		sc.nextLine();
 		proVO.setProductId(productId);
-		System.out.println("카테코리아이디: ");
+		System.out.println("카테고리 아이디: ");
 		proVO.setCategoryId(sc.nextInt());
 		sc.nextLine();
 		System.out.println("상품명: ");
