@@ -660,12 +660,13 @@ public class Main {
 		System.out.println("***상품 디테일 등록***");
 		System.out.println("상품ID: ");
 		int productId = sc.nextInt();
+		sc.nextLine();
 		pdVO.setProductId(productId);
+		System.out.println("옵션: ");
+		pdVO.setOptions(sc.nextLine());
 		System.out.println("재고: ");
 		pdVO.setCnt(sc.nextInt());
 		sc.nextLine();
-		System.out.println("옵션: ");
-		pdVO.setOptions(sc.nextLine());
 		try {
 			pdDAO.insertProductDetail(pdVO);
 			System.out.println(pdVO);

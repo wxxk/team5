@@ -80,24 +80,23 @@ public class ProductDetailDAO implements IProductDetailDAO {
 	//상품 디테일 등록
 	@Override
 	public int insertProductDetail(ProductDetailVO vo) {
-		int count = 0;
-		String sql = "INSERT INTO product_detail (producct_detail_seq.NEXTVAL(), product_id, options, cnt)"+
-				" VALUES (?, ?, ?, ?)";
-		Connection con = null;
-		try {
-			con = DataSource.getConnection();
-			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setInt(1, vo.getProductDetailId());
-			stmt.setInt(2, vo.getProductId());
-			stmt.setString(3, vo.getOptions());
-			stmt.setInt(4, vo.getCnt());
-			count = stmt.executeUpdate();
-		} catch(Exception e) {
-			throw new RuntimeException(e);
-		} finally {
-			DataSource.closeConnection(con);
-		}
-		return count;
+	    int count = 0;
+	    String sql = "INSERT INTO product_detail (product_detail_id, product_id, options, cnt)"+
+	        " VALUES (product_detail_seq.NEXTVAL, ?, ?, ?)";
+	    Connection con = null;
+	    try {
+	        con = DataSource.getConnection();
+	        PreparedStatement stmt = con.prepareStatement(sql);
+	        stmt.setInt(1, vo.getProductId());
+	        stmt.setString(2, vo.getOptions());
+	        stmt.setInt(3, vo.getCnt());
+	        count = stmt.executeUpdate();
+	    } catch(Exception e) {
+	        throw new RuntimeException(e);
+	    } finally {
+	        DataSource.closeConnection(con);
+	    }
+	    return count;
 	}
 
 	//상품 디테일 수정
