@@ -13,7 +13,7 @@ public class ProductVO {
 	@Override
 	public String toString() {
 		return  
-				"  " + productId + "\t" + "     " + categoryId + "\t" + "         " + productName + "\t" +  " " + productPrice + "\t" +  "    "+ productImg +"\n"
+				"  " + categoryId + "\t" + "     " + productId + "\t" + "         " + productName + "\t" +  " " + productPrice + "\t" +  "    "+ productImg +"\n"
 				+ "----------------------------------------------------------------------";
 	}
 //	public String toString() {

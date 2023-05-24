@@ -18,7 +18,8 @@ public class ProductDAO implements IProductDAO{
 		ArrayList<ProductVO> productList = new ArrayList<ProductVO>();
 		String sql = "SELECT p.product_id, c.category_id, p.product_name, p.product_price, p.product_img "
 				+ "FROM product p, category c "
-				+ "WHERE p.category_id = c.category_id";
+				+ "WHERE p.category_id = c.category_id "
+				+ "ORDER BY c.category_id ";
 		Connection con = null;
 		PreparedStatement stmt = null;
 		try {
