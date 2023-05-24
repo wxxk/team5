@@ -192,7 +192,7 @@ public class OrderDAO implements IOrderDAO {
 				odDAO.insertOrderDetail(odVO);
 				
 				pdVO = pdDAO.getProductD(vo.getProductId(), vo.getOptions());
-				pdDAO.updateStock(vo.getProductId(), pdVO.getCnt() - vo.getCartCnt());
+				pdDAO.updateStock(vo.getProductId(), pdVO.getCnt() - vo.getCartCnt(), vo.getOptions());
 				cDAO.deleteCart(vo.getCartId());
 			}
 		} catch(Exception e) {
@@ -206,6 +206,8 @@ public class OrderDAO implements IOrderDAO {
 	public int insertProductOrder(OrderVO vo, int cnt, String orderDetailOptions) {
 		int count = 0;
 		int orderPk = 0;
+		ProductDetailDAO pdDAO = new ProductDetailDAO();
+		ProductDetailVO pdVO = new ProductDetailVO();
 		OrderDetailDAO odDAO = new OrderDetailDAO();
 		String sql = "INSERT INTO orders (order_id, user_id, order_total_price)"
 				+ " VALUES (?, ?, ?)";
@@ -238,6 +240,9 @@ public class OrderDAO implements IOrderDAO {
 			odVO.setOrderId(orderPk);
 			odVO.setOptions(orderDetailOptions);
 			odDAO.insertOrderDetail(odVO);
+			
+			pdVO = pdDAO.getProductD(odVO.getProductId(), odVO.getOptions());
+			pdDAO.updateStock(odVO.getProductId(), pdVO.getCnt() - odVO.getProductCnt(), odVO.getOptions());
 		} catch(Exception e) {
 			throw new RuntimeException(e);
 		} finally {

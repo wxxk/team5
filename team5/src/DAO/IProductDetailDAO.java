@@ -9,7 +9,7 @@ public interface IProductDetailDAO {
 	public ProductDetailVO getProductD(int productId, String options);
 	public int insertProductDetail(ProductDetailVO vo);
 	public int updateProductDetail(ProductDetailVO vo);
-	public int updateStock	(int productDetailId, int cnt);
+	public int updateStock	(int productDetailId, int cnt, String options);
 	public int deleteProductDetail(ProductDetailVO vo);
 }
 

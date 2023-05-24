@@ -432,14 +432,15 @@ public class Main {
 			System.out.println(cVO.getProductName() + " " + cVO.getCartCnt() + "개가 추가되었습니다.");
 		}
 
-		System.out.println("(1)메인페이지 | (2)장바구니");
+		System.out.println("(1)메인페이지 | (2)상품보기 | (3)장바구니");
 		System.out.print("메뉴 번호 입력: ");
 		int cartInsertSelectMenu = sc.nextInt();
 		sc.nextLine();
 		try {
 			switch (cartInsertSelectMenu) {
 			case 1 -> mainPage();
-			case 2 -> cart();
+			case 2 -> product();
+			case 3 -> cart();
 			default -> System.out.println("잘못된 메뉴");
 			}
 		} catch (InputMismatchException e) {
