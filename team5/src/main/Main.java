@@ -129,21 +129,24 @@ public class Main {
 						updateUser();
 						break;
 					case 2 :
-						System.out.println("***회원 탈퇴***");
+						System.out.println("\t\t\t\t ***회원 탈퇴***");
+						System.out.println("-----------------------------------------------------------------------------------");
 						System.out.print("아이디 : ");
 						String id = sc.nextLine();
 						System.out.print("비밀번호 : ");
 						String pwd = sc.nextLine();
-						if (id.equals(uVO.getUserId()) && pwd.equals(uVO.getUserId())) {
+						if (id.equals(uVO.getUserId()) && pwd.equals(uVO.getUserPassword())) {
 							deleteUser();
+							System.out.println("탈퇴되었습니다.");
 							main(null);
 						} else {
 							System.out.println("비밀번호가 일치하지 않습니다");
+							mainPage();
 						}
 						break;
 					case 3: 
 						mainPage();
-						break;
+						break;	
 					case 9:
 						exit();
 					default :
@@ -216,6 +219,7 @@ public class Main {
 		uVO.setUserAddress(sc.nextLine());
 		try {   
 			uDAO.insertUser(uVO);
+			System.out.println("회원가입이 완료되었습니다.");
 		} catch(RuntimeException e) {
 			System.out.println(e.getMessage());
 		}
@@ -242,7 +246,6 @@ public class Main {
 	}
 
 	public static void deleteUser() {
-		// 삭제안됨
 		try {
 			uVO.setStated(0);
 			uDAO.deleteUser(uVO);

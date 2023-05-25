@@ -123,7 +123,7 @@ public class UsersDAO implements IUsersDAO {
 
 		String sql = "UPDATE users SET stated = ? WHERE user_id=? ";
 
-		Connection con = null;
+		Connection con = null;	
 		try {
 			con=DataSource.getConnection();
 			PreparedStatement stmt = con.prepareStatement(sql);

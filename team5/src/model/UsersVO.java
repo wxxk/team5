@@ -19,8 +19,7 @@ public class UsersVO {
 				userName + "\t      " +
 				userBirth + "\t     " +
 				userPhoneNumber + "\t" +
-				userAddress +"\n" +
-				"----------------------------------------------------------------------------------------------";
+				userAddress +"\n";
 	}
 
 	public String [] toArray() {
